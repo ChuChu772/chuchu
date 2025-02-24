@@ -1,0 +1,2721 @@
+*{
+    margin: 0;
+    padding: 0;
+    --gg: #d1ccbb;
+    --cc: rgb(151, 141, 132);
+    --mm: rgb(181, 177, 170);
+    scroll-behavior: smooth;
+}
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital@0;1&family=Shippori+Mincho&family=Zen+Maru+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Shippori+Mincho&family=Zen+Maru+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Shippori+Mincho&family=Zen+Maru+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Shippori+Mincho&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDPMincho&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital@0;1&family=Shippori+Mincho&family=Zen+Maru+Gothic&display=swap');
+@font-face {
+    font-family: 'Zen Maru Gothic';
+    src: url('kkk/zen-marugothic-main') format("truetype"),
+         url('kkk/ZenMaruGothic-Bold') format("truetype"),
+         url('kkk/ZenMaruGothic-Light') format("truetype");
+    font-weight: normal;
+    font-style: normal;
+
+  }
+  /* ::-webkit-scrollbar {
+    width: 0px;
+  } */
+  ::-webkit-scrollbar {
+    display: none; /* 隱藏滾動條 */
+  }
+  
+body{
+    position: relative;  
+    background-color: var(--cc);
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    overscroll-behavior: none;
+    overflow-x: hidden;
+}
+
+.cursor,
+.circle {
+    z-index: -110;
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgb(75, 173, 165);
+    border-radius: 100%;
+}
+
+.cursor#main {
+    background: rgb(160, 62, 62);
+    color: #fff;
+    font-size: 20px;
+    line-height: 110%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+}
+
+.firstpage{
+    display: flex;
+    position: relative;
+    /* background-color:  rgb(255, 255, 255); */
+    color: #fff;
+    height: 80%;
+    width: 100%;
+    /* top: -25; */
+}
+
+.paper {
+    position: absolute;
+    z-index: -111;
+    width: 100%;
+    height: 1000px;
+    /* background-image: url('kkk.jpg');  */
+    background-color: var(--mm);
+    opacity: 1;
+  }
+
+.title {
+    display: flex;
+    width: 550px;
+    z-index: 1000;
+    height: 100vh;
+    width: 100vw;
+    letter-spacing: 50;
+    justify-content: center;
+    align-items: center;
+    /* line-height: 1; */
+    font-size: 70px;
+    font-family: "Noto Sans", serif;
+    font-weight: 500;
+    font-style: normal;
+    position: absolute;
+    color: rgb(71, 62, 57);
+    border: 1px solid black;
+}
+.titleh1{
+    display: flex;
+    height: 50vh;
+    width: 50vw;
+    border: 1px solid black;
+}
+.title p{
+    font-size: 70px;
+    font-weight: 500;
+    position:relative;
+    display: flex;
+    transform: translateY(100%);
+} 
+
+.scrr {
+    display: flex;
+    width: 550px;
+    z-index: 1000;
+    height: 5%;
+    top: 95%;
+    left: 6%;
+    letter-spacing: 0.5;
+    font-size: 20px;
+    font-family: "Noto Sans", serif;
+    font-weight: 500;
+    font-style: normal;
+    position: absolute;
+    color: var(--cc);
+    opacity: 1;
+    overflow: hidden;
+}
+
+.scrr p{
+    display: flex;
+    transform: translateY(100%);
+}
+
+.material-symbols-outlined {
+    display: flex;
+    position: relative;
+    height: 20px;
+    width: 18px;
+    top: -10%;
+    left: 1%;
+    transform: scale(0.5);
+    transform: rotate(135deg);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+}
+/* 
+.scrr:hover .material-symbols-outlined{
+    top: 6;
+    opacity: .7;
+} */
+
+.logo/*閃現*/{
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-family: 'Dx Sitrus';
+    background-image: url('kkk.jpg'); 
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+}
+.txt /*台灣陶瓷歷史slogan閃現*/{
+    z-index: 10;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    letter-spacing: 3px;
+    font-family: "Noto Sans", serif;
+    color: var(--cc);
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+}
+.txt2 /*台灣陶瓷歷史slogan閃現*/{
+    z-index: 10;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    letter-spacing: 10px;
+    font-family: "Noto Sans", serif;
+    color: var(--cc);
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+}
+.link /*四位老哥*/ {
+    z-index: 888;
+    position: absolute;
+    top: 0px;  
+    width: 100vw;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.link .longb {
+    position: absolute;
+    width: 100vw;
+    height: 170px;
+    /* background-color: rgb(177, 172, 149); */
+    opacity: .5;
+    z-index: 1;
+}
+
+.link .ul{
+    z-index: 500;
+    position: fixed;
+    right: 20px;
+    list-style: none;
+    display: flex;
+    cursor: pointer;
+   /* opacity: 0;*/
+}
+.link .ul li{
+    margin:0px 30px;
+}
+.link .ul li a{
+    text-decoration: none;
+    color: rgb(123, 126, 112);
+    font-size: 15px;
+    font-family: 'Monument';
+    opacity: 1;
+    cursor: pointer;
+}
+
+.link .ul li a:hover {
+    color: rgb(150, 76, 76); 
+    transition: .1s ease-in ;
+}
+
+.mo{
+    height: 100vh;
+    position: relative;
+}
+
+.mo .list .item{
+    position: absolute;
+    inset: 0 0 0 0 ;
+    transition: .5s;
+}
+
+.cera{
+    display: flex;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+.cera .list{
+    display: flex;
+    position: relative;
+    left: 10%;
+    height: 80%;
+    width: 80%;
+}
+.cera .list .iii img{
+    position: relative;
+    z-index: 4000;
+    width: 100%;
+    height: 100%;
+    transform: scale(1.9);
+    right: 0%;
+    /* object-fit: cover; */
+    opacity: 1;
+    /* transform: translateY(-10%); */
+}
+
+.fixed-icon {
+    z-index: 1001;
+    width: 25px;
+    height: 30px;  
+    display: flex;
+    justify-content: center;
+    cursor: pointer; /* 顯示為可點擊 */
+    position: fixed;  /* 固定在視窗 */
+    top: 20px;        /* 距離視窗頂部 20px */
+    right: 20px;
+  }
+
+.fixed-icon .material-symbols-outlined{
+    position: relative;
+    display: flex;
+    color: rgb(150, 143, 136);
+    opacity: .8;
+
+}
+
+.fixed-icon .material-symbols-outlined:hover{
+    color: rgb(110, 103, 96);
+    opacity: 1;
+}
+.overlay{
+    top: 0;
+    z-index: 1000;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(0, 0, 0);
+    opacity: 0;
+}
+.firstpage .menuf {
+    z-index: 1000;
+    position: fixed;
+    height: 127%;
+    width: 600px;
+    transform-origin: right;
+    right: -615;
+    border-radius: 50% 0% 0% 50%;
+    background-color: rgba(114, 108, 102, 0.8);
+    opacity: 1;
+    cursor: pointer;
+    transform: translateY(-12.3%);
+}
+  .firstpage .menu {
+    z-index: 1000;
+    position: fixed;
+    height: 120%;
+    width: 550px;
+    transform-origin: right;
+    right: -620;
+    border-radius: 50% 0% 0% 50%;
+    background-color: rgb(78, 76, 74);
+    /* box-shadow: -15px 0 0 0 rgba(126, 117, 113, 0.6); */
+    opacity: 1;
+    transform: translateY(-10%);
+    text-decoration: none;
+}
+
+.firstpage .menu .place {
+    opacity: 1;
+    height: 100%;
+    left: 30%; 
+    top: 3%;
+    position: relative;
+    display: flex; /* 使用 Flex 布局 */
+    flex-direction: column; /* 子元素垂直排列 */
+    justify-content: center; /* 垂直居中内容 */
+    align-items: left; /* 水平居中内容 */
+    text-decoration: none;
+    line-height: 50px;
+    list-style: none; 
+}
+
+.firstpage .menu .place .text {
+    color: rgb(177, 166, 164);;
+    display: flex; 
+    flex-direction: column;
+    font-family: 'Zen Maru Gothic';
+    font-size: 22px;
+    font-weight: 200;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: left; 
+    text-decoration: none;
+    
+}
+
+.tex{
+    color: seashell;
+    height: 120px;
+    width: 220px;
+    font-family: 'Zen Maru Gothic';
+    letter-spacing: 10;
+    font-size: 35px;
+    text-decoration: none;
+}
+
+#texx{
+    color: rgb(160, 148, 145);
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.firstpage .menu .place .text:hover{
+    color: seashell;
+    font-weight: 300;
+    cursor: pointer;
+}
+.hoome{
+    position: relative;
+    display: flex;
+    height: 200vh;
+    width: 100vw;
+}
+.concept{
+    display: flex;
+    writing-mode: vertical-rl; 
+    text-orientation: upright; 
+    position: relative;
+    z-index: -99;
+    color: #fff;
+    height: 100%;
+    width: 100vw;
+    /* opacity: 0; */
+    /* border-radius: 30% 30% 0% 0%; */
+}
+
+.concept .brown{
+    top: 15%;
+    display: flex;
+    position: absolute;
+    z-index: -99;
+    /* background-color: rgb(126, 121, 118); */
+    height: 100%;
+    width: 100vw;
+    opacity: .3;
+    transform-origin: center;
+    /* opacity: 0; */
+    /* border-radius: 30% 30% 0% 0%; */
+}
+.bbgpaper{
+    height: 100%;
+    width: 100vw;
+    position: absolute;
+    display: flex;
+    z-index: -999;
+    background-color: var(--mm);
+    /* background-image: url('kkk.jpg');  */
+}
+
+.cback {  
+    display: flex;
+    position: absolute;
+    list-style: none; 
+    left: 22%;
+    top: 20%;
+    width: 120px;
+    height: 30rem;
+    letter-spacing: 0.5rem;
+    font-size:40px;
+    font-family: 'Zen Maru Gothic';
+    font-weight: 600;
+    z-index: 100;
+    /* background: linear-gradient(rgb(0, 0, 0, 0) , rgb(0, 0, 0, .7) 40%); */
+}
+
+.concept .d0 {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    position: absolute;
+    left: 37%; 
+    top: 35%;
+    writing-mode: horizontal-tb;
+    font-family: 'Zen Maru Gothic';
+    font-weight: 400;
+    font-size: 15px;
+    letter-spacing: 0.2rem;
+    line-height: 2;
+}
+
+.concept .d0 li{
+    margin: 40px 0px;
+}
+
+
+.concept .motion {
+    top: 600px;
+    display: flex;
+    width: 100%;
+    position: absolute;    
+}
+
+.concept .motion .leaf1{
+    position: absolute;
+    top: 280px;
+    left: 270px;
+    opacity: .5;
+}
+
+.concept .motion .leaf1 img {
+    height: 35rem;
+}
+
+.concept .motion .leaf2{
+    position: absolute;
+    top: 570px;
+    left: 350px;
+    opacity: .5;
+}
+
+.concept .motion .leaf2 img {
+    height: 30rem;
+}
+
+.concept .motion .leaf4{
+    position: absolute;
+    top: 1000px;
+    right: 250px;
+    opacity: .5;
+}
+
+.concept .motion .leaf4 img {
+    height: 10rem;
+}
+
+/* .flow{
+    display: flex;
+    position: relative;
+    height: 20vh;
+    width: 100vw;
+} */
+
+.concept .middle{
+    z-index: 999;
+    display: flex;
+    position: absolute;
+    height: 100px;
+    width: 100vw;
+    bottom:0;
+    justify-content: center;
+    align-items: center;
+    /* background-color: cadetblue; */
+}
+
+.concept .middle .wen{
+    font-size: 20px;
+    color: rgb(89, 102, 77);
+}
+
+
+.sad .leaf3 {
+    z-index: 1;
+    left: 500px;
+    top: 0px;
+    position: absolute;
+    animation: spin 120s linear infinite;
+    opacity: 0;
+}
+
+.sad .leaf3 img {
+    position: absolute;
+    height: 80rem;
+}
+
+/* @keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+} */
+
+.aa{
+    display: flex;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    top: 30px;
+}
+
+.aa .tr img{
+    z-index: 1;
+    position: relative;
+    display: flex;
+    height: 119px;
+}
+
+.aa .tr{
+    position: relative;
+    display: flex;
+    height: 150px;
+    width: 100px;
+    top: 30px;
+    left: 0px;
+}
+
+.aa .tr .triangle {
+  z-index: 5;
+  position: absolute;
+  width: 220px;
+  height: 120px;
+
+  background-color: #5D5752;
+  opacity: 1;
+  clip-path: polygon(0% 0%, 64% 0%, 100% 100%, 0% 100%);
+  }
+
+.aa .tr .tlinehome{
+    z-index: 50;
+    height: 100px;
+    top: -110;
+    left: 40;
+    width: 100px;
+    position: relative;
+    transform: rotate(56.3deg);
+    opacity: 1;
+}
+
+.aa .tr .tline {
+    z-index: 50;
+    position: relative;
+    left: 250px;
+    top: 0px;
+    width: 2px;
+    transform: rotate(56.3);
+    height: 1px;
+    background-color: rgb(43, 37, 36);
+}
+
+.aa1{
+    display: flex;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    left: 500px;
+    top: 30px;
+}
+
+.aa1 .tr1 img{
+    z-index: 1;
+    position: relative;
+    display: flex;
+    height: 119px;
+}
+
+.aa1 .tr1{
+    position: relative;
+    display: flex;
+    height: 150px;
+    width: 100px;
+    top: 30px;
+    left: 0px;
+}
+
+.aa1 .tr1 .triangle1 {
+  z-index: 5;
+  position: absolute;
+  width: 220px;
+  height: 120px;
+
+  background-color: #5D5752;
+  opacity: 1;
+  clip-path: polygon(0% 0%, 64% 0%, 100% 100%, 0% 100%);
+  }
+
+.aa1 .tr1 .tlinehome1{
+    z-index: 50;
+    height: 100px;
+    top: -110;
+    left: 40;
+    width: 100px;
+    position: relative;
+    transform: rotate(56.3deg);
+    opacity: 1;
+}
+
+.aa1 .tr1 .tline1 {
+    z-index: 50;
+    position: relative;
+    left: 250px;
+    top: 0px;
+    width: 2px;
+    transform: rotate(56.3);
+    height: 1px;
+    background-color: rgb(43, 37, 36);
+}
+.aa2{
+    z-index: 50;
+    display: flex;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 30px;
+    left: 450px;
+}
+
+.aa2 .tr2 img{
+    z-index: 1;
+    position: relative;
+    display: flex;
+    height: 119px;
+}
+
+.aa2 .tr2{
+    position: relative;
+    display: flex;
+    height: 150px;
+    width: 100px;
+    top: 30px;
+    left: 0px;
+}
+
+.aa2 .tr2 .triangle2 {
+  z-index: 5;
+  position: absolute;
+  width: 220px;
+  height: 120px;
+
+  background-color: #5D5752;
+  opacity: 1;
+  clip-path: polygon(0% 0%, 64% 0%, 100% 100%, 0% 100%);
+  }
+
+.aa2 .tr2 .tlinehome2{
+    z-index: 50;
+    height: 100px;
+    top: -110;
+    left: 40;
+    width: 100px;
+    position: relative;
+    transform: rotate(56.3deg);
+    opacity: 1;
+}
+
+.aa1 .tr1 .tline1 {
+    z-index: 50;
+    position: relative;
+    left: 250px;
+    top: 0px;
+    width: 2px;
+    transform: rotate(56.3);
+    height: 1px;
+    background-color: rgb(43, 37, 36);
+}
+
+.aa3{
+    z-index: 50;
+    display: flex;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 30px;
+    left: 900px;
+}
+
+.aa3 .tr3 img{
+    z-index: 1;
+    position: relative;
+    display: flex;
+    height: 119px;
+}
+
+.aa3 .tr3{
+    position: relative;
+    display: flex;
+    height: 150px;
+    width: 100px;
+    top: 30px;
+    left: 0px;
+}
+
+.aa3 .tr3 .triangle3 {
+  z-index: 50;
+  position: absolute;
+  width: 220px;
+  height: 120px;
+  background-color: #5D5752;
+  opacity: 1;
+  clip-path: polygon(0% 0%, 60% 0%, 100% 100%, 0% 100%);
+  }
+
+.aa3 .tr3 .tlinehome3{
+    z-index: 50;
+    height: 100px;
+    top: -80;
+    left: 70;
+    width: 100px;
+    position: relative;
+    transform: rotate(56.3deg);
+    opacity: .4;
+}
+
+.aa3 .tr3 .tline3 {
+    z-index: 50;
+    position: relative;
+    left: 250px;
+    top: 0px;
+    width: 2px;
+    transform: rotate(56.3);
+    height: 1px;
+    background-color: rgb(43, 37, 36);
+}
+
+.sad{
+    position: relative;
+    z-index: 999;
+    height: 340vh;
+    width: 100vw;
+    opacity: 1;
+    background-color: var(--gg);
+}
+
+.er{
+    right: 270px;
+    top: 75;
+    height: 50px;
+    width: 200px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* background-color: rgb(235, 210, 210); */
+}
+
+.err {
+    letter-spacing: 1;
+    transform: translateY(75%);
+    color: rgb(151, 141, 132);
+    font-family: "Noto Sans", serif;
+    font-size: 40px
+}
+.sad .hane{
+    position: relative;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.sad .hane .roun{
+    display: flex;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    top: 25px;
+    left: -60px;
+}
+
+.sad .hane .roun img{
+    display: flex;
+    position: relative;
+    bottom: 30px;
+    height: 120px;
+    width: 120px;
+}
+.sad .hane .roun1{
+    display: flex;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    top: 25px;
+    left: -100px;
+    opacity: 0;
+}
+
+.sad .hane .roun1 img{
+    display: flex;
+    position: relative;
+    bottom: 30px;
+    height: 120px;
+    width: 120px;
+}
+
+.sad .hane .roun2{
+    display: flex;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    top: 25px;
+    left: -182px;
+    opacity: 0;
+}
+
+.sad .hane .roun2 img{
+    display: flex;
+    position: relative;
+    bottom: 30px;
+    height: 120px;
+    width: 120px;
+}
+
+.sad .hane .roun3{
+    display: flex;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    top: 25px;
+    right: 400px;
+    opacity: 0;
+}
+
+.sad .hane .roun3 img{
+    display: flex;
+    position: relative;
+    bottom: 30px;
+    height: 120px;
+    width: 120px;
+}
+
+.sad .hane .rounline{
+    display: flex;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    top: 60px;
+    left: 100px;
+    transform-origin: left;
+    background-color: rgb(151, 141, 132);
+}
+
+.hanaline {
+    display: flex;
+    width: 1500px;
+    height: 1px;
+    background-color: burlywood;
+
+}
+.pcut{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    z-index: 100;
+    height: 100vh;
+    width: 100vw;
+}
+.cutt{
+    height: 20%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+.pcut .cut{
+    z-index: 10;
+    height: 20%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-image: url('kkk.jpg');
+}
+.pcut .cut1{
+    z-index: 9;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-image: url('kkk.jpg');
+}
+.pcut .cut2{
+    z-index: 8;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-image: url('kkk.jpg');
+}
+.pcut .cut3{
+    z-index: 7;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-image: url('kkk.jpg');
+}
+.pcut .cut4{
+    z-index: 6;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background-image: url('kkk.jpg');
+}
+.up, .up1, .up2, .up3{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+    left: 5%;
+    font-family: "Noto Sans", serif;
+    font-size: 120px;
+    letter-spacing: 4px;
+    align-items: center;
+    color: var(--cc);
+    overflow: hidden;
+}
+.up p, .up1 p, .up2 p, .up3 p{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    transform: translateY(100%);
+}
+.kowa{
+    display: flex;
+    position: relative;
+    height: 25%;
+    width: 15%;
+    top: -35%;
+    right: 24%;
+    font-size: 25px;
+    justify-content: center;
+    align-items: center;
+}
+.pso{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 340vh;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.psoo{
+    position: relative;
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    top: 15%;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+}
+.psoo p{
+    display: flex;
+    position: relative;
+    color: var(--cc);
+    font-size: 30px;
+}
+.haha{
+    height: 187vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    top: 15.5%;
+}
+.mmtt{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    /* overflow: hidden;  */
+}
+.backto{
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 5%;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.door {
+    position: absolute;
+    display: flex;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--cc);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); 
+}
+.backto p {
+    position: relative;
+    display: flex;
+    width: 550%;
+    top: 20%;
+    font-weight: 300;
+    font-size: 12px;
+    transform: rotate(90deg);
+    color: var(--cc);
+    letter-spacing: 5px;
+    mix-blend-mode: difference;
+    transition: color 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;  
+}
+.backto h4{
+    display: flex;
+    position: relative;
+    width: 180%;
+    font-weight: 500;
+    transform: rotate(90deg);
+    top: 25%;
+    mix-blend-mode: difference;
+    align-items: center;
+    justify-content: center;
+    color: rgb(104, 123, 109);
+}
+.namehome{
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 20%;
+    left: 22%;
+    justify-content: center;
+    align-items: center;
+}
+.namehome p{
+    opacity: 0;
+}
+.name{
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 24%;
+    padding: 2rem;
+    font-size: 85px;
+    font-family: "Noto Sans", serif;
+    font-weight: bolder;
+    line-height: 2;
+    color: var(--cc);
+    writing-mode: vertical-rl;
+    justify-content: top;
+    align-items: center;
+    text-align: top;
+}
+.ename{
+    display: flex;
+    right: 19%;
+    height: 5%;
+    width: 120%;
+    top: 23%;
+    position: absolute;
+    font-size: 25px;
+    font-family: "Noto Sans", serif;
+    font-weight: bolder;
+    font-style: normal;
+    letter-spacing: 5px;
+    justify-content: left;
+    align-items: left;
+    color: var(--cc);
+    transform: rotate(90deg);
+}
+.pichome{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 100%;
+    width: 60%;
+    top: 15%;
+    left: 30%;
+    justify-content: top;
+    align-items: flex-start;
+}
+#image-container{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80%;
+    border-radius: 20px;
+}
+#image-container img {
+    position: absolute;
+    width:100%;
+}
+/* 植物 */
+#photo4, #photo7, #photo11, #photo12, #photo13, #photo14, #photo16{
+    position: absolute;
+    top: -30%;
+    left: 2%;
+    width:100%;
+    opacity: 0;
+}
+#photo3, #photo9, #photo15{
+    position: absolute;
+    left: 13%;
+    top: -13%;
+    width:100%;
+    opacity: 0;   
+}
+#photo19, #photo20{
+    position: absolute;
+    left: 3%;
+    width:100%;
+    opacity: 0;
+    bottom: -22%;
+}
+#photo2{
+    position: absolute;
+    height:150%;
+    opacity: 0;  
+}
+#photo17, #photo5{
+    position: absolute;
+    width:100%;
+    opacity: 0;
+    bottom: -18%;
+    left: 10%;
+    transform: scale(90%);
+}
+#photo1, #photo9, #photo10, #photo15{
+    position: absolute;
+    width:100%;
+    opacity: 0;
+}
+#photo6{
+    position: absolute;
+    opacity: 0;
+    left: 15%;
+}
+#photo8{
+    position: absolute;
+    opacity: 0;
+}
+#photo18{
+    display: flex;
+    position: absolute;
+    left: 15%;
+    bottom: -20%;
+    transform: scale(80%);
+    opacity: 0;
+}
+#photo3{
+    opacity: 0;
+}
+#image-container img.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 2s ease, visibility 0s 1.5s;
+}
+.era{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-left: 3%;
+    height: 100%;
+    width: 50%;
+    font-weight: bolder;
+    justify-content: top;
+    align-items: left;
+}
+.eraa{
+    display: flex;
+    flex-direction: column;
+    height: 20%;
+    width: 100%;
+    top: 1%;
+    position: relative;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: "Noto Sans", serif;
+    letter-spacing: 2px;
+    color: var(--cc);
+}
+#eraa1{
+    transition: 1s ease;
+}
+#eraa2{
+    transition: 1s ease;
+}
+.eraa1{
+    height: 45%;
+    font-weight: bolder;
+    overflow: hidden;
+    transition: 1s ease;
+}
+.eraa1 p{
+    transform: translateY(120%);
+}
+.eraa2{
+    height: 30%;
+    font-weight: bolder;
+    overflow: hidden;
+    transition: 1s ease;
+}
+.eraa2 p{
+    transform: translateY(120%);
+}
+.eraa .doww{
+    transform: translateY(120%)!important;
+}
+.eraa .upp{
+    transform: translateY(0%)!important;
+}
+.eraa1 p{
+    letter-spacing: 10px;
+    font-size: 45px;
+}
+.eraa2 p{
+    letter-spacing: 3px;
+    font-size: 30px;
+}
+.genus{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 40%;
+    width: 10%;
+    justify-content: center;
+    align-items: left;
+    color: var(--cc);
+    opacity: 0;
+}
+.gg{
+    font-family: 'Zen Maru Gothic';
+    font-size: 18px;
+    line-height: 2.1;
+    letter-spacing: 1px;
+    font-weight: 300;
+    opacity: .4;
+
+}
+.good{
+    transform: translateX(20%);
+    opacity: 1;
+    line-height: 3;
+    font-weight: 400;
+    transition: 1s ease ;
+}
+.bad{
+    transform: translateX(0);
+    opacity: .3;
+    font-weight: 300;
+    transition: 1s ease ;
+}
+.blockh{
+    z-index: 10;
+    display: flex;
+    position: relative;
+    height: 6%;
+    width: 100%;
+    top: 3%;
+    color: var(--cc);
+    letter-spacing: 8px;
+    font-weight: 400;
+    font-size: 30px;
+    font-family: 'Zen Maru Gothic';
+    overflow: hidden;
+}
+#word{
+    transition: 1s ease ;
+}
+#word1,#word2, #word3, #word4{
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 19px;
+    font-family: 'Zen Maru Gothic';
+}
+.block p{
+    transform: translateY(150%);
+}
+.blockh .do{
+    transform: translateY(120%)!important;
+}
+.blockh .uu{
+    transform: translateY(0%)!important;
+}
+.dtail{
+    z-index: 10;
+    top: 7%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 21%;
+    width: 100%;
+    font-size: 19px;
+    letter-spacing: 10px;
+    font-weight: 400;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'Zen Maru Gothic';
+    color: var(--cc);
+    transition: .9s ease ;
+}
+.block1 p, .block2 p, .block3 p, .block4 p{
+    transform: translateY(100%);
+}
+.block1 .do{
+    transform: translateY(100%)!important;
+    transition: .9s ease ;
+}
+.block1 .uu{
+    transform: translateY(0%)!important;
+    transition: .9s ease 0.2s;
+}
+.block2 .do{
+    transform: translateY(100%)!important;
+    transition: .9s ease ;
+}
+.block2 .uu{
+    transform: translateY(0%)!important;
+    transition: .9s ease 0.4s;
+}
+.block3 .do{
+    transform: translateY(100%)!important;
+    transition: .9s ease ;
+}
+.block3 .uu{
+    transform: translateY(0%)!important;
+    transition: .9s ease 0.6s;
+}
+.block4 .do{
+    transform: translateY(100%)!important;
+    transition: .9s ease ;
+}
+.block4 .uu{
+    transform: translateY(0%)!important;
+    transition: .9s ease 0.8s;
+}
+.block1{
+    display: flex;
+    flex-direction: column;
+    height: 17%;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    overflow: hidden;
+}
+.block2{
+    display: flex;
+    height: 17%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+}
+.block3{
+    display: flex;
+    height: 17%;
+    position: relative;
+    overflow: hidden;
+}
+.block4{
+    display: flex;
+    flex-direction: column;
+    height: 17%;
+    width: 120%;
+    position: relative;
+    overflow: hidden;
+}
+.sad .ssad{
+    z-index: 999;
+    position: absolute;
+    top: -10%;
+    right:50%;
+    height: 100px;
+    width: 100px;
+}
+
+.sad .ssad .sssad{
+    z-index: 999;
+    height: 160px;
+    width: 10px;
+}
+
+.sad .ssad .sssad img{
+    height: 160px;
+    width: 10px;
+    transition: transform 2s ease-in-out;
+}
+
+.rotate-animation {
+    animation: rotate720 2s ease forwards; 
+}
+
+@keyframes rotate720 {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(720deg);
+    }
+}
+
+
+.sad .ssad1{
+    position: absolute;
+    bottom: 320px;
+    left: 1296px;
+    height: 200px;
+    width: 180px;
+
+}
+
+.sad .ssad1 .sssad1{
+    z-index: 999;
+    height: 200px;
+    width: 10px;
+    opacity: 0;
+}
+
+.sad .ssad1 .sssad1 img{
+    height: 190px;
+    width: 10px;
+    
+}
+
+.ssad2{
+    display: flex;
+    position: absolute;
+    bottom: 470px;
+    left: 1200px;
+    height: 200px;
+    width: 200px;
+
+}
+
+ .ssad2 .sssad2{
+    display: flex;
+    position: absolute;
+    z-index: 999;
+    height: 200px;
+    width: 200px;
+    opacity: 1;
+}
+
+.ssad2 .sssad2 img{
+
+    height: 200px;
+    width: 200px;
+    
+}
+.noname{
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    width: 100vw;
+    background-image: url("kkk.jpg");
+}
+
+.coco{
+    z-index: 1;
+    top: 0;
+    position: absolute;
+    height: 200vh;
+    width: 100vw;
+    background-color: #fff;
+    opacity: 0;
+}
+.horizontal-container {
+    /* z-index: 2000; */
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 1200vh;
+    /* background-image: url("kkk.jpg"); */
+    /* background-color: var(--gg); */
+    align-items: center;
+    text-align: flex ;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.ppthome{
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    height: 400vh;
+    width: 100vw;
+    bottom: 0;
+    align-items: center;
+ 
+    opacity: 1;
+}
+
+.ppt{
+    top: 13%;
+    z-index: 2000;
+    display: flex;
+    position: absolute;
+    height: 400vh;
+    width:15%;
+    left: 35%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transform: translateY(-100%);
+    background-clip: content-box;
+    
+
+}
+
+.ppt .www{
+    display: flex;
+    /* background-image: url("kkkk.jpg"); */
+    background-clip: content-box;
+    position: relative;
+    height: 170px;
+    width: 240px;
+    margin: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.ppt1{
+    z-index: 2000;
+    display: flex;
+    position: absolute;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 400vh;
+    width:15%;
+    left: 15%;
+    top: 25%;
+    /* background-color: rgba(141, 123, 119, 0.5) */
+}
+
+.ppt1 .ww{
+    /* background-image: url("kkk.jpg"); */
+    position: relative;
+    height: 170px;
+    width: 240px;
+    margin: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#ww1 img{
+    position: absolute;
+    height: 150%;
+    top: -60;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww2 img{
+    position: absolute;
+    height: 130%;
+    right: 5;
+    top: -20;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+
+#ww3 img{
+    position: absolute;
+    height: 120%;
+    right: 5;
+    top: -20;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww4 img{
+    position: absolute;
+    height: 120%;
+    right: 5;
+    top: -20;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww5, #ww9, #ww10{
+    height:10rem;
+}
+#ww5 img{
+    position: absolute;
+    height: 160%;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww6 img{
+    position: absolute;
+    height: 140%;
+    top: -55;
+    right: -5;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww7 img{
+    position: absolute;
+    height: 160%;
+    right: -20;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww8 img{
+    position: absolute;
+    height: 160%;
+    right: -20;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww9 img{
+    position: absolute;
+    height: 170%;
+    left: 0;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww10 img{
+    position: absolute;
+    height: 170%;
+    left: 0;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww11 img{
+    position: absolute;
+    height: 140%;
+    left: -5;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww12 img{
+    position: absolute;
+    height: 150%;
+    left: -10;
+    top: -60;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww13 img{
+    position: absolute;
+    height: 140%;
+    left: -5;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww14 img{
+    position: absolute;
+    height: 140%;
+    left: -5;
+    top: -50;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww15 img{
+    position: absolute;
+    height: 150%;
+    top: -60;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww19 img{
+    position: absolute;
+    height: 142%;
+    left: 0;
+    bottom: -30;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+#ww20 img{
+    position: absolute;
+    height: 142%;
+    left: 0;
+    bottom: -30;
+    /* filter: brightness(0.9) contrast(1.1) saturate(1); */
+}
+
+.too{
+    position: relative;
+    transform: translateY(60%);
+    font-family: 'Zen Maru Gothic';
+    font-weight: 900;
+}
+
+.horizontal-container .pattern{
+    position: relative;
+    height: 100vh;
+    width: 100vw;    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(158, 161, 146);
+    opacity: 1;
+}
+
+.pattern4{
+    /* z-index: 5; */
+    position: relative;
+    height: 100%;
+    width: 100%;
+    justify-content: right;
+    background-color: rgb(187, 185, 156);
+    
+}
+.pagecess{
+    position: relative;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: left;
+    align-items: center;
+    background-color: #d1ccbb;
+}
+
+.tradi{
+    left: 50px;
+    top: 40;
+    height: 50px;
+    width: 200px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* background-color: rgb(235, 210, 210); */
+}
+
+.tradi .tradii {
+    letter-spacing: 1;
+    transform: translateY(110%);
+    color: rgb(151, 141, 132);
+    font-family: "Noto Sans", serif;
+    font-size: 40px
+}
+
+.tradition{
+    top: 100px;
+    height: 25px;
+    width: 200px;
+    left: 50px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* background-color: rgb(205, 214, 189); */
+}
+
+.traditionn{
+    transform: translateY(110%);
+    color: rgb(151, 141, 132);
+    font-family: "Noto Sans", serif;
+    font-size: 25px
+}
+
+.traword{
+    position: absolute;
+    bottom: 22%;
+    left: 50px;
+    height: 230px;
+    width: 360px;
+    /* background-color: lightblue; */
+}
+
+.t1{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t1 .tt1{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t2{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t2 .tt2{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+
+.t3{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+
+.t3 .tt3{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t4{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t4 .tt4{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t5{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t5 .tt5{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t6{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t6 .tt6{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t7{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t7 .tt7{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t8{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t8 .tt8{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t9{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+
+    overflow: hidden;
+}
+
+.t9 .tt9{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.t10{
+    line-height: 1.5;
+    letter-spacing: 3;
+    position: relative;
+    height: 23px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.t10 .tt10{
+    color: rgb(151, 141, 132);
+    transform: translateY(90%);
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+}
+
+.pagecess .process{
+    z-index: 1;
+    display: flex;
+    position: relative;
+    height: 165px;
+    width: 780px;
+    top: 37%;
+    left: 50px;
+    overflow: hidden;
+}
+
+
+.pagecess .process .wordcess{
+    display: flex;
+    position: relative;
+    z-index: 50;
+    font-family: "Noto Sans", serif;
+    font-size: 160px;
+    transform: translateY(70%);
+    color: rgb(151, 141, 132);
+}
+
+.trapic{
+    position: absolute;
+    bottom: 22%;
+    left: 520px;
+    height: 230px;
+    width: 200px;
+    overflow: hidden;
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+}
+
+.trapicc{
+    position: relative;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+.trapicc img{
+    position: absolute;
+    height: 120%;
+    right: -50%;
+}
+.pagecess .picesss{
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 20px;
+    right: 40px;
+    height: 95%;
+    width: 40%;
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+}
+
+.picesss .picess{
+    position: relative;
+    /* background-position: center; */
+    height: 100%;
+    width: 100%;  
+}
+
+.picess img{
+    position: absolute;
+    height: 120%;
+    left: 0%;
+}
+
+.page4{
+    z-index: 6;
+    display: flex;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--gg);
+}
+
+.grounddd{
+    z-index: 10;
+    display: flex;
+    position: absolute;
+    height: 150px;
+    width: 289px;
+    top: 160px;
+    right: 60;
+    align-items: center;
+    justify-content: left;
+
+}
+
+.swiperrr li {
+    display: inline-block;
+    margin: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    color: rgb(151, 141, 132);
+    font-family: "BIZ UDPMincho", serif;
+    font-weight: bold;
+    font-size: 50px;
+    letter-spacing: 3;
+}
+
+.swiperrr li.active {
+    display: inline-block;
+}
+
+.groundd{
+    z-index: 10;
+    display: flex;
+    position: absolute;
+    height: 6000px;
+    width: 289px;
+    top: 150px;
+    right: 60;
+    cursor: auto;
+    /* background: rgb(248, 246, 246); */
+}
+.swiperr{
+    display: flex;
+    width: 100%;
+	height: calc(100% - 40px);
+	position: relative;
+	overflow: hidden;
+    cursor: url('ww1.PNG');
+}
+.swiper:hover{
+    cursor: url('ww1.PNG');
+}
+.swiperr li {
+    display: inline-block;
+    margin: 20px;
+    color: rgb(151, 141, 132);
+    border-radius: 5px;
+    font-family: 'Zen Maru Gothic';
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.5;
+    letter-spacing: 3;
+    cursor: auto;
+    display: none;
+}
+.swiperr .blod{
+    font-weight: 900;
+    font-size: 17;
+    letter-spacing: 1;
+    
+}
+
+.swiperr .blo{
+    font-weight: 400;
+    font-size: 17;
+    letter-spacing: 1;
+    opacity: .5;
+}
+
+.swiper{
+    z-index: 10;
+    top: 100;
+    left: -160;
+    position: relative;
+    display: flex;
+    width: 70%;
+    height: 80%;
+    overflow: hidden;
+    border-radius: 20rem 0 0 20rem;
+}
+
+.swiperr li.active {
+    display: inline-block;
+}
+
+
+.swiperr img{
+    position: absolute;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+#emm{
+    position: absolute;
+}
+
+.swiperr img:not(.active) {
+    top: 0;
+    left: -100%; /* 修正：移出視區 */
+}
+
+/* span.next, span.prev{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 14px;
+    color: #eee;
+    font-size: 24px;
+    font-weight: bold;
+    transition: 0.5s;
+    border-radius: 3px;
+    user-select: none;
+    cursor: pointer;
+    z-index: 1;
+    background-color: #fff;
+}
+
+span.next{
+    right: 20px;
+}
+span.prev{
+    left: 20px;
+}
+
+span.next:hover, span.prev:hover{
+    background-color: #ede6d6;
+    opacity: 0.8;
+    color: #222;
+}  */
+
+@keyframes next1{
+    from{
+        left: 0%
+    }
+    to{
+        left: -100%;
+    }
+}
+@keyframes next2{
+    from{
+        left: 100%
+    }
+    to{
+        left: 0%;
+    }
+}
+
+@keyframes prev1{
+    from{
+        left: 0%
+    }
+    to{
+        left: 100%;
+    }
+}
+@keyframes prev2{
+    from{
+        left: -100%
+    }
+    to{
+        left: 0%;
+    }
+}
+
+#sl5 img {
+    user-select: none;  /* 禁用選擇圖片 */
+}
+
+.page45{
+    position: relative;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    flex-direction: column;
+}
+
+.page5{
+    position: relative;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    flex-direction: column;
+}
+
+.timeline {
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 200px;
+    width: 90vw;
+    margin: 20px auto;
+    background-color: rgb(0, 0, 0);
+  }
+/* 算是整個滑軌的父元素？   */
+  input[type="range"] {
+      position: relative;
+    -webkit-appearance: none; /* 移除預設樣式 */
+    appearance: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3px; /* 滑軌的高度 */
+    background: linear-gradient(to right, #2c455f, #ccc); /* 背景漸層 */
+    border-radius: 50px;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  /* 滑動條的滑軌 */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    background: black; /* 滑軌顏色 */
+    border-radius: 5px;
+  }
+  
+  input[type="range"]::-moz-range-track {
+    height: 3px;
+    background: black;
+    border-radius: 5px;
+  }
+  
+  input[type="range"]::-ms-track {
+    height: 3px;
+    background: transparent; /* Edge 需要額外的樣式修正 */
+    border-color: transparent;
+    color: transparent;
+  }
+  
+  /* 滑塊樣式 */
+  input[type="range"]::-webkit-slider-thumb {  
+    -webkit-appearance: none;
+    appearance: none;
+    transform: translateX(-10px); /* 调整水平位置 */
+    transform: translateY(-5px);
+    width: 50px; /* 滑塊的寬度 */
+    height: 20px; /* 滑塊的高度 */
+    background: #000000; /* 滑塊顏色 */
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 陰影 */
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4e6b5f;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  input[type="range"]::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 調整滑動條的焦點效果 */
+  input[type="range"]:focus {
+    outline: none;
+  }
+  
+  input[type="range"]::-ms-fill-lower {
+    background: #000000; /* 滑軌填充部分的顏色 */
+  }
+  
+  input[type="range"]::-ms-fill-upper {
+    background: rgb(0, 0, 0); /* 滑軌未填充部分的顏色 */
+  }
+  
+  
+  #slider {
+    width: 90vw;
+    cursor: pointer;
+  }
+  
+.buttons {
+    bottom: 210px;
+    position: relative;
+    display: flex;
+    height: 20px;
+    width: 90vw;
+    gap: 10px;
+    justify-content: space-between;
+    background-color: rgb(152, 216, 216);
+  }
+  
+.button {
+    position: relative;
+    height: 20px;
+    width: 3px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #000000;
+    border-radius: 4px;
+    color: white;
+}
+  
+  .circle-container {
+    z-index: -1;
+    height: 20vh;
+    width: 100vw;
+    top: 240px;
+    position: relative;
+    background: rgb(117, 95, 95);
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+  }
+  
+  .circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+  }
+  
+  .circle1 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+  }
+
+.circle2 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+}
+
+.circle3 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+}
+
+.circle4 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+}
+
+.circle5 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+}
+
+.circle6 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    transition: all 0.5s ease; /* 平滑過渡動畫 */
+    display: block;  /* 保證圓形不會消失 */
+}
+
+
+  /* 定義圓形大小 */
+  .circle.scale-70 {
+    height: 100px;
+  }
+  
+  .circle.scale-30 {
+    height: 130px;
+  }
+  
+  .circle.scale-50 {
+    height: 150px;
+  }
+  
+.take{
+    height: 20vh;
+    width: 100vw;
+    background-color: var(--gg);
+}  
+.take2{
+    height: 10vh;
+    width: 100vw;
+    background-color: var(--gg);
+}
+.take3{
+    height: 30vh;
+    width: 100vw;
+    background-color: var(--gg);
+}
+.page6{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    background-color: var(--cc);
+    overflow: hidden;
+}
+.teex{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 70%;
+    width: 50%;
+    letter-spacing: 50;
+    /* line-height: 1; */
+    font-size: 70px;
+    margin: 5%;
+    left: 5%;
+    font-family: "Noto Sans", serif;
+    color: var(--gg);
+}
+.texx{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40%;
+}
+.texx1{
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+.texx2{
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: left;
+    left: 17%;
+    overflow: hidden;
+}
+.texx1 p, .texx2 p{
+    transform: translateY(100%);
+}
+.inteex{
+    position: relative;
+    display: flex;
+    height: 40%;
+    width: 100%;
+    top: 18%;
+    gap: 7%;
+    font-size: 20px;
+    letter-spacing: 1;
+    align-items: center;
+    justify-content: center;
+}
+.email{
+    width: 105%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.other{
+    opacity: .7;
+    
+}
+.phone {
+    display: inline-block;               /* 適配內容大小 */
+    position: relative;                  /* 調整字體大小 */
+    color: var(--gg, #000);                   /* 隱藏多餘部分 */
+    z-index: 1;  
+    overflow: hidden;                        /* 確保文字層級高於背景 */
+}
+.phone::before {
+    content: "";                         /* 必須設定內容屬性 */
+    position: absolute;                  /* 絕對定位 */
+    top: 95%;
+    left: -100%;                         /* 初始位置在左側外 */
+    width: 100%;                         /* 背景寬度與容器相同 */
+    height: 4%;                        /* 背景高度與容器相同 */
+    background: var(--gg);                       /* 背景置於文字下方 */
+    transition: transform 1s ease;     /* 平滑過渡背景滑動 */
+}
+
+.phone:hover::before {
+    transform: translateX(100%);         /* 背景從左滑動到右側 */
+}
+.email::before {
+    content: "";                         /* 必須設定內容屬性 */
+    position: absolute;                  /* 絕對定位 */
+    top: 95%;
+    left: -100%;                         /* 初始位置在左側外 */
+    width: 100%;                         /* 背景寬度與容器相同 */
+    height: 4%;                        /* 背景高度與容器相同 */
+    background: var(--gg);                       /* 背景置於文字下方 */
+    transition: transform 1s ease;     /* 平滑過渡背景滑動 */
+}
+
+.email:hover::before {
+    transform: translateX(100%);         /* 背景從左滑動到右側 */
+}
+
+
+.inteex1{
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+}
+.inteex2{
+    height: 100%;
+    width: 30%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20%;
+}
+.inins{
+    position: relative;
+    display: flex;
+    height: 50%;
+    width: 30%;
+    margin: 5%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.textt{
+    position: relative;
+    height: 20%;
+    width: 100%;
+    color: var(--gg);
+    display: flex; 
+    font-family: "Noto Sans", serif;
+    font-size: 30px;
+    font-weight: 200;
+    list-style: none;
+    margin: .5%;
+    align-items: bottom; 
+    justify-content: flex-start;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.ggl, .ggl2, .ggl3, .ggl4, .ggl5{
+    height: 60%;
+    width: 10%;
+    position: relative;
+    display: flex;
+}
+.ggl p, .ggl2 p, .ggl3 p, .ggl4 p, .ggl5 p{
+    transform: translateY(160%);
+}
+.ggll, .ggll2, .ggll3, .ggll4, .ggll5{
+    height: 50%;
+    width: 10%;
+    position: relative;
+    display: flex;
+}
+.ggll p, .ggll2 p, .ggll3 p, .ggll4 p, .ggll5 p{
+    transform: translateY(160%);
+}
+.textt h2{
+    position: relative;
+    display: flex;
+}
+.bye{
+    height: 1px;
+    width: 100%;
+    bottom: 1%;
+    position: absolute;
+    background-color: var(--gg);
+    transform: translateX(-100%);
+}
+.page6 .byebye{
+    display: flex;
+    position: absolute;
+    height: .5%;
+    width: 30%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    letter-spacing: 2px;
+    right: 2%;
+    bottom: .5%;
+    font-family: 'Zen Maru Gothic';
+    color: var(--gg);
+    overflow: hidden;
+}
+.byebye p{
+    transform: translateY(100%);
+}
+
+/*
+
+.animation:after {
+    content: "";
+    background-image:  ();
+    width: 200%;
+    height: 200%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0.1;
+    animation: animateGrain 8s step(10) infinite;   
+}
+
+.gradient {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 100%,
+    );
+    z-index: 1;
+}
+*/
