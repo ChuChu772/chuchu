@@ -1,224 +1,100 @@
-
-// 禁止滑動10秒
-// x
-// let idleTime = 0;  // 閒置時間
-// const maxIdleTime = 500;  // 設定閒置時間為 10 秒（測試時設為短時間，實際可以設為更長）
-
-// // 監聽滑鼠和鍵盤事件來重置閒置時間
-// window.addEventListener('mousemove', resetIdleTime);
-// window.addEventListener('keydown', resetIdleTime);
-// window.addEventListener('scroll', resetIdleTime);
-
-// // 重置閒置時間的函數
-// function resetIdleTime() {
-//   idleTime = 0;  // 每當用戶有操作時，重置閒置時間
-// }
-
-// // 每秒檢查閒置時間
-// setInterval(() => {
-//   idleTime++;  // 每秒閒置時間加一
-//   if (idleTime >= maxIdleTime) {  // 如果閒置時間超過 10 秒
-//     console.log("閒置超過 10 秒，跳轉到 pppp1 並重整頁面");
-//     scrollToPppp1();  // 滾動到 pppp1
-//     setTimeout(() => {  // 延遲 10 秒後再進行重整
-//       reloadPage();  // 重整頁面
-//     }, 300000);  // 延遲 10 秒（10000 毫秒）
-//   }
-// }, 1000);  // 每秒檢查一次
-
-// // 滾動到 pppp1 的函數
-// function scrollToPppp1() {
-//   const pppp1 = document.getElementById('pppp1');
-//   if (pppp1) {
-//     pppp1.scrollIntoView({ behavior: 'smooth' });  // 滾動到 pppp1
-//   } else {
-//     console.warn('未找到 pppp1 元素');
-//   }
-// }
-
-// // 重載頁面的函數
-// function reloadPage() {
-//   location.reload();  // 重新加載頁面
-// }
-
-
-//page5 timeline
-// 獲取滑動條和按鈕
-
-// let hasOpened = false; // 防止重複觸發
-// window.addEventListener('scroll', () => {
-//   if (!hasOpened && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-//     hasOpened = true;
-//     window.location.href = "playground.html"; // 替換為你的檔案名稱
-//   }
-// });
-
-
-// let port;
-// let reader;
-// let currentLetter = "";
-// let isScrolling = false; // 滾動狀態
-// let scrollDirection = null; // 滾動方向：'up' 或 'down'
-
-// // 連接串口
-// async function autoConnect() {
-//     try {
-//         const ports = await navigator.serial.getPorts();
-//         if (ports.length > 0) {
-//             port = ports[0];
-//             console.log("找到可用串口，嘗試連接...");
-//             await port.open({ baudRate: 9600 });
-//             reader = port.readable.getReader();
-//             console.log("串口連接成功！");
-//             listenToSerial();  // 當串口連接成功後，開始監聽串口數據
-//         } else {
-//             console.warn("未找到可用串口，請手動連接。");
-//         }
-//     } catch (err) {
-//         console.error("自動連接串口失敗: ", err);
-//     }
-// }
-
-// // 監聽串口數據
-// async function listenToSerial() {
-//     const decoder = new TextDecoder();
-//     try {
-//         while (true) {
-//             const { value, done } = await reader.read();
-//             if (done) break;
-
-//             // 解碼數據並去除多餘的換行符或空格
-//             const input = decoder.decode(value).trim();
-//             console.log(`從 Arduino 接收到的數據：${input}`); // 這裡檢查接收到的數據
-
-//             // 呼叫 handleArduinoInput 函數來處理指令
-//             handleArduinoInput(input);
-//         }
-//     } catch (error) {
-//         console.error("讀取數據時出錯：", error);
-//     } finally {
-//         reader.releaseLock();
-//     }
-// }
-
-// // 處理接收到的指令並執行對應動作
-// function handleArduinoInput(input) {
-//     console.log(`進入 handleArduinoInput，接收到指令：${input}`);
-    
-//     // 避免正在滾動時再次觸發滾動
-//     if (isScrolling) {
-//         console.log("滾動中，請稍等...");
-//         return;
-//     }
-
-//     if (input === 'U') {
-//         console.log("正在向上滾動");
-//         scrollDirection = 'up'; // 設置滾動方向為上
-//         smoothScroll(); // 開始平滑滾動
-//     } else if (input === 'D') {
-//         console.log("正在向下滾動");
-//         scrollDirection = 'down'; // 設置滾動方向為下
-//         smoothScroll(); // 開始平滑滾動
-//     } else {
-//         console.warn(`未知指令：${input}`);
-//     }
-// }
-
-// // 平滑滾動邏輯
-// function smoothScroll() {
-//     if (isScrolling) return; // 如果正在滾動，則不進行新的滾動
-//     isScrolling = true; // 設置滾動狀態為正在滾動
-
-//     let distance = scrollDirection === 'up' ? -100 : 100; // 根據滾動方向設置滾動距離
-//     let stepTime = 50; // 增加時間間隔，減少計算頻率，減少卡頓
-//     let totalSteps = 10; // 減少總步數，保持平滑但不會過度計算
-//     let stepSize = distance / totalSteps; // 每一步的滾動距離
-
-//     let currentStep = 0;
-
-//     // 使用 requestAnimationFrame 進行平滑滾動
-//     function scrollStep() {
-//         if (currentStep < totalSteps) {
-//             window.scrollBy(0, stepSize); // 滾動指定的距離
-//             currentStep++; // 更新步數
-//             requestAnimationFrame(scrollStep); // 再次調用 requestAnimationFrame 進行下一步滾動
-//         } else {
-//             isScrolling = false; // 滾動完成後，重設滾動狀態
-//         }
-//     }
-
-//     // 開始進行滾動
-//     requestAnimationFrame(scrollStep);
-// }
-
 let port;
 let reader;
 let currentLetter = "";
 let isInteractionAllowed = false;
-
-// const keyMap = {
-//   L: 'ArrowLeft', // "L" 對應左箭頭鍵
-//   R: 'ArrowRight' // "R" 對應右箭頭鍵
-// };
-
-// 模擬鍵盤按鍵事件
-// function simulateKey(key) {
-//   // 模擬按下按鍵
-//   const keydownEvent = new KeyboardEvent('keydown', { key });
-//   document.dispatchEvent(keydownEvent);
-
-//   // 模擬釋放按鍵
-//   setTimeout(() => {
-//     const keyupEvent = new KeyboardEvent('keyup', { key });
-//     document.dispatchEvent(keyupEvent);
-//   }, 100); // 按下 100 毫秒後釋放
-
-//   console.log(`Triggered key: ${key}`);
-// }
+let lastScrollTime = 0;
 
 async function autoConnect() {
-    try {
-        const ports = await navigator.serial.getPorts();
-        if (ports.length > 0) {
-            port = ports[0];
-            console.log("找到可用串口，嘗試連接...");
-            await port.open({ baudRate: 9600 });
-            reader = port.readable.getReader();
-            console.log("串口連接成功！");
-            listenToSerial();
-        } else {
-            console.warn("未找到可用串口，請手動連接。");
-        }
-    } catch (err) {
-        console.error("自動連接串口失敗: ", err);
-    }
-}
+  try {
+    // 自動尋找可用的串口
+    const ports = await navigator.serial.getPorts();
+    if (ports.length > 0) {
+      // 選擇第一個可用的串口
+      port = ports[0];
+      console.log("找到可用串口，嘗試連接...");
 
+      // 開啟串口並設定波特率
+      await port.open({ baudRate: 9600 });
+      reader = port.readable.getReader();
+      console.log("串口連接成功！");
+
+      // 開始監聽串口數據
+      await listenToSerial();
+    } else {
+      console.warn("未找到可用串口，請手動連接。");
+    }
+  } catch (err) {
+    console.error("自動連接串口失敗: ", err);
+  }
+}
 
 async function listenToSerial() {
-    try {
-        while (true) {
-            const { value, done } = await reader.read();
-            if (done) break;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break; // 串口關閉時跳出迴圈
 
-            const text = new TextDecoder().decode(value).trim();
-            if (text === "") continue;
+      const text = new TextDecoder().decode(value).trim();
+      if (!text) continue; // 如果沒有數據則繼續讀取
 
-            console.log(`接收到的有效數據: ${text}`);
-            displayImage(text);
+      console.log(`接收到的有效數據: ${text}`);
 
-            // if (keyMap[text]) {
-            //   simulateKey(keyMap[text]);
-            // } else {
-            //   console.warn(`未定義的指令: ${text}`);
-            // }
+      // 處理滾動數值
+      let scrollValue = parseInt(text, 10);
+      if (!isNaN(scrollValue)) {
+        const now = Date.now();
+        if (now - lastScrollTime > 50) { // 限制滾動頻率
+          window.scrollBy({ top: scrollValue, behavior: "smooth" });
+          console.log("滾動：", scrollValue);
+          lastScrollTime = now;
         }
-    } catch (err) {
-        console.error("讀取數據時發生錯誤: ", err);
-    } finally {
-        reader.releaseLock();
+      }
+
+      // 顯示圖片（假設 displayImage 是一個已定義的函數）
+      displayImage(text);
+
+      // 設定滾動到 .mmtt 區塊的條件
+      const scrollToMmtt = ["j", "n", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "o", "p", "q", "r", "s", "t"];
+      if (scrollToMmtt.includes(text)) {
+        const pa = document.querySelector('.mmtt');
+        if (pa) {
+          pa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          console.log("滾動到 .mmtt 區塊");
+        }
+      }
+
+      // 設定滾動到 .firstpage 區塊的條件
+      if (text === "z") {
+        const fa = document.querySelector('.firstpage');
+        if (fa) {
+          fa.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          console.log("滾動到 .firstpage 區塊");
+        }
+      }
     }
+  } catch (err) {
+    console.error("讀取數據時發生錯誤: ", err);
+  } finally {
+    // 釋放串口讀取器資源
+    if (reader) {
+      reader.releaseLock();
+    }
+    if (port) {
+      await port.close();
+      console.log("串口已關閉");
+    }
+  }
 }
+
+let currentScroll = 0;
+
+function smoothScroll(targetScroll) {
+  let step = (targetScroll - currentScroll) * 0.2; // 設定步進
+  currentScroll += step;
+  window.scrollBy(0, step);
+  if (Math.abs(step) > 1) requestAnimationFrame(() => smoothScroll(targetScroll));
+}
+
 
 function displayImage(letter) {
 
@@ -261,7 +137,7 @@ function displayImage(letter) {
     if (letter === "a") {
         document.getElementById('photo1').classList.add('visible');
         document.getElementById('result').textContent = "鹿";
-        document.getElementById('eresult').textContent = "( LU )";
+        // document.getElementById('eresult').textContent = "( LU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "荷治時期";
             document.getElementById('eraa2').textContent = "1624 - 1662";
@@ -296,7 +172,7 @@ function displayImage(letter) {
     } else if (letter === "b") {
         document.getElementById('photo2').classList.add('visible');
         document.getElementById('result').textContent = "壽 字";
-        document.getElementById('eresult').textContent = "( SHOU )";
+        // document.getElementById('eresult').textContent = "( SHOU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "荷治時期";
             document.getElementById('eraa2').textContent = "1624 - 1662";
@@ -331,7 +207,7 @@ function displayImage(letter) {
     } else if (letter === "c") {
         document.getElementById('photo3').classList.add('visible');
         document.getElementById('result').textContent = "璃 龍";
-        document.getElementById('eresult').textContent = "( LILONG )";
+        // document.getElementById('eresult').textContent = "( LILONG )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "荷治時期";
             document.getElementById('eraa2').textContent = "1624 - 1662";
@@ -361,7 +237,7 @@ function displayImage(letter) {
     } else if (letter === "d") {
         document.getElementById('photo4').classList.add('visible');
         document.getElementById('result').textContent = "鬱 金 香";
-        document.getElementById('eresult').textContent = "( YUJINSHIAN )";
+        // document.getElementById('eresult').textContent = "( YUJINSHIAN )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "荷治時期";
             document.getElementById('eraa2').textContent = "1624 - 1662";
@@ -391,7 +267,7 @@ function displayImage(letter) {
     } else if (letter === "e") {
         document.getElementById('photo5').classList.add('visible');
         document.getElementById('result').textContent = "阿 拉 伯 銘 文";
-        document.getElementById('eresult').textContent = "( ARABIC )";
+        // document.getElementById('eresult').textContent = "( ARABIC )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "荷治時期";
             document.getElementById('eraa2').textContent = "1624 - 1662";
@@ -421,7 +297,7 @@ function displayImage(letter) {
     } else if (letter === "f") {
         document.getElementById('photo6').classList.add('visible');
         document.getElementById('result').textContent = "鳥";
-        document.getElementById('eresult').textContent = "( NIAO )";
+        // document.getElementById('eresult').textContent = "( NIAO )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "明鄭時期";
             document.getElementById('eraa2').textContent = "1662 - 1683";
@@ -451,7 +327,7 @@ function displayImage(letter) {
     } else if (letter === "g") {
         document.getElementById('photo7').classList.add('visible');
         document.getElementById('result').textContent = "秋 葉";
-        document.getElementById('eresult').textContent = "( CHIUYA )";
+        // document.getElementById('eresult').textContent = "( CHIUYA )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "明鄭時期";
             document.getElementById('eraa2').textContent = "1662 - 1683";
@@ -481,7 +357,7 @@ function displayImage(letter) {
     } else if (letter === "h") {
         document.getElementById('photo8').classList.add('visible');
         document.getElementById('result').textContent = "山 水 樹 石";
-        document.getElementById('eresult').textContent = "( SANSUISUSHI )";
+        // document.getElementById('eresult').textContent = "( SANSUISUSHI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "明鄭時期";
             document.getElementById('eraa2').textContent = "1662 - 1683";
@@ -511,7 +387,7 @@ function displayImage(letter) {
     } else if (letter === "i") {
         document.getElementById('photo9').classList.add('visible');
         document.getElementById('result').textContent = "鳳 鳥";
-        document.getElementById('eresult').textContent = "( FONNIAO )";
+        // document.getElementById('eresult').textContent = "( FONNIAO )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
@@ -541,7 +417,7 @@ function displayImage(letter) {
     } else if (letter === "j") {
         document.getElementById('photo10').classList.add('visible');
         document.getElementById('result').textContent = "八 卦 太 極";
-        document.getElementById('eresult').textContent = "( BAGUATAIJI )";
+        // document.getElementById('eresult').textContent = "( BAGUATAIJI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
@@ -571,7 +447,7 @@ function displayImage(letter) {
     } else if (letter === "k") {
         document.getElementById('photo11').classList.add('visible');
         document.getElementById('result').textContent = "冰 梅";
-        document.getElementById('eresult').textContent = "( BINMEI )";
+        // document.getElementById('eresult').textContent = "( BINMEI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
@@ -601,7 +477,7 @@ function displayImage(letter) {
     } else if (letter === "l") {
         document.getElementById('photo12').classList.add('visible');
         document.getElementById('result').textContent = "團 菊";
-        document.getElementById('eresult').textContent = "( TUANJU )";
+        // document.getElementById('eresult').textContent = "( TUANJU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
@@ -631,7 +507,7 @@ function displayImage(letter) {
     } else if (letter === "m") {
         document.getElementById('photo13').classList.add('visible');
         document.getElementById('result').textContent = "靈 芝";
-        document.getElementById('eresult').textContent = "( LINGI )";
+        // document.getElementById('eresult').textContent = "( LINGI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -661,7 +537,7 @@ function displayImage(letter) {
     } else if (letter === "n") {
         document.getElementById('photo14').classList.add('visible');
         document.getElementById('result').textContent = "石 榴";
-        document.getElementById('eresult').textContent = "( SHILIU )";
+        // document.getElementById('eresult').textContent = "( SHILIU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -691,7 +567,7 @@ function displayImage(letter) {
     } else if (letter === "o") {
         document.getElementById('photo15').classList.add('visible');
         document.getElementById('result').textContent = "雲 龍";
-        document.getElementById('eresult').textContent = "( YUNLONG )";
+        // document.getElementById('eresult').textContent = "( YUNLONG )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -721,7 +597,7 @@ function displayImage(letter) {
     } else if (letter === "p") {
         document.getElementById('photo16').classList.add('visible');
         document.getElementById('result').textContent = "牡 丹";
-        document.getElementById('eresult').textContent = "( MUDAN )";
+        // document.getElementById('eresult').textContent = "( MUDAN )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -751,7 +627,7 @@ function displayImage(letter) {
     } else if (letter === "q") {
         document.getElementById('photo17').classList.add('visible');
         document.getElementById('result').textContent = "梵 文";
-        document.getElementById('eresult').textContent = "( SANSKRIT )";
+        // document.getElementById('eresult').textContent = "( SANSKRIT )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -781,7 +657,7 @@ function displayImage(letter) {
     } else if (letter === "r") {
         document.getElementById('photo18').classList.add('visible');
         document.getElementById('result').textContent = "湖 石 花 草" ;
-        document.getElementById('eresult').textContent = "( HUSHIHUATSAO )";
+        // document.getElementById('eresult').textContent = "( HUSHIHUATSAO )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
@@ -811,7 +687,7 @@ function displayImage(letter) {
     } else if (letter === "s") {
         document.getElementById('photo19').classList.add('visible');
         document.getElementById('result').textContent = "富 士 山";
-        document.getElementById('eresult').textContent = "( FUJISAN )";
+        // document.getElementById('eresult').textContent = "( FUJISAN )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "日治時期";
             document.getElementById('eraa2').textContent = "1895 - 1945";
@@ -841,7 +717,7 @@ function displayImage(letter) {
     } else if (letter === "t") {
         document.getElementById('photo20').classList.add('visible');
         document.getElementById('result').textContent = "鶴";
-        document.getElementById('eresult').textContent = "( HE )";
+        // document.getElementById('eresult').textContent = "( HE )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "日治時期";
             document.getElementById('eraa2').textContent = "1895 - 1945";
@@ -869,7 +745,7 @@ function displayImage(letter) {
         g6.classList.add('good');  
     } else {
         document.getElementById('result').textContent = "紋 樣 寓 意";
-        document.getElementById('eresult').textContent = "(JOURNAL)";
+        // document.getElementById('eresult').textContent = "(JOURNAL)";
         document.getElementById('eraa1').textContent = "陶瓷與臺灣";
         document.getElementById('eraa2').textContent = "17世紀";
         document.getElementById('word').textContent = "回看過去四百年";
@@ -881,1522 +757,1147 @@ function displayImage(letter) {
     }
 }
 
-//如果把設置滾動監聽器刪掉就要加入這個
-// document.addEventListener('DOMContentLoaded', autoConnect);
+document.addEventListener("DOMContentLoaded", autoConnect);
 
-// 設置滾動監聽器
-function setupObserver() {
-  const sadSection = document.querySelector('.mmtt');
-  if (!sadSection) return;
+// function setupObserver() {
+//     const sadSection = document.querySelector('.firstpage');
+//     if (!sadSection) return;
+  
+//     const observer = new IntersectionObserver((entries) => {
+//         entries.forEach((entry) => {
+//             if (entry.isIntersecting) {
+//                 console.log("進入 .mmtt 區域，將在 5 秒後啟用與 Arduino 的互動！");
+                
+//                 // 延遲 5 秒啟用互動
+//                 // setTimeout(() => {
+//                 //     isInteractionAllowed = true; // 啟用互動
+//                 //     autoConnect(); // 僅需執行一次
+//                 //     console.log("與 Arduino 的互動已啟用！");
+//                 // }, 3000);
+  
+//                 observer.unobserve(sadSection); // 停止觀察，避免重複觸發
+//             }
+//         });
+//     });
+  
+//     observer.observe(sadSection);
+//   }
+  
+//   // 初始化滾動監聽
+//   setupObserver();
 
-  const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-              console.log("進入 .mmtt 區域，將在 5 秒後啟用與 Arduino 的互動！");
-              
-              // 延遲 5 秒啟用互動
-              setTimeout(() => {
-                  isInteractionAllowed = true; // 啟用互動
-                  autoConnect(); // 僅需執行一次
-                  console.log("與 Arduino 的互動已啟用！");
-              }, 3000);
+let lastScrollY = window.scrollY;
+let positionY = 0;
+const logo = document.querySelector('.logo');
+const th5 = document.querySelector('.t2w1 h5');
+const th6 = document.querySelector('.t2w2 h6');
+const tp1 = document.querySelector('.t1w1 p');
+const tp2 = document.querySelector('.t1w2 p');
+const tp6 = document.querySelector('.t1w3 p');
 
-              observer.unobserve(sadSection); // 停止觀察，避免重複觸發
-          }
-      });
+window.addEventListener("scroll", () => {
+    let currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY) {
+        positionY -= 20; // 滑鼠往下，logo 向下
+    } else {
+        positionY += 20; // 滑鼠往上，logo 向上
+    }
+
+    // 限制 LOGO 位置，避免跑太遠
+    positionY = Math.max(-100, Math.min(0, positionY));
+
+    // 用 GSAP 平滑動畫
+    gsap.to(logo, { y: positionY, duration: 1.5, ease: "power2.out" });
+    gsap.to(th5, { y: positionY, duration: 1.5, ease: "power2.inOut" });
+    gsap.to(th6, { y: positionY, duration: 1.5, ease: "power2.inOut" });
+    gsap.to(tp1, { y: positionY, duration: 1.5, ease: "power2.inOut" });
+    gsap.to(tp2, { y: positionY, duration: 1.5, ease: "power2.inOut" });
+    gsap.to(tp6, { y: positionY, duration: 1.5, ease: "power2.inOut" });
+    
+    
+    lastScrollY = currentScrollY;
+});
+
+
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.timeline({
+    scrollTrigger: {
+      trigger: '.psoo',
+      start: 'top top',
+      end: 'bottom top',
+      pin: true,
+      toggleActions: "play none none none", // 只執行一次
+    }
+  })
+  .to('.psoo', { opacity: 1, duration: 1 })
+  .to('.psoo', { opacity: 0, duration: 1 });
+  
+// gsap.timeline({
+//     scrollTrigger: {
+//       // markers: true,
+//       trigger: '.psoo',
+//       start: 'top top',
+//       end: 'bottom top',
+//       scrub: true,
+//       pin:true,
+//       toggleActions: "restart reverse none none",
+//     }
+//   })
+//   .to('.psoo', { opacity: 1, duration: 1 })
+//   .to('.psoo', { opacity: 0, duration: 1 });
+// gsap.to('.psoo', { 
+//     scrollTrigger:{
+//       //  markers:true,
+//       trigger:'.psoo',
+//       start: 'top top',
+//       end: 'bottom top',
+//       pin:true,
+//       scrub:true,
+//       toggleActions: "restart none none reverse",
+//      },
+//      opacity:1,
+//   })
+gsap.to('.door', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.haha',
+      start: 'top top',
+      end: 'bottom bottom',
+      pin:true,
+      scrub:true,
+      toggleActions: "restart none none reverse",
+     },
+     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', 
+  })
+  
+  gsap.to('.ce1', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.ce1',
+      start: 'top top',
+      end: 'bottom top',
+      scrub:true,
+      toggleActions: "restart none none reverse",
+     },   
+     y:-100,
+  })
+  gsap.to('.story1', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151',
+      start: 'top top',
+      end: 'bottom top',
+      pin:true,
+      toggleActions: "restart none none reverse",
+     }, 
+  })
+  gsap.to('.story2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p152',
+      start: 'top top',
+      end: 'bottom top',
+      pin:true,
+      toggleActions: "restart none none reverse",
+     },   
+  })
+  gsap.to('.story3', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p153',
+      start: 'top top',
+      end: 'bottom top',
+      pin:true,
+      toggleActions: "restart none none reverse",
+     },   
+  })
+  gsap.to('.story4', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p154',
+      start: 'top top',
+      end: 'bottom top',
+      pin:true,
+      toggleActions: "restart none none reverse",
+     },   
+  })
+  gsap.to('.story5', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p155',
+      start: 'top top',
+      end: 'bottom top',
+      pin:true,
+      toggleActions: "restart none none reverse",
+     },   
+  })
+  gsap.to('.p151w1 p', {
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.p151',
+        start: 'top top', // 當 trigger 進入視窗頂部時開始
+        end: 'bottom top', // 當 trigger 離開視窗頂部時結束
+        toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
+        onEnter: () => gsap.to('.p151w1 p', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+        onLeave: () => gsap.to('.p151w1 p', { y: '100%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+        onEnterBack: () => gsap.to('.p151w1 p', { y: 0 ,opacity:1}), // 回到範圍內時設定 y 為 0
+        onLeaveBack: () => gsap.to('.p151w1 p', { y: '100%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+    },
+    duration: 1,
+    ease: "power2.inOut"
+});
+gsap.to('.p152w1 p', {
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.p152',
+        start: 'top top', // 當 trigger 進入視窗頂部時開始
+        end: 'bottom top', // 當 trigger 離開視窗頂部時結束
+        toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
+        onEnter: () => gsap.to('.p152w1 p', { y: 0 }), // 進入範圍時設定 y 為 0
+        onLeave: () => gsap.to('.p152w1 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+        onEnterBack: () => gsap.to('.p152w1 p', { y: 0 }), // 回到範圍內時設定 y 為 0
+        onLeaveBack: () => gsap.to('.p152w1 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+    },
+    duration: 1,
+    ease: "power2.out"
+});
+gsap.to('.p151pic', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151pic',
+      start: 'top 90%',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+     },
+     duration:1,
+     ease:"power2.out",
+     opacity:1,
+     y:"0%", 
+})
+gsap.to('.p151pic2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151pic2',
+      start: 'top 70%',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+     },
+     duration:1,
+     ease:"power2.out",
+     opacity:1,
+     y:"0%", 
+})
+gsap.to('.p151pic3', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151pic3',
+      start: 'top 60%',
+      end: 'bottom -60%',
+      scrub:2,
+      toggleActions: "restart none none reverse",
+     },
+     ease:"power2.out",
+     opacity:.7,
+     x:"0%", 
+})
+gsap.to('.p151pic4', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151pic4',
+      start: 'top -60%',
+      end: 'bottom -100%',
+      scrub:2,
+      toggleActions: "restart none none reverse",
+     },
+     ease:"power2.out",
+     opacity:0,
+     x:"0%", 
+})
+gsap.to(".p151pic4", {
+    y: -20,  // 向下移動 100px
+    duration: 1.5, // 每次動畫 1 秒
+    repeat: -1, 
+    rotation:-.5,
+    yoyo: true,  // 來回運動
+    ease: "power2.inOut" // 平滑的移動效果
   });
+  
+  gsap.to('.p153w1 p', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p153',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p153w1 p', { y: 0 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p153w1 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p153w1 p', { y: 0 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p153w1 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+   gsap.to('.p154w1 p', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p154',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p154w1 p', { y: 0 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p154w1 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p154w1 p', { y: 0 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p154w1 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p155w1 p', { 
+    scrollTrigger:{
+        // markers:true,
+        trigger: '.p155',
+        start: 'top top',
+        end: 'bottom top',
+        toggleActions: "restart none none reverse",
+        onEnter: () => gsap.to('.p155w1 p', { y: 0, zIndex: 10 }), 
+        onLeave: () => gsap.to('.p155w1 p', { y: '100%', zIndex: 10 }), 
+        onEnterBack: () => gsap.to('.p155w1 p', { y: 0, zIndex: 10 }), 
+        onLeaveBack: () => gsap.to('.p155w1 p', { y: '100%', zIndex: 10 }) 
+    },
+    duration: 1,
+    ease: "power2.out"
+});
 
-  observer.observe(sadSection);
+  gsap.to('.p151w2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p151',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p151w2', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p151w2', { y: '20%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p151w2', { y: 0,opacity:1 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p151w2', { y: '20%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p152w2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p152',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p152w2', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p152w2', { y: '20%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p152w2', { y: 0,opacity:1 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p152w2', { y: '20%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p153w2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p153',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p153w2', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p153w2', { y: '20%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p153w2', { y: 0,opacity:1 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p153w2', { y: '20%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p154w2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p154',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p154w2', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p154w2', { y: '20%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p154w2', { y: 0,opacity:1 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p154w2', { y: '20%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p155w2', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.p155',
+      start: 'top top',
+      end: 'bottom top',
+      toggleActions: "restart none none reverse",
+      onEnter: () => gsap.to('.p155w2', { y: 0,opacity:1 }), // 進入範圍時設定 y 為 0
+      onLeave: () => gsap.to('.p155w2', { y: '20%',opacity:0 }), // 離開範圍時設定 y 為 -100%
+      onEnterBack: () => gsap.to('.p155w2', { y: 0,opacity:1 }), // 回到範圍內時設定 y 為 0
+      onLeaveBack: () => gsap.to('.p155w2', { y: '20%',opacity:0 }) // 再次離開範圍時設定 y 為 -100%
+  },
+  duration: 1,
+  ease: "power2.out"
+  })
+  gsap.to('.p152pic', { 
+    scrollTrigger:{
+    //    markers:true,
+      trigger:'.p152pic',
+      scrub:2,
+      start: 'top bottom',
+      end: 'bottom 40%',
+      toggleActions: "restart none none reverse",
+  },
+  opacity:1,
+  rotation:2,
+  y:"-130%",
+  onComplete: () => gsap.set('.p152pic', { zIndex: -1 }) 
+  })
+  gsap.to('.p152pic2', { 
+    scrollTrigger:{
+    //    markers:true,
+      trigger:'.p152pic2',
+      scrub:2,
+      start: 'top 110%',
+      end: 'bottom 30%',
+      toggleActions: "restart none none reverse",
+  },
+  opacity:1,
+  rotation:-3,
+  y:"-120%",
+  onComplete: () => gsap.set('.p152pic', { zIndex: -1 }) 
+  })
+
+//   gsap.to('.b p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p151',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
+//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
+//         onEnter: () => gsap.to('.b p', { y: 0, opacity: 1, delay: 0.2 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b p', { y: 0, opacity: 1, delay: 0.2 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+// gsap.to('.b2 p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p151',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
+//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
+//         onEnter: () => gsap.to('.b2 p', { y: 0, opacity: 1, delay: 0.4 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b2 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b2 p', { y: 0, opacity: 1, delay: 0.4 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b2 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+// gsap.to('.b3 p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p151',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
+//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
+//         onEnter: () => gsap.to('.b3 p', { y: 0, opacity: 1, delay: 0.6 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b3 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b3 p', { y: 0, opacity: 1, delay: 0.6 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b3 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+// gsap.to('.b4 p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p152',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
+//         onEnter: () => gsap.to('.b4 p', { y: 0, opacity: 1, delay: 0.2 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b4 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b4 p', { y: 0, opacity: 1, delay: 0.2 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b4 p', { y: '100%' }),
+//         invalidateOnRefresh: true,
+//         // 讓動畫進行到結束時
+//         onUpdate: (self) => {
+//             if (self.progress === 1) {
+//                 self.animation.progress(1); // 讓動畫直接結束
+//             }
+//         }
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+// gsap.to('.b5 p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p152',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom top', // 當 trigger 離開視窗頂部時結束
+//         onEnter: () => gsap.to('.b5 p', { y: 0, opacity: 1, delay: 0.4 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b5 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b5 p', { y: 0, opacity: 1, delay: 0.4 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b5 p', { y: '100%' }) ,
+//         invalidateOnRefresh: true,
+//         // 讓動畫進行到結束時
+//         onUpdate: (self) => {
+//             if (self.progress === 1) {
+//                 self.animation.progress(1); // 讓動畫直接結束
+//             }
+//         }
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+// gsap.to('.b6 p', {
+//     scrollTrigger: {
+//         markers: true,
+//         trigger: '.p152',
+//         start: 'top top', // 當 trigger 進入視窗頂部時開始
+//         end: 'bottom top', // 當 trigger 離開視窗頂部時結束
+//         onEnter: () => gsap.to('.b6 p', { y: 0, opacity: 1, delay: 0.6 }), // 進入範圍時設定 y 為 0
+//         onLeave: () => gsap.to('.b6 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
+//         onEnterBack: () => gsap.to('.b6 p', { y: 0, opacity: 1, delay: 0.6 }), // 回到範圍內時設定 y 為 0
+//         onLeaveBack: () => gsap.to('.b6 p', { y: '100%' }),
+//         invalidateOnRefresh: true,
+//         // 讓動畫進行到結束時
+//         onUpdate: (self) => {
+//             if (self.progress === 1) {
+//                 self.animation.progress(1); // 讓動畫直接結束
+//             }
+//         }
+//     },
+//     opacity:1,
+//     duration: 1,
+//     ease: "power2.inOut"
+// });
+  gsap.to('.eraa1 p, .eraa2 p, .block p', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },   
+     y:0,
+  })
+  gsap.to('.block1 p ', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },
+     duration:.9,
+     delay:1,   
+     y:0,
+  })
+  gsap.to('.block2 p ', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },
+     duration:.9,
+     delay:1.2,   
+     y:0,
+  })
+  gsap.to('.block3 p ', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },
+     duration:.9,
+     delay:1.4,   
+     y:0,
+  })
+  gsap.to('.block4 p ', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },
+     duration:.9,
+     delay:1.6,   
+     y:0,
+  })
+  gsap.to('.namehome p', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },   
+     opacity:1,
+     duration:1,
+     ease:"power2.out"
+  })
+  gsap.to('.genus', { 
+    scrollTrigger:{
+      //  markers:true,
+      trigger:'.mmtt',
+      start: 'top -10%',
+      end: 'bottom top',
+    //   toggleActions: "restart none none none",
+     },   
+     opacity:1,
+     duration:1,
+     ease:"power2.out"
+  })
+  gsap.to('.totra',{
+    scrollTrigger:{
+      trigger:'.totra',
+      start:'top top',
+      end:'bottom bottom',
+      pin:true,
+    }
+  })
+gsap.to('.p2pic',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.p2pic ',
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: true,
+        toggleActions: "restart none none reverse",
+    },
+});
+gsap.to('.p154pic',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.p154pic ',
+        start: 'top top',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    opacity:1,
+    duration:1,
+    ease:"power2.inOut"
+});
+gsap.to('.tashi',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tashi',
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: true,
+        toggleActions: "restart none none reverse",
+    },
+});
+gsap.to('.process p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.process',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:-2,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.to('.tap1', {
+    scrollTrigger: {
+        trigger: '.p31',
+        start: 'top top',
+        end: 'bottom top',
+        onEnter: () => {
+            gsap.to('.tap1', { opacity: 1, marginBottom: "55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp1', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic1', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeave: () => {
+            gsap.to('.tap1', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp1', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.p3pic1', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onEnterBack: () => {
+            gsap.to('.tap1', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp1', { opacity: 1, y: "0%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic1', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeaveBack: () => {
+            gsap.to('.tap1', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp1', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic1', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+    }
+});
+gsap.to('.tap2', {
+    scrollTrigger: {
+        trigger: '.p32',
+        start: 'top top',
+        end: 'bottom top',
+        onEnter: () => {
+            gsap.to('.tap2', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp2', { opacity: 1,y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic2', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeave: () => {
+            gsap.to('.tap2', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp2', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic2', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onEnterBack: () => {
+            gsap.to('.tap2', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp2', { opacity: 1, y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic2', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeaveBack: () => {
+            gsap.to('.tap2', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp2', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic2', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+    }
+});
+gsap.to('.tap3', {
+    scrollTrigger: {
+        trigger: '.p33',
+        start: 'top top',
+        onEnter: () => {
+            gsap.to('.tap3', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp3', { opacity: 1,y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic3', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeave: () => {
+            gsap.to('.tap3', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp3', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic3', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onEnterBack: () => {
+            gsap.to('.tap3', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp3', { opacity: 1, y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic3', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeaveBack: () => {
+            gsap.to('.tap3', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp3', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic3', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+    }
+});
+gsap.to('.tap4', {
+    scrollTrigger: {
+        trigger: '.p34',
+        start: 'top top',
+        end: 'bottom top',
+        onEnter: () => {
+            gsap.to('.tap4', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp4', { opacity: 1,y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic4', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeave: () => {
+            gsap.to('.tap4', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp4', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic4', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onEnterBack: () => {
+            gsap.to('.tap4', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp4', { opacity: 1, y: "0%", duration: 0.7,  ease: "power2.out" }); 
+            gsap.to('.p3pic4', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeaveBack: () => {
+            gsap.to('.tap4', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp4', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic4', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+    }
+});
+gsap.to('.tap5', {
+    scrollTrigger: {
+        trigger: '.p35',
+        start: 'top top',
+        end: 'bottom top',
+        onEnter: () => {
+            gsap.to('.tap5', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp5', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic5', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeave: () => {
+            gsap.to('.tap5', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp5', { opacity: 1, y: "0%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic5', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onEnterBack: () => {
+            gsap.to('.tap5', { opacity: 1, marginBottom:"55%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp5', { opacity: 1, y: "0%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic5', { opacity: 1,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+        onLeaveBack: () => {
+            gsap.to('.tap5', { opacity: 0.3, marginBottom:"0%", duration: 0.7, ease: "power2.out" });
+            gsap.to('.tapp5', { opacity: 0, y: "10%", duration: 0.7, ease: "power2.out" }); 
+            gsap.to('.p3pic5', { opacity: 0,y: "0%", duration: 0.7, ease: "power2.out" }); 
+        },
+    }
+});
+
+gsap.to('.tap1 p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tap1',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:0,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.to('.tap2 p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tap2',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:0,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.to('.tap3 p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tap3',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:0,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.to('.tap4 p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tap4',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:0,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.to('.tap5 p',{
+    scrollTrigger: {
+        // markers: true,
+        trigger: '.tap5',
+        start: 'top bottom',
+        end: 'bottom bottom',
+        toggleActions: "restart none none reverse",
+    },
+    y:0,
+    duration:1,
+    ease:"power2.out",
+});
+gsap.fromTo("#text", 
+    { strokeDashoffset: 246 }, 
+    { 
+        strokeDashoffset: 0, 
+        duration: 3, 
+        ease: "linear",
+        scrollTrigger: {
+            trigger: "#text",
+            start: "top bottom",   // 當 #text 滑動到畫面 80% 時開始動畫
+            end: "top 50%",     // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    }
+);
+gsap.to('.p42pic img',{
+    scrollTrigger: {
+        // markers:true,
+        trigger:'.p42pic',
+        start:'top bottom',
+        end:'bottom -40%',
+        
+        toggleAction:'restart none none restart',
+    },
+    y:"0",
+})
+gsap.to('.p42w p',{
+    scrollTrigger: {
+        // markers:true,
+        trigger:'.p42w',
+        start:'top bottom',
+        end:'bottom -40%',
+        
+        toggleAction:'restart none none restart',
+    },
+    y:"0",
+})
+gsap.to('.s3svg1',{
+    scrollTrigger: {
+        // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+        scrub:true,
+        toggleAction:'restart none none restart',
+    },
+    y:"-10%",
+    opacity:0,
+})
+gsap.to('.s3svg2',{
+    scrollTrigger: {
+        // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+        scrub:true,
+        toggleAction:'restart none none restart',
+    },
+    y:"-20%",
+    opacity:0,
+})
+gsap.to('.s3svg3',{
+        scrollTrigger: {
+            // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+            scrub:true,
+            toggleAction:'restart none none restart',
+        },
+        y:"-35%",
+    opacity:0,
+})
+gsap.to('.s3svg4',{
+        scrollTrigger: {
+            // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+            scrub:true,
+            toggleAction:'restart none none restart',
+        },
+        y:"-45%",
+    opacity:0,
+})
+gsap.to('.s3svg5',{
+        scrollTrigger: {
+            // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+            scrub:true,
+            toggleAction:'restart none none restart',
+        },
+        y:"-5%",
+    opacity:0,
+})
+gsap.to('.s3svg6',{
+        scrollTrigger: {
+            // markers:true,
+        trigger:'.p153',
+        start:'top top',
+        end:'bottom -40%',
+            scrub:true,
+            toggleAction:'restart none none restart',
+        },
+        y:"-25%",
+    opacity:0,
+})
+gsap.to('.s3svg7',{
+        scrollTrigger: {
+            // markers:true,
+            trigger:'.p153',
+            start:'top top',
+            end:'bottom -40%', 
+            scrub:true,
+            toggleAction:'restart none none restart',
+        },
+        y:"-20%",
+    opacity:0,
+})
+gsap.fromTo("#v1", 
+    { strokeDashoffset: 420, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 70%',
+            end:'bottom -5%',    // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    }
+);
+gsap.fromTo("#v2", 
+    { strokeDashoffset: 420, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 60%',
+            end:'bottom -5%',    // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    }
+);
+gsap.fromTo("#v3", 
+    { strokeDashoffset: 600, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        markers:true,
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 50%',
+            end:'bottom 20%',     // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+});
+gsap.fromTo("#v4", 
+    { strokeDashoffset: 1020, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        markers:true,
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 0%',
+            end:'bottom 30%',     // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    })
+gsap.fromTo("#v5", 
+    { strokeDashoffset: 77, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        markers:true,
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 80%',
+            end:'bottom 10%',     // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    });
+gsap.fromTo("#v6", 
+    { strokeDashoffset: 46, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 60%',
+            end:'bottom 20%',    // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    }
+);
+gsap.fromTo("#v7", 
+    { strokeDashoffset: 380, y:"0%" }, 
+    { 
+        strokeDashoffset: 0, 
+        ease: "linear",
+        scrollTrigger: {
+            trigger:'.p153',
+            start:'top 40%',
+            end:'bottom 50%',    // 當 #text 滑動到 20% 時結束動畫
+            scrub: 2,           // 讓動畫隨滾動進度播放
+        }
+    }
+);
+
+
+console.clear();
+/* The encoding is super important here to enable frame-by-frame scrubbing. */
+
+// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -movflags faststart -vcodec libx264 -crf 23 -g 1 -pix_fmt yuv420p output.mp4
+// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -vf scale=960:-1 -movflags faststart -vcodec libx264 -crf 20 -g 1 -pix_fmt yuv420p output_960.mp4
+
+const video = document.querySelector(".video-background");
+let src = video.currentSrc || video.src;
+console.log(video, src);
+
+/* Make sure the video is 'activated' on iOS */
+function once(el, event, fn, opts) {
+  var onceFn = function (e) {
+    el.removeEventListener(event, onceFn);
+    fn.apply(this, arguments);
+  };
+  el.addEventListener(event, onceFn, opts);
+  return onceFn;
 }
 
-// 初始化滾動監聽
-setupObserver();
-
-
-
-// const slider = document.getElementById('slider');
-// const button1 = document.getElementById('button1');
-// const button2 = document.getElementById('button2');
-// const button3 = document.getElementById('button3');
-// const circle = document.getElementById('circle');
-
-// slider.addEventListener('input', function () {
-//     const value = parseInt(slider.value);
-  
-//     // 根據 slider 的值添加相應的圓形大小
-//     if (value === 1) {
-//       updateCircle('scale-70');
-//     } else if (value === 2) {
-//       updateCircle('scale-30');
-//     } else if (value === 3) {
-//       updateCircle('scale-50');
-//     }
-//   });
-  
-//   // 通用函數，用於更新圓形的大小
-//   function updateCircle(scaleClass) {
-//     circle.className = `circle ${scaleClass}`; // 確保僅添加所需的類
-//   }
-
-// // 按鈕1事件：圓形縮放為70%
-// button1.addEventListener('click', function() {
-//   circle.classList.remove('scale-30', 'scale-50'); // 移除其他的大小類
-//   circle.classList.add('scale-70');
-//   slider.value = 1; // 設置滑動條值為 1
-//   slider.dispatchEvent(new Event('input')); // 添加70%大小的類
-// });
-
-// // 按鈕2事件：圓形縮放為30%
-// button2.addEventListener('click', function() {
-//   circle.classList.remove('scale-70', 'scale-50'); // 移除其他的大小類
-//   circle.classList.add('scale-30'); // 添加30%大小的類
-//   slider.value = 2; // 設置滑動條值為 2
-//   slider.dispatchEvent(new Event('input'));
-// });
-
-// // 按鈕3事件：圓形縮放為50%
-// button3.addEventListener('click', function() {
-//   circle.classList.remove('scale-70', 'scale-30'); // 移除其他的大小類
-//   circle.classList.add('scale-50'); // 添加50%大小的類
-//   slider.value = 3; // 設置滑動條值為 3
-//   slider.dispatchEvent(new Event('input'));
-// });
-
-
-
-
-
-
-//process滑動
-document.addEventListener('DOMContentLoaded', () => {
-  let slideImages = document.querySelectorAll('#sl5 img');
-  let indicators = document.querySelectorAll('.groundd .swiperr li'); // 所有的 li
-  let kkIndicators = document.querySelectorAll('.grounddd .swiperrr li'); // 所有的 kk
-  let isDragging = false; // 用來判斷是否正在拖動
-  let startX, endX;
-  let counter = 0;
-  const sliderContainer = document.querySelector('#sl5'); // 滑動區域
-
-  // 禁用圖片選擇和拖動
-  slideImages.forEach(img => {
-      img.setAttribute('draggable', 'false');
-      img.style.userSelect = 'none'; // 禁用選擇
-  });
-
-  // li
-  function updateIndicators() {
-      indicators.forEach((li, index) => {
-          li.classList.toggle('active', index === counter); // 根據 counter 更新 li 的 active 狀態
-          if (index === counter) {
-              // 設置 active 狀態並添加顯示動畫
-              gsap.fromTo(
-                  li,
-                  { opacity: 0, x: 20 }, // 初始狀態
-                  { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' } // 動畫到最終狀態
-              );
-          } else {
-              // 隱藏非 active 的 li
-              gsap.to(li, {
-                  opacity: 0,
-                  x: -20,
-                  duration: 0.5,
-                  ease: 'power2.in'
-              });
-          }
-      });
-
-      // kk
-      kkIndicators.forEach((li, index) => {
-          li.classList.toggle('active', index === counter); // 根據 counter 更新 kk 的 active 狀態
-          if (index === counter) {
-              // 設置 active 狀態並添加顯示動畫
-              gsap.fromTo(
-                  li,
-                  { opacity: 0, x: 50 }, // 初始狀態
-                  { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out' } // 動畫到最終狀態
-              );
-          } else {
-              // 隱藏非 active 的 kk
-              gsap.to(li, {
-                  opacity: 0,
-                  y: 10,
-                  duration: 0.5,
-                  ease: 'power2.in'
-              });
-          }
-      });
-  }
-
-  // 處理拖動開始
-  slideImages.forEach((img) => {
-      img.addEventListener('mousedown', (e) => {
-          isDragging = true;
-          startX = e.pageX; // 記錄起始位置
-          img.style.cursor = 'grabbing'; // 更改滑鼠樣式
-      });
-
-      // 處理拖動過程
-      img.addEventListener('mousemove', (e) => {
-          if (!isDragging) return; // 如果沒有拖動就不處理
-          endX = e.pageX; // 記錄當前位置
-      });
-
-      // 處理拖動結束
-      img.addEventListener('mouseup', () => {
-          if (!isDragging) return; // 如果沒有拖動就不處理
-
-          isDragging = false;
-          img.style.cursor = 'grab'; // 還原滑鼠樣式
-
-          // 根據拖動方向切換圖片
-          if (startX - endX > 50) {
-              // 往左拖動超過 50px，切換到下一張
-              slideNext();
-          } else if (endX - startX > 50) {
-              // 往右拖動超過 50px，切換到上一張
-              slidePrev();
-          }
-      });
-  });
-
-  // 處理圖片的下一張
-  function slideNext() {
-      slideImages[counter].style.animation = 'next1 0.5s ease-in forwards';
-      if (counter >= slideImages.length - 1) {
-          counter = 0;
-      } else {
-          counter++;
-      }
-      slideImages[counter].style.animation = 'next2 0.5s ease-in forwards';
-      updateIndicators(); // 更新 li 和 kk 狀態
-  }
-
-  // 處理圖片的上一張
-  function slidePrev() {
-      slideImages[counter].style.animation = 'prev1 0.5s ease-in forwards';
-      if (counter === 0) {
-          counter = slideImages.length - 1;
-      } else {
-          counter--;
-      }
-      slideImages[counter].style.animation = 'prev2 0.5s ease-in forwards';
-      updateIndicators(); // 更新 li 和 kk 狀態
-  }
-
-  // 初始化時設置默認 li 和 kk 狀態
-  updateIndicators();
-
-  // 處理鍵盤事件
-  document.addEventListener('keydown', (e) => {
-      // 檢查滑動區域是否存在，且頁面可見
-      if (sliderContainer && sliderContainer.offsetParent !== null) {
-          if (e.key === 'ArrowRight') {
-              // 按下右箭頭鍵，切換到下一張
-              slideNext();
-          } else if (e.key === 'ArrowLeft') {
-              // 按下左箭頭鍵，切換到上一張
-              slidePrev();
-          }
-      }
-  });
+once(document.documentElement, "touchstart", function (e) {
+  video.play();
+  video.pause();
 });
 
-
-
-let lastScrollTop = 0; // 上一次滚动位置
-
-window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-  // 滚动在 3800px 到 4200px 之间
-  if (scrollTop >= 3600 && scrollTop < 4200) {
-    // 检测滚动方向
-    if (scrollTop > lastScrollTop) {
-      // 向下滚动：播放动画
-      clipPathAnimation.play();
-    } else if (scrollTop < lastScrollTop) {
-      // 向上滚动：倒转动画
-      clipPathAnimation.reverse();
-    }
-  } else if (scrollTop >= 4200) {
-    // 滚动超过 4200px 时：倒转动画
-    clipPathAnimation.reverse();
-  } else if (scrollTop < 3600) {
-    // 滚动回到 3800px 以下时：倒转动画
-    clipPathAnimation.reverse();
-  }
-
-  // lastScrollTop = scrollTop; // 更新上一次滚动位置 
-});
-
-
-
-
-const tl = gsap.timeline(); 
-// tl.to(".txt ",{
-//   delay:1,
-//   opacity: 0,
-//   duration: 1.5,
-//   ease:"power2.out",
-// });  
-// tl.to(".txt2 ",{
-//   opacity: 1,
-//   duration: 1.5,
-//   ease:"power2.out",
-// });  
-// tl.to(".txt2 ",{
-//   opacity: 0,
-//   duration: 1.5,
-//   ease:"power2.out",
-// }); 
-tl.to(".title p ",{
-  y:0,
-  duration: 2,
-  ease:"power2.out",
-  stagger:.2,
-});   
-tl.to(".item img",{
-  opacity: 1,
-  duration: 1.7,
-  ease:"power2.out",
-  y:0,
-},"-=1.3");
-tl.to(".brown",{
-  duration: 1.5,
-  ease:"power2.out",
-  y:"-15%",
-},"-=1.5");
-tl.to(".scrr p",{
-  opacity: 1,
-  duration: 1,
-  ease:"power2.out",
-  opacity:.7,
-  y:0,
-}),"-=1";
-tl.to(".material-symbols-outlined",{
-  opacity: 1,
-  duration: 1,
-  opacity:.7,
-  y:"20%",
-},"-=1");
-
-
-
-
-const timeline = gsap.timeline({
-  repeat: -1,             // 无限循环
-  repeatDelay: 3,
-});
-
-// 动画定义
-timeline.to(".sssad",  {
-  delay:0.5,
-  rotationY: 360,
-  duration: 1,
-  ease: "power4.out",       
-});
+/* ---------------------------------- */
+/* Scroll Control! */
 
 gsap.registerPlugin(ScrollTrigger);
 
-//四位老哥
-gsap.to('.link', {
-    scrollTrigger: {
-    //   markers: true,
-      trigger: '.block',
-      start: 'top center',
-      end: 'bottom 100px',
-      scrub: true,
-    },
-    y: -60,
-  });
-  //封面圖
-  gsap.to('.cera', {
-    scrollTrigger: {
-      // markers: true,
-      trigger: '.cera',
-      start: 'top top',
-      end: 'bottom 50px',
-      scrub: true,
-    },
-    y: -80,
-    zIndex:99,
-  })
-gsap.to('.scrr', {
+let tl = gsap.timeline({
+  defaults: { duration: 1 },
   scrollTrigger: {
-    // markers: true,
-    trigger: '.scrr',
-    start: 'top 400px',
-    end: 'top top',
-    scrub: true,
-  },
-  opacity:0,
-})
-
-//漸層concept
-  gsap.to('.brown', {
-    backgroundColor: "#5D5752",
-    scrollTrigger: {
-        // markers: true,
-        trigger: '.brown',
-        start: 'top 70%%',
-        end: 'bottom 200%',
-        scrub: true,
-      },
-    borderRadius: "10%",
-    scaleX: 0.8,
-    opacity: .8,
-  })
-
-//台灣陶瓷史 十六世紀末到日治時期
-    gsap.to('.cback p', {
-      scrollTrigger: {
-        // markers:true,
-        trigger:'.cback',
-        start: 'top 30px',
-        end: 'bottom -125px',
-        pin: true,
-      }
-    })
-//三個花紋
-    gsap.to('.motion',{
-      scrollTrigger: {
-        // markers:true,
-        trigger:'.motion',
-        start: 'top 800px',
-        end: 'bottom -1200px',
-        scrub:true,
-      },
-      y:-370,
-    })
-//花1
-    gsap.to('.sssad', {
-      delay:0.4,
-      scaleX: 16,
-      opacity:1,
-      scrollTrigger: {
-        // markers: true,
-        trigger: '.sssad',
-        start: 'top 630px',
-        end: 'bottom top',
-
-      }
-    });
-
-//花2
-gsap.to('.sssad1', {
-      delay:0.2,
-      scaleX: 20,
-      opacity:1,
-      scrollTrigger: {
-        // markers: true,
-        trigger: '.sssad',
-        start: 'top 630px',
-        end: 'bottom top',
-
-      }
-});
-gsap.to('.up p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.up',
-    start: 'top bottom',
-    end: 'bottom 130px',
-    toggleActions: "restart none none reverse",
-   },   
-   y:0,  
-    duration: 1,
-    ease: "power2.out",
-  })
-gsap.to('.up1 p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.up1',
-    start: 'top bottom',
-    end: 'bottom 130px',
-    toggleActions: "restart none none reverse",
-   },   
-   y:0,  
-    duration: 1,
-    ease: "power2.out",
-});
-gsap.to('.up2 p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.up2',
-    start: 'top bottom',
-    end: 'bottom 130px',
-    toggleActions: "restart none none reverse",
-   },   
-   y:0,  
-    duration: 1,
-    ease: "power2.out",
-})
-gsap.to('.up3 p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.up3',
-    start: 'top bottom',
-    end: 'bottom 130px',
-    toggleActions: "restart none none reverse",
-   },   
-   y:0,  
-    duration: 1,
-    ease: "power2.out",
-})
-gsap.to('.cut', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.pcut',
-    start: 'top top',
-    end: 'bottom top',
-    scrub:true,
-    pin:true,
-    toggleActions: "restart none none reverse",
-   },   
-   y:"-101%",
-})
-gsap.to('.cut1', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.pcut',
-    start: 'top top',
-    end: 'bottom top',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-   },   
-   y:"-101%",
-})
-gsap.to('.cut2', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.pcut',
-    start: 'top top',
-    end: 'bottom top',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-   },   
-   y:"-101%",
-})
-gsap.to('.cut3', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.pcut',
-    start: 'top top',
-    end: 'bottom top',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-   },   
-   y:"-101%",
-})
-gsap.to('.cut4', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.pcut',
-    start: 'top top',
-    end: 'bottom top',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-   },   
-   y:"-101%",
-})
-gsap.timeline({
-  scrollTrigger: {
-    // markers: true,
-    trigger: '.psoo',
-    start: 'top top',
-    end: 'bottom top',
-    scrub: true,
-    pin:true,
-    toggleActions: "restart reverse none none",
+    trigger: ".p151",
+    start: "top top",
+    end: "bottom top",
+    scrub: 1,
   }
-})
-.to('.psoo', { opacity: 1, duration: 1 })
-.to('.psoo', { opacity: 0, duration: 1 });
+});
+once(video, "loadedmetadata", () => {
+  tl.fromTo(
+    video,
+    {
+      currentTime: 0
+    },
+    {
+      currentTime: video.duration || 1
+    }
+  );
+});
 
-gsap.to('.door', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.haha',
-    start: 'top top',
-    end: 'bottom bottom',
-    pin:true,
-    scrub:true,
-    toggleActions: "restart none none reverse",
-   },
-   clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', 
-})
-gsap.to('.eraa1 p, .eraa2 p, .block p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },   
-   y:0,
-})
+/* When first coded, the Blobbing was important to ensure the browser wasn't dropping previously played segments, but it doesn't seem to be a problem now. Possibly based on memory availability? */
+setTimeout(function () {
+  if (window["fetch"]) {
+    fetch(src)
+      .then((response) => response.blob())
+      .then((response) => {
+        var blobURL = URL.createObjectURL(response);
 
-gsap.to('.block1 p ', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },
-   duration:.9,
-   delay:1,   
-   y:0,
-})
-gsap.to('.block2 p ', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },
-   duration:.9,
-   delay:1.2,   
-   y:0,
-})
-gsap.to('.block3 p ', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },
-   duration:.9,
-   delay:1.4,   
-   y:0,
-})
-gsap.to('.block4 p ', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },
-   duration:.9,
-   delay:1.6,   
-   y:0,
-})
-gsap.to('.namehome p', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },   
-   opacity:1,
-   duration:1,
-   ease:"power2.out"
-})
-gsap.to('.genus', { 
-  scrollTrigger:{
-    //  markers:true,
-    trigger:'.mmtt',
-    start: 'top top',
-    end: 'bottom top',
-    toggleActions: "restart none none reverse",
-   },   
-   opacity:1,
-   duration:1,
-   ease:"power2.out"
-})
-gsap.to('.totra',{
-  scrollTrigger:{
-    trigger:'.totra',
-    start:'top top',
-    end:'bottom bottom',
-    pin:true,
+        var t = video.currentTime;
+        once(document.documentElement, "touchstart", function (e) {
+          video.play();
+          video.pause();
+        });
+
+        video.setAttribute("src", blobURL);
+        video.currentTime = t + 0.01;
+      });
   }
-})
-
-gsap.to('.friend1',{
-  scrollTrigger:{
-    trigger:'.friend1',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friend2',{
-  scrollTrigger:{
-    trigger:'.friend2',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friend3',{
-  scrollTrigger:{
-    trigger:'.friend3',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friend4',{
-  scrollTrigger:{
-    trigger:'.friend4',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friend5',{
-  scrollTrigger:{
-    trigger:'.friend5',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friendname1',{
-  scrollTrigger:{
-    trigger:'.friendname1',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friendname2',{
-  scrollTrigger:{
-    trigger:'.friendname2',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friendname3',{
-  scrollTrigger:{
-    trigger:'.friendname3',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friendname4',{
-  scrollTrigger:{
-    trigger:'.friendname4',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.friendname5',{
-  scrollTrigger:{
-    trigger:'.friendname5',
-    start:'top bottom',
-    end:'bottom 60%',
-    scrub:true,
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  x:0,
-  y:"-80%",
-})
-gsap.to('.roma1 p',{
-  scrollTrigger:{
-    trigger:'.roma1',
-    start:'top bottom',
-    end:'bottom 60%',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1.5,
-  ease:"power2.out",
-  x:0,
-})
-
-gsap.to('.nono p',{
-  scrollTrigger:{
-    trigger:'.mo1',
-    start:'top top',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bon').style.display = 'block';
-  // }
-})
-          
-gsap.to('.nono2 p',{
-  scrollTrigger:{
-    trigger:'.mo2',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bon1').style.display = 'block';
-  // }
-}) 
-               
-gsap.to('.nono3 p',{
-  scrollTrigger:{
-    trigger:'.mo3',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bon2').style.display = 'block';
-  // }
-}) 
-               
-gsap.to('.nono4 p',{
-  scrollTrigger:{
-    trigger:'.mo4',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bon3').style.display = 'block';
-  // }
-}) 
-
-gsap.to('.nono5 p',{
-  scrollTrigger:{
-    trigger:'.mo5',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bon4').style.display = 'block';
-  // }
-}) 
-
-gsap.to('.dont',{
-  scrollTrigger:{
-    trigger:'.bonn',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none reverse",
-  },
-  duration:1,
-  ease: "power2.out",
-  y:0,
-  // onComplete: () => {
-  //   document.querySelector('.bonn').style.display = 'block';
-  // }
-}) 
-
-
-
-gsap.to('.roun', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.roun',
-    start:'center 630',
-    end:'center top',
-    toggleActions: "restart none none reverse",
-  },
-  x:60,
-  duration:1,
-  ease:"power4.out"
-})
-
-
-
-gsap.to('.wordcess',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.wordcess',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:1,
-  y:0,
-})
-
-gsap.to('.err',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.err',
-    start:'bottom bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:1,
-  y:0,
-})
-
-gsap.to('.eraa',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.eraa',
-    start:'bottom bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  delay:0.3,
-  ease:"power2.out(1)",
-  duration:1,
-  y:0,
-})
-
-gsap.to('.tradii',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tradii',
-    start:'bottom bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:1,
-  y:0,
-})
-
-gsap.to('.traditionn',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.traditionn',
-    start:'bottom bottom',
-    end:'bottom top',
-    toggleActions: "restart none none none",
-  },
-  delay:0.3,
-  ease:"power2.out(1)",
-  duration:1,
-  y:0,
-})
-
-gsap.to('.tt1',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt1',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt2',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt2',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt3',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt3',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt4',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt4',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt5',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt5',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt6',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt6',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt7',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt7',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt8',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt8',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt9',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt9',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.tt10',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.tt10',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:2,
-  y:0,
-})
-
-gsap.to('.trapic', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.trapic',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none reverse",
-  },
-     clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",// 最終狀態
-      duration: 2, // 動畫持續時間
-      ease: "power2.out", // 動畫緩動效果
-})
-
-gsap.to('.picesss', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.picesss',
-    start:'top 600',
-    end:'bottom top',
-    // toggleActions: "restart none none reverse",
-  },
-     clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",// 最終狀態
-      duration: 2, // 動畫持續時間
-      ease: "power2.out", // 動畫緩動效果
-})
-
-gsap.to('.trapicc', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.trapicc',
-    start:'top bottom',
-    end:'bottom top',
-    scrub:true,
-    // toggleActions: "restart none none reverse",
-  },
-     y:-50,
-})
-
-gsap.to('.picess', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.picess',
-    start:'top bottom',
-    end:'bottom top',
-    scrub:true,
-    // toggleActions: "restart none none reverse",
-  },
-     y:-100,
-})
-
-gsap.to('.groundd',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.groundd',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:1,
-  y:-50,
-})
-
-gsap.to('.grounddd',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.grounddd',
-    start:'top bottom',
-    end:'bottom top',
-    // toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:1,
-  y:-50,
-})
-
-
-
-gsap.to('.swiper',{
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.swiper',
-    start:'top bottom',
-    end:'bottom top',
-    toggleActions: "restart none none none",
-  },
-  ease:"power2.out(1)",
-  duration:0.5,
-  y:-50,
-})
-
-gsap.to('.rounline', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.rounline',
-    start:'top bottom',
-    end:'center top',
-    toggleActions: "restart none none reverse",
-  },
-  delay:1.5,
-  scaleX:1350,
-  duration:1.5,
-  ease:"power4.out(1)"
-})
-
-//.horizontal-container
-// gsap.to('.coolor', {
-//   scrollTrigger:{
-//     // markers:true,
-//     trigger:'.coolor',
-//     start:'top top',
-//     end:'top -700',
-//     scrub:true,
-//   },
-//   opacity:.5,
-// })
-
-gsap.to('.quhome', {
-  scrollTrigger:{
-    // markers:true,
-    trigger:'.quhome',
-    start:'top top',
-    end:'bottom top',
-    pin:true,
-    // toggleActions: "restart none none reverse",
-  },
-})
-
-gsap.to('.too', {
-  scrollTrigger:{
-    trigger:'.too',
-    start:'top 500',
-    end:'top top',
-  },
-  y:0,
-})
-
-gsap.to('.ppt',{
-  scrollTrigger:{
-    trigger:'.ppthome',
-    start:'top top',
-    end:'bottom top',
-    scrub:true,
-  },
-  y:2350,
-  // y:3050,
-}) 
-
-gsap.to('.ppt1',{
-  scrollTrigger:{
-    trigger:'.ppt1',
-    start:'top bottom',
-    end:'bottom top',
-    scrub:true,
-  },
-  y:-1500,
-}) 
-
-gsap.to('.coco',{
-  scrollTrigger:{
-    trigger:'.coco',
-    start:'top top',
-    end:'bottom bottom',
-    scrub:true,
-  },
-  opacity:0,
-}) 
-gsap.to('.bye',{
-  scrollTrigger:{
-    trigger:'.bye',
-    start:'top bottom',
-    end:'bottom bottom',
-  },
-  x:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.texx1 p',{
-  scrollTrigger:{
-    trigger:'.texx1',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.texx2 p',{
-  scrollTrigger:{
-    trigger:'.texx2',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.ggl p',{
-  scrollTrigger:{
-    trigger:'.ggl',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.ggl2 p',{
-  scrollTrigger:{
-    trigger:'.ggl2',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.ggl3 p',{
-  scrollTrigger:{
-    trigger:'.ggl3',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-})
-gsap.to('.ggl4 p',{
-  scrollTrigger:{
-    trigger:'.ggl4',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-})  
-gsap.to('.ggl5 p',{
-  scrollTrigger:{
-    trigger:'.ggl5',
-    start:'top 90%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-})
-gsap.to('.ggll p',{
-  scrollTrigger:{
-    trigger:'.ggll',
-    start:'top 80%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.ggll2 p',{
-  scrollTrigger:{
-    trigger:'.ggll2',
-    start:'top 80%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.ggll3 p',{
-  scrollTrigger:{
-    trigger:'.ggll3',
-    start:'top 80%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-})
-gsap.to('.ggll4 p',{
-  scrollTrigger:{
-    trigger:'.ggll4',
-    start:'top 80%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-})  
-gsap.to('.ggll5 p',{
-  scrollTrigger:{
-    trigger:'.ggll5',
-    start:'top 80%',
-    end:'bottom bottom',
-  },
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-gsap.to('.byebye p',{
-  scrollTrigger:{
-    trigger:'.byebye p',
-    start:'top bottom',
-    end:'bottom bottom',
-  },
-  delay:1.2,
-  y:0,
-  duration:1.5,
-  ease:"power2.out",
-}) 
-    
-//home鍵fix
-//   gsap.fromTo(".fixed-icon", {
-//     pointerEvents: "none",
-//     opacity: 0, }, {
-//     opacity: 1,
-//     pointerEvents: "auto", // 滾動到第二頁後顯示
-//     scrollTrigger: {
-//         // markers: true,
-//         trigger: ".concept", 
-//         start: "top 10", 
-//         end: "bottom 10", 
-//         toggleActions: "restart none none reset", 
-//     }
-// });
-
-// //home鍵旋轉效果(last)
-// const fixedIcon = document.querySelector('.fixed-icon');
-// const overlay = document.querySelector('.overlay');
-// const menu= document.querySelector('.menu');
-// const menuf= document.querySelector('.menuf');
-// const xx=document.querySelectorAll(".text");
-//   let isRotated = false;
-
-//   fixedIcon.addEventListener('click', function() {
-//     if (isRotated) {
-//       gsap.to(fixedIcon, {
-//         rotation: 0,  
-//         duration: .5,  
-//         ease: "power2.out"
-//       });
-//       gsap.to(overlay, {
-//         opacity: 0, // 使蒙版逐渐消失
-//         duration: 0.5,
-//         onComplete: () => { 
-//           overlay.style.display = 'none'; // 完全透明后隐藏蒙版
-//         }
-//       });
-//       gsap.to(menu, {
-//         x:0,
-//         duration:.5,
-//         ease:"power2.out"
-//       });
-//       gsap.to(menuf, {
-//         x:0,
-//         duration:.5,
-//         ease:"power2.out"
-//       });
-    
-//     } else {
-//       gsap.to(fixedIcon, {
-//         rotation: "+=45", 
-//         duration: .5,      
-//         ease: "power2.out"
-//       });
-//       gsap.to(overlay, {
-//         display: 'block',
-//         opacity: .7, // 使蒙版从透明变为可见
-//         duration: 0.5
-//       });
-//       gsap.to(menu, {
-//         x:-500,
-//         duration:1,
-//         ease:"elastic.out(0.3)"
-//       });
-//       gsap.to(menuf, {
-//         x:-470,
-//         duration:1.1,
-//         opacity:.5,
-//         ease:"elastic.out(0.3)"
-//       });
-    
-//     }
-//     isRotated = !isRotated;
-//   });
-
-//   overlay.addEventListener('click', () => {
-//     gsap.to(overlay, {
-//       opacity: 0, // 使蒙版逐渐消失
-//       duration: 0.5,
-//       onComplete: () => { 
-//         overlay.style.display = 'none'; // 完全透明后隐藏蒙版
-//       }
-//     });
-//     gsap.to(fixedIcon, {
-//       rotation: "0", 
-//       duration: .5,      
-//       ease: "power2.out"
-//     });
-//     gsap.to(menu, {
-//       x:0,
-//       duration:.5,
-//       ease:"power2.out"
-//     });
-//     gsap.to(menuf, {
-//       x:0,
-//       duration:.5,
-//       ease:"power2.out"
-//     });
-//     isRotated = !isRotated;
-//   });
-
-// xx.addEventListener('click',  () => {
-//   gsap.to(overlay, {
-//     opacity: 0, // 使蒙版逐渐消失
-//     duration: 0.5,
-//     onComplete: () => { 
-//       overlay.style.display = 'none'; // 完全透明后隐藏蒙版
-//     }
-//   });
-//   gsap.to(fixedIcon, {
-//     rotation: "0", 
-//     duration: .5,      
-//     ease: "power2.out"
-//   });
-//   gsap.to(menu, {
-//     x:0,
-//     duration:.5,
-//     ease:"power2.out"
-//   });
-//   gsap.to(menuf, {
-//     x:0,
-//     duration:.5,
-//     ease:"power2.out"
-//   });
-//   isRotated = !isRotated;
-// });
-
+}, 1000);
 
