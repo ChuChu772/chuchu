@@ -1802,4 +1802,7 @@ body{
         display: flex;
         position: relative;
     }
+    .page3{
+        display:none;
+    }
 }
