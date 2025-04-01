@@ -743,7 +743,6 @@ body{
     width: 100vw;
     justify-content: flex-start;
     align-items: flex-start;
-    border: 1px solid black;
 }
 .psoo{
     position: relative;
@@ -774,7 +773,6 @@ body{
     position: relative;
     justify-content: center;
     align-items: end;
-    border: 1px solid brown;
     /* overflow: hidden;  */
 }
 .backto{
