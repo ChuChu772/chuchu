@@ -727,7 +727,6 @@ body{
     height: 250vh;
     width: 100vw;
     opacity: 1;
-    background-color: black;
 }
 .hanaline {
     display: flex;
@@ -767,7 +766,6 @@ body{
     width: 100vw;
     position: relative;
     display: flex;
-    border: 1px solid brown;
 }
 .mmtt{
     display: flex;
@@ -776,6 +774,7 @@ body{
     position: relative;
     justify-content: center;
     align-items: end;
+    border: 1px solid brown;
     /* overflow: hidden;  */
 }
 .backto{
