@@ -1,4 +1,185 @@
+const slider = document.querySelector(".navhome");
+const images = document.querySelectorAll(".php img");
+const infoDisplay = document.querySelector(".disc h3"); 
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
+const scrollAmount = 100; // 每次滾動的距離，可自行調整
+
+nextBtn.addEventListener("click", () => {
+    slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+});
+
+prevBtn.addEventListener("click", () => {
+    slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+});
+
+function scaleCenterImage() {
+    let sliderRect = slider.getBoundingClientRect(); // `.navhome` 的範圍
+    let sliderCenter = sliderRect.left + sliderRect.width / 2; // 中心點
+
+    let closestImg = null; // 用來儲存最接近中心的圖片
+    let closestDistance = Infinity; // 儲存最小距離
+
+    images.forEach((img) => {
+        let imgRect = img.getBoundingClientRect(); // 取得圖片位置
+        let imgCenter = imgRect.left + imgRect.width / 2; // 計算圖片中心點
+        let distance = Math.abs(sliderCenter - imgCenter); // 與中間的距離
+        let maxDistance = sliderRect.width / 2; // 最大距離（螢幕寬度的一半）
+
+        // 根據距離計算 scale（1 ~ 1.5）
+        let scale = 1 + (2 - 1) * (1 - Math.min(distance / maxDistance, 1));
+
+        // 根據距離計算 opacity（0.3 ~ 1）
+        let opacity = 0.3 + (1 - 0.3) * (1 - Math.min(distance / maxDistance, 1));
+
+        img.style.transformOrigin = "top center";
+        img.style.transform = `scale(${scale})`;
+        img.style.opacity = opacity;
+
+        // 找出最接近中心的圖片
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestImg = img;
+        }
+
+        // 清除所有圖片的active類別
+        img.classList.remove("active");
+    });
+
+    // 當最接近中心的圖片存在時，為它添加active類別並顯示相應的資訊
+    if (closestImg) {
+        closestImg.classList.add("active"); // 為中心圖片添加 active 類別
+        let imgId = closestImg.getAttribute("data-id"); 
+        let conId = closestImg.getAttribute("data-i"); 
+        
+        addGoodClassToText(imgId);
+        
+        // 確保 conId 存在才執行
+        if (conId) {
+            crying(conId);
+        }
+    }}
+
+// 為對應的文字添加 `good` 類別
+function addGoodClassToText(imgId) {
+    const allTextElements = document.querySelectorAll(".dd"); // 取得所有 p.dd 元素
+    const textElement = document.getElementById(`d${imgId}`); // 取得對應的 p.dd 元素
+
+    // 先清除所有 "good" 和 "bad" 類別
+    allTextElements.forEach((el) => {
+        el.classList.remove("goood", "bad");
+    });
+
+    // 為當前的元素添加 "good"
+    if (textElement) {
+        textElement.classList.add("goood");
+    }
+
+    // 為其他非當前的元素添加 "bad"
+    allTextElements.forEach((el) => {
+        if (el !== textElement) {
+            el.classList.add("bad");
+        }
+    });
+}
+let timeoutId;
+let lastConId = null;  // 記錄最後一個有效的 conId
+
+// 這個函數確保只有停留超過 1 秒的 conId 才會被處理
+function delayedCrying(conId) {
+    // 如果 conId 和最後一個有效的 conId 一樣，則不需要重新設置延遲
+    if (lastConId === conId) return;
+
+    // 清除之前的 setTimeout
+    clearTimeout(timeoutId);
+
+    // 設置延遲 1 秒後執行 crying 函式
+    timeoutId = setTimeout(() => {
+        // 確保 conId 在 1 秒後仍然是 lastConId，這樣才執行更新
+        if (lastConId === conId) {
+            crying(conId);  // 停留 1 秒後執行，這時確保 conId 沒有改變
+        }
+    }, 1000);  // 延遲 1 秒才執行
+
+    // 更新 lastConId 為當前的 conId
+    lastConId = conId;
+}
+
+function crying(conId) {
+    const elements = {
+        phw1: document.getElementById('phw1'),
+        phw2: document.getElementById('phw2'),
+        phw3: document.getElementById('phw3')
+    };
+
+    // 清除所有的動畫類別
+    Object.values(elements).forEach(el => el.classList.remove('z', 'zz', 'zzz'));
+
+    // 立即更新文字內容
+    const textContentMap = {
+        a: ["鹿", "祿、仕途順遂", "荷治時期"],
+        b: ["壽字", "生命的敬畏、健康的祝願、生活的期盼", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        c: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        d: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        e: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        f: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        g: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        h: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        i: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        j: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        k: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        l: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        m: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        n: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        o: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        p: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        q: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        r: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        s: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
+        t: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"]
+    };
+
+    // 更新文字
+    if (textContentMap[conId]) {
+        Object.keys(elements).forEach((key, index) => {
+            elements[key].textContent = textContentMap[conId][index];
+        });
+    }
+
+    // 延遲 0.7 秒後執行動畫
+    // setTimeout(() => {
+    //     const classChanges = [
+    //         { className: 'z', delay: 300 },
+    //         { className: 'zz', delay: 700 },
+    //         { className: 'zzz', delay: 1000 },
+    //     ];
+    //     classChanges.forEach(item => {
+    //         setTimeout(() => {
+    //             Object.values(elements).forEach(el => el.classList.add(item.className));
+    //         }, item.delay);
+    //     });
+    // }, 700); 
+}
+
+
+
+
+// document.querySelector('.navhome').addEventListener('scroll', () => {
+//     let closestImg = findClosestImage(); // 假設這是找出中心圖片的函數
+//     if (closestImg) {
+//         let conId = closestImg.getAttribute("data-i");
+//         delayedCrying(conId); // 觸發延遲判斷
+//     }
+// });
+
+
+
+// 呼叫scaleCenterImage()來更新圖片的縮放和顯示的資訊
+slider.addEventListener("scroll", scaleCenterImage);
+
+// 初始化
+scaleCenterImage();
 
 // 禁止滑動10秒
 // x
@@ -1584,14 +1765,15 @@ gsap.to('.p154pic',{
     duration:1,
     ease:"power2.inOut"
 });
-gsap.to('.tashi',{
+gsap.to('.tashi', {
     scrollTrigger: {
         // markers: true,
         trigger: '.tashi',
         start: 'top top',
-        end: 'bottom bottom',
+        end:'bottom bottom',
         pin: true,
-        toggleActions: "restart none none reverse",
+        pinSpacing: true, // Ensure spacing is maintained
+        toggleActions: "play none none reverse", // Simplify toggle actions
     },
 });
 gsap.to('.process p',{
