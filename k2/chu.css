@@ -727,7 +727,7 @@ body{
     height: 250vh;
     width: 100vw;
     opacity: 1;
-    background-color: var(--gg);
+    background-color: black;
 }
 .hanaline {
     display: flex;
@@ -744,6 +744,7 @@ body{
     width: 100vw;
     justify-content: flex-start;
     align-items: flex-start;
+    border: 1px solid black;
 }
 .psoo{
     position: relative;
@@ -766,6 +767,7 @@ body{
     width: 100vw;
     position: relative;
     display: flex;
+    border: 1px solid brown;
 }
 .mmtt{
     display: flex;
