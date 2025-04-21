@@ -1,368 +1,412 @@
-const slider = document.querySelector(".navhome");
-const images = document.querySelectorAll(".php img");
-const infoDisplay = document.querySelector(".disc h3"); 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
+let lastPhwId = null;
+let up2Timeout = null;
+let isTransitioning = false;
+let isColorChanging = false;
+let isLocked = false;
+let navOffset = 0; // 記錄 navtrack 的偏移距離
 
-const scrollAmount = 100; // 每次滾動的距離，可自行調整
+const phwIds = Array.from({ length: 20 }, (_, i) => `phw${(i + 1).toString().padStart(2, '0')}`);
 
-nextBtn.addEventListener("click", () => {
-    slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-});
-
-prevBtn.addEventListener("click", () => {
-    slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-});
-
-function scaleCenterImage() {
-    let sliderRect = slider.getBoundingClientRect(); // `.navhome` 的範圍
-    let sliderCenter = sliderRect.left + sliderRect.width / 2; // 中心點
-
-    let closestImg = null; // 用來儲存最接近中心的圖片
-    let closestDistance = Infinity; // 儲存最小距離
-
-    images.forEach((img) => {
-        let imgRect = img.getBoundingClientRect(); // 取得圖片位置
-        let imgCenter = imgRect.left + imgRect.width / 2; // 計算圖片中心點
-        let distance = Math.abs(sliderCenter - imgCenter); // 與中間的距離
-        let maxDistance = sliderRect.width / 2; // 最大距離（螢幕寬度的一半）
-
-        // 根據距離計算 scale（1 ~ 1.5）
-        let scale = 1 + (2 - 1) * (1 - Math.min(distance / maxDistance, 1));
-
-        // 根據距離計算 opacity（0.3 ~ 1）
-        let opacity = 0.3 + (1 - 0.3) * (1 - Math.min(distance / maxDistance, 1));
-
-        img.style.transformOrigin = "top center";
-        img.style.transform = `scale(${scale})`;
-        img.style.opacity = opacity;
-
-        // 找出最接近中心的圖片
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestImg = img;
-        }
-
-        // 清除所有圖片的active類別
-        img.classList.remove("active");
-    });
-
-    // 當最接近中心的圖片存在時，為它添加active類別並顯示相應的資訊
-    if (closestImg) {
-        closestImg.classList.add("active"); // 為中心圖片添加 active 類別
-        let imgId = closestImg.getAttribute("data-id"); 
-        let conId = closestImg.getAttribute("data-i"); 
-        
-        addGoodClassToText(imgId);
-        
-        // 確保 conId 存在才執行
-        if (conId) {
-            crying(conId);
-        }
-    }}
-
-// 為對應的文字添加 `good` 類別
-function addGoodClassToText(imgId) {
-    const allTextElements = document.querySelectorAll(".dd"); // 取得所有 p.dd 元素
-    const textElement = document.getElementById(`d${imgId}`); // 取得對應的 p.dd 元素
-
-    // 先清除所有 "good" 和 "bad" 類別
-    allTextElements.forEach((el) => {
-        el.classList.remove("goood", "bad");
-    });
-
-    // 為當前的元素添加 "good"
-    if (textElement) {
-        textElement.classList.add("goood");
+function showCorrespondingW(phwId) {
+    // 隱藏所有 w 元素
+    document.querySelectorAll('[id^="w"]').forEach(el => el.classList.remove('w'));
+    document.querySelectorAll('[id^="svg"]').forEach(el => el.classList.remove('run'));
+  
+    // 從 phwId 中取出數字，例如 'php01' -> '1'
+    const index = parseInt(phwId.replace('phw', ''), 10);
+    const paddedIndex = String(index).padStart(2, '0');
+  
+    // 尋找對應的 w 元素，例如 w1, w2...
+    const targetW = document.getElementById(`w${index}`);
+    const tardetsvg = document.getElementById(`svg${index}`);
+    if (targetW) {
+      targetW.classList.add('w'); // 加上你要的 class
     }
-
-    // 為其他非當前的元素添加 "bad"
-    allTextElements.forEach((el) => {
-        if (el !== textElement) {
-            el.classList.add("bad");
-        }
-    });
-}
-let timeoutId;
-let lastConId = null;  // 記錄最後一個有效的 conId
-
-// 這個函數確保只有停留超過 1 秒的 conId 才會被處理
-function delayedCrying(conId) {
-    // 如果 conId 和最後一個有效的 conId 一樣，則不需要重新設置延遲
-    if (lastConId === conId) return;
-
-    // 清除之前的 setTimeout
-    clearTimeout(timeoutId);
-
-    // 設置延遲 1 秒後執行 crying 函式
-    timeoutId = setTimeout(() => {
-        // 確保 conId 在 1 秒後仍然是 lastConId，這樣才執行更新
-        if (lastConId === conId) {
-            crying(conId);  // 停留 1 秒後執行，這時確保 conId 沒有改變
-        }
-    }, 1000);  // 延遲 1 秒才執行
-
-    // 更新 lastConId 為當前的 conId
-    lastConId = conId;
-}
-
-function crying(conId) {
-    const elements = {
-        phw1: document.getElementById('phw1'),
-        phw2: document.getElementById('phw2'),
-        phw3: document.getElementById('phw3')
+    if (tardetsvg) {
+        tardetsvg.classList.add('run'); // 加上你要的 class
+      }
+      const textMap = {
+        "01": [ "祿、仕途順遂", "始於宋代，官祿、福祿，代表長壽和福氣，\n常與動植物如鶴、松、竹、梅搭配，表達富裕和幸福。\n此時期的鹿紋陶器常使用鮮明的顏色，如藍、紅、金。\n使用雕刻、凹雕技術，使鹿紋顯得更加生動。"],
+        "02": ["生命的敬畏、健康的祝願、生活的期盼", "可追溯至漢代，在清代達到工藝高峰。\n與和諧的生活息息相關，日常生活中追求的重要美德。\n樣式和裝飾方式的表現形式多樣。\n使用雕刻、凹雕技術，光線變化使紋路更加清晰。"],
+        "03": ["美好、吉祥、招財", "始於唐宋，經過多次演變。\n中國神話中一種沒有角的龍，龍與虎的後代。\n使用雕刻、浮雕技術，使得龍形圖案更加立體，表現出龍身的曲線和細節，甚至是龍鱗的質感。"],
+        "04": ["荷蘭上層社會的代表", "透過荷蘭東印度公司貿易網絡進入台灣。\n寓意著繁榮和美麗，也代表荷蘭人對異國情調的熱愛。\n台灣的陶瓷工匠在荷蘭的影響下，開始模仿這種風格。\n體現了荷蘭對植物的偏好、貿易影響及文化的交融。"],
+        "05": ["來自伊斯蘭教，阿拉伯文的宗教祈禱", "透過荷蘭東印度公司貿易網絡進入台灣。\n被認為具有祝福功能，能保護擁有者免受邪惡或不幸，如「奉仁慈的真主之名」或「真主至大」等祈語。\n是當時國際貿易和文化交流的體現。"],
+        "06": ["吉祥、長壽，還是表達自然的自由精神", "發展悠久，始於漢代之前。\n有吉祥和幸福的寓意，與自由、季節變化相關，常與其他元素如花卉、雲紋等搭配。\n常以浮雕或刻花技法表現，展現鳥羽的細節。"],
+        "07": ["「梧桐一落葉，天下盡知秋」", "始於唐代，此時葉片紋樣逐漸成為一種常見的紋樣。\n秋季是收穫的季節，代表豐收、成熟和安定。\n清順治時期流行的一種搭配為石頭、落葉與警語。\n常以浮雕或刻花技法表現，凸顯葉片的立體感。"],
+        "08": ["山川、溪流、樹木、奇石", "起源於宋代的山水畫藝術，在元明清逐漸成熟。\n以山水景致為主題，突出自然山水的廣闊與深遠，常見於具觀賞性的器物，體現文人對寄情山水的理想。\n技法偏向寫意，以勾勒、皴法為主，常見於青花瓷、釉里紅。"],
+        "09": ["吉祥與高貴", "發展悠久，始於新石器時代。\n與祥雲、山水結合，常用於宮廷瓷器上。\n是生活器具如盤、碗、瓶與祭祀、禮儀中的重要體現。\n常以浮雕或刻花雕刻鳳鳥，突出線條的流暢與紋理。"],
+        "10": ["起源於道家思想，陰陽相生、萬物變化", "始於魏晉南北朝，在隋唐至宋代逐漸成熟。\n八卦紋以短線組成八組不同的符號，搭配太極紋。\n常作為宗教供奉、風水器物，是道教宇宙觀的體現。\n以青花、釉里紅或彩繪技法表現。"],
+        "11": ["寒冬時誕生、象徵堅強意志與生命的復甦", "始於清康熙，又稱「冰裂梅花紋」，描述冬季冰面裂紋與梅花盛開的景象。\n釉面在高溫燒製後形成自然的裂紋，稱為「開片」，再在其釉面繪上梅花或枝梅。"],
+        "12": ["長壽之花，正直不屈、高雅純潔", "始於宋代，常被用於婚嫁或吉慶場合的器物裝飾。\n團菊紋的主體多數以對稱的形式呈現，花瓣層層疊疊，細線勾勒菊花輪廓，用填色或施釉技術增加立體感。\n以青花藍、釉裏紅、黃色為主，色彩鮮明而典雅。"],
+        "13": ["被視為仙草，象徵長壽、健康與祥瑞", "可追溯至漢代，在明清兩代達到工藝高峰。\n珍貴的藥材，形似不規則的波浪，似雲或花。\n常以曲線勾勒，與其他圖案如雲紋、如意紋等結合。\n在青花瓷中，多以青花料勾畫。"],
+        "14": ["多子多福、繁榮昌盛", "始於明代，常見於清代的婚慶用瓷及壽器上。\n豐滿的外形和許多果實顆粒，代表繁榮和生生不息。\n常見於青花瓷中，工匠以藍色釉料繪製石榴外形。"],
+        "15": ["花王，富貴與繁榮、吉祥與美好", "始於宋代，常見於壽器、婚慶以及其他吉祥禮品中。\n花中之王，長久以來被視為富貴、繁榮和幸福。\n牡丹的顏色多變，常見的有紅色、粉色、紫色。\n常與其他圖案如蝙蝠、鳳凰等結合，強化其祝福意涵。"],
+        "17": ["湖石、花卉、草木", "始於宋代，在明清兩代達到工藝高峰。\n刻畫庭園中湖石與花草如牡丹、菊花、梅花的搭配。\n構圖集中，注重花草與湖石的局部組合。\n技法偏向工筆，細膩描繪、色彩豐富常見於粉彩、五彩。"],
+        "16": ["權威、力量、保護和祥瑞", "始於唐宋，在宮廷瓷器中得到廣泛應用。\n龍多呈現蜿蜒或盤旋，雲則外形多變，作為輔紋，常與龍的動態形成對比。\n在青花瓷中最為常見，青花龍搭配白色的雲。"],
+        "18": ["來自佛教經典，寓意祥和、安寧與幸福。", "始於唐代，在明清兩代達到工藝高峰。\n起源於宗教藝術，古印度的文字，常見於佛經中。\n多以篆書字母，以圓形、方形整齊排列構成規律圖案。\n融合了宗教信仰、藝術表現和文化交流的紋樣。"],
+        "19": ["長壽、吉祥與和平", "這一紋樣反映了日治時期中日文化交融的特點，\n常與松樹、富士山、櫻花等搭配，體現日本物哀美學。\n此時期陶瓷工藝在台灣迅速發展，多以日本引進技法，\n如釉下彩、印花轉印等，結合台灣本地資源與傳統技藝。"],
+        "20": ["安穩、神聖與吉祥", "這一紋樣反映了日治時期中日文化交融的特點，\n常以簡練的線條呈現，搭配太陽、櫻花、波浪或雲朵。\n此時期陶瓷工藝在台灣迅速發展，多以日本引進技法，\n如釉下彩、印花轉印等，結合台灣本地資源與傳統技藝。"]
     };
-
-    // 清除所有的動畫類別
-    Object.values(elements).forEach(el => el.classList.remove('z', 'zz', 'zzz'));
-
-    // 立即更新文字內容
-    const textContentMap = {
-        a: ["鹿", "祿、仕途順遂", "荷治時期"],
-        b: ["壽字", "生命的敬畏、健康的祝願、生活的期盼", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        c: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        d: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        e: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        f: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        g: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        h: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        i: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        j: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        k: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        l: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        m: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        n: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        o: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        p: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        q: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        r: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        s: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"],
-        t: ["璃龍", "美好、吉祥、招財", "始於宋代，官祿、福祿，代表長壽和福氣"]
-    };
-
-    // 更新文字
-    if (textContentMap[conId]) {
-        Object.keys(elements).forEach((key, index) => {
-            elements[key].textContent = textContentMap[conId][index];
-        });
+      const ta = document.getElementById('phw3');
+      const tb = document.getElementById('phw4');
+      
+      // 根據 paddedIndex 更新 textContent
+      if (tb && textMap[paddedIndex]) {
+        tb.textContent = textMap[paddedIndex][0];
+        tb.classList.remove('fade-in');
+        void tb.offsetWidth; // 觸發 reflow，讓動畫可以重新啟動
+        tb.classList.add('fade-in');
+    } else if (tb) {
+        tb.textContent = '';
+        tb.classList.remove('fade-in');
     }
-
-    // 延遲 0.7 秒後執行動畫
-    // setTimeout(() => {
-    //     const classChanges = [
-    //         { className: 'z', delay: 300 },
-    //         { className: 'zz', delay: 700 },
-    //         { className: 'zzz', delay: 1000 },
-    //     ];
-    //     classChanges.forEach(item => {
-    //         setTimeout(() => {
-    //             Object.values(elements).forEach(el => el.classList.add(item.className));
-    //         }, item.delay);
-    //     });
-    // }, 700); 
-}
-
-
-
-
-// document.querySelector('.navhome').addEventListener('scroll', () => {
-//     let closestImg = findClosestImage(); // 假設這是找出中心圖片的函數
-//     if (closestImg) {
-//         let conId = closestImg.getAttribute("data-i");
-//         delayedCrying(conId); // 觸發延遲判斷
-//     }
-// });
-
-
-
-// 呼叫scaleCenterImage()來更新圖片的縮放和顯示的資訊
-slider.addEventListener("scroll", scaleCenterImage);
-
-// 初始化
-scaleCenterImage();
-
-// 禁止滑動10秒
-// x
-// let idleTime = 0;  // 閒置時間
-// const maxIdleTime = 500;  // 設定閒置時間為 10 秒（測試時設為短時間，實際可以設為更長）
-
-// // 監聽滑鼠和鍵盤事件來重置閒置時間
-// window.addEventListener('mousemove', resetIdleTime);
-// window.addEventListener('keydown', resetIdleTime);
-// window.addEventListener('scroll', resetIdleTime);
-
-// // 重置閒置時間的函數
-// function resetIdleTime() {
-//   idleTime = 0;  // 每當用戶有操作時，重置閒置時間
-// }
-
-// // 每秒檢查閒置時間
-// setInterval(() => {
-//   idleTime++;  // 每秒閒置時間加一
-//   if (idleTime >= maxIdleTime) {  // 如果閒置時間超過 10 秒
-//     console.log("閒置超過 10 秒，跳轉到 pppp1 並重整頁面");
-//     scrollToPppp1();  // 滾動到 pppp1
-//     setTimeout(() => {  // 延遲 10 秒後再進行重整
-//       reloadPage();  // 重整頁面
-//     }, 300000);  // 延遲 10 秒（10000 毫秒）
-//   }
-// }, 1000);  // 每秒檢查一次
-
-// // 滾動到 pppp1 的函數
-// function scrollToPppp1() {
-//   const pppp1 = document.getElementById('pppp1');
-//   if (pppp1) {
-//     pppp1.scrollIntoView({ behavior: 'smooth' });  // 滾動到 pppp1
-//   } else {
-//     console.warn('未找到 pppp1 元素');
-//   }
-// }
-
-// // 重載頁面的函數
-// function reloadPage() {
-//   location.reload();  // 重新加載頁面
-// }
-
-
-
-// let port;
-// let reader;
-// let currentLetter = "";
-// let isScrolling = false; // 滾動狀態
-// let scrollDirection = null; // 滾動方向：'up' 或 'down'
-
-// // 連接串口
-// async function autoConnect() {
-//     try {
-//         const ports = await navigator.serial.getPorts();
-//         if (ports.length > 0) {
-//             port = ports[0];
-//             console.log("找到可用串口，嘗試連接...");
-//             await port.open({ baudRate: 9600 });
-//             reader = port.readable.getReader();
-//             console.log("串口連接成功！");
-//             listenToSerial();  // 當串口連接成功後，開始監聽串口數據
-//         } else {
-//             console.warn("未找到可用串口，請手動連接。");
-//         }
-//     } catch (err) {
-//         console.error("自動連接串口失敗: ", err);
-//     }
-// }
-
-// // 監聽串口數據
-// async function listenToSerial() {
-//     const decoder = new TextDecoder();
-//     try {
-//         while (true) {
-//             const { value, done } = await reader.read();
-//             if (done) break;
-
-//             // 解碼數據並去除多餘的換行符或空格
-//             const input = decoder.decode(value).trim();
-//             console.log(`從 Arduino 接收到的數據：${input}`); // 這裡檢查接收到的數據
-
-//             // 呼叫 handleArduinoInput 函數來處理指令
-//             handleArduinoInput(input);
-//         }
-//     } catch (error) {
-//         console.error("讀取數據時出錯：", error);
-//     } finally {
-//         reader.releaseLock();
-//     }
-// }
-
-// // 處理接收到的指令並執行對應動作
-// function handleArduinoInput(input) {
-//     console.log(`進入 handleArduinoInput，接收到指令：${input}`);
     
-//     // 避免正在滾動時再次觸發滾動
-//     if (isScrolling) {
-//         console.log("滾動中，請稍等...");
-//         return;
-//     }
+    if (ta && textMap[paddedIndex]) {
+        ta.textContent = textMap[paddedIndex][1];
+        ta.classList.remove('fade-in');
+        void ta.offsetWidth;
+        ta.classList.add('fade-in');
+    } else if (ta) {
+        ta.textContent = '';
+        ta.classList.remove('fade-in');
+    }
+  }
+  
+function showOnly(phwId) {
+  isTransitioning = true;
+  
 
-//     if (input === 'U') {
-//         console.log("正在向上滾動");
-//         scrollDirection = 'up'; // 設置滾動方向為上
-//         smoothScroll(); // 開始平滑滾動
-//     } else if (input === 'D') {
-//         console.log("正在向下滾動");
-//         scrollDirection = 'down'; // 設置滾動方向為下
-//         smoothScroll(); // 開始平滑滾動
-//     } else {
-//         console.warn(`未知指令：${input}`);
-//     }
-// }
+  phwIds.forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('up', 'up2');
+    el.style.opacity = '';
+  });
 
-// // 平滑滾動邏輯
-// function smoothScroll() {
-//     if (isScrolling) return; // 如果正在滾動，則不進行新的滾動
-//     isScrolling = true; // 設置滾動狀態為正在滾動
+  const current = document.getElementById(phwId);
+  current.classList.add('up');
+  setTimeout(() => {
+    current.style.opacity = '1';
+  }, 50);
 
-//     let distance = scrollDirection === 'up' ? -100 : 100; // 根據滾動方向設置滾動距離
-//     let stepTime = 50; // 增加時間間隔，減少計算頻率，減少卡頓
-//     let totalSteps = 10; // 減少總步數，保持平滑但不會過度計算
-//     let stepSize = distance / totalSteps; // 每一步的滾動距離
+  if (lastPhwId && lastPhwId !== phwId) {
+    const lastEl = document.getElementById(lastPhwId);
+    lastEl.classList.add('up2');
 
-//     let currentStep = 0;
+    if (up2Timeout) clearTimeout(up2Timeout);
 
-//     // 使用 requestAnimationFrame 進行平滑滾動
-//     function scrollStep() {
-//         if (currentStep < totalSteps) {
-//             window.scrollBy(0, stepSize); // 滾動指定的距離
-//             currentStep++; // 更新步數
-//             requestAnimationFrame(scrollStep); // 再次調用 requestAnimationFrame 進行下一步滾動
-//         } else {
-//             isScrolling = false; // 滾動完成後，重設滾動狀態
-//         }
-//     }
+    setTimeout(() => {
+      lastEl.style.opacity = '0';
+    }, 800);
 
-//     // 開始進行滾動
-//     requestAnimationFrame(scrollStep);
-// }
-// let port;
-// let reader;
-// let currentLetter = "";
-// let isInteractionAllowed = false;
+    up2Timeout = setTimeout(() => {
+      lastEl.classList.remove('up2');
+    }, 800);
+  }
 
-// async function autoConnect() {
-//     try {
-//         const ports = await navigator.serial.getPorts();
-//         if (ports.length > 0) {
-//             port = ports[0];
-//             console.log("找到可用串口，嘗試連接...");
-//             await port.open({ baudRate: 9600 });
-//             reader = port.readable.getReader();
-//             console.log("串口連接成功！");
-//             listenToSerial();
-//         } else {
-//             console.warn("未找到可用串口，請手動連接。");
-//         }
-//     } catch (err) {
-//         console.error("自動連接串口失敗: ", err);
-//     }
-// }
+  lastPhwId = phwId;
+  showCorrespondingW(phwId);
+
+  setTimeout(() => {
+    isTransitioning = false;
+  }, 1500);
+}
+
+function queueShowOnly(phwId) {
+  if (isTransitioning) return;
+  showOnly(phwId);
+}
+
+const materialIcons = document.querySelectorAll('.icon-track');
+const materialIcon = document.querySelectorAll('.icon-trac');
+document.querySelectorAll('.php').forEach((el, index) => {
+  el.addEventListener('click', () => {
+    if (isLocked || isColorChanging) return;
+
+    isLocked = true;
+    isColorChanging = true;
+
+    materialIcons.forEach(icon => icon.classList.add('animate-once'));
+    materialIcon.forEach(icon => icon.classList.add('animate-twice'));
+
+    setTimeout(() => {
+      materialIcons.forEach(icon => icon.classList.remove('animate-once'));
+      isLocked = false;
+    }, 2000);
+    setTimeout(() => {
+        materialIcon.forEach(icon => icon.classList.remove('animate-twice'));
+        isLocked = false;
+      }, 2000);
+
+      document.querySelectorAll('.php').forEach(p => {
+        p.style.setProperty('--after-h', '0%');
+      });
+      
+      // 再設置新值，確保 transition 生效
+      el.style.setProperty('--after-h', '5rem');
+      
+      const phwId = `phw${(index + 1).toString().padStart(2, '0')}`;
+      queueShowOnly(phwId);
 
 
-// async function listenToSerial() {
-//     try {
-//         while (true) {
-//             const { value, done } = await reader.read();
-//             if (done) break;
+    setTimeout(() => {
+      isColorChanging = false;
+    }, 2000);
+  });
+});
+function changePhw(direction = 1) {
+  if (isTransitioning) return;
 
-//             const text = new TextDecoder().decode(value).trim();
-//             if (text === "") continue;
+  const currentIndex = phwIds.indexOf(lastPhwId);
+  const nextIndex = (currentIndex + direction + phwIds.length) % phwIds.length;
+  const nextId = phwIds[nextIndex];
+  const navTrack = document.getElementById('navhome');
 
-//             console.log(`接收到的有效數據: ${text}`);
-//             displayImage(text);
-//         }
-//     } catch (err) {
-//         console.error("讀取數據時發生錯誤: ", err);
-//     } finally {
-//         reader.releaseLock();
-//     }
-// }
+
+  // 動畫 class 操作
+  materialIcons.forEach(icon => icon.classList.add('animate-once'));
+  materialIcon.forEach(icon => icon.classList.add('animate-twice'));
+
+  setTimeout(() => {
+    materialIcons.forEach(icon => icon.classList.remove('animate-once'));
+    isLocked = false;
+  }, 2000);
+
+  setTimeout(() => {
+    materialIcon.forEach(icon => icon.classList.remove('animate-twice'));
+    isLocked = false;
+  }, 2000);
+
+  // 所有 .php 的 --after-h 重設為 0%
+  document.querySelectorAll('.php').forEach(p => {
+    p.style.setProperty('--after-h', '0%');
+  });
+
+  // 讓要顯示的元素加上動畫效果
+  const targetPhp = document.querySelector(`.php:nth-child(${nextIndex + 2})`);
+  if (targetPhp) {
+    targetPhp.style.setProperty('--after-h', '5rem');
+  }
+
+  showOnly(nextId);
+  showCorrespondingW(nextId);
+}
+
+  
+  // 原本的函式可保留調用用法
+  function nextPhw() {
+    changePhw(1);
+  }
+  function prevPhw() {
+    changePhw(-1);
+  }
+  
+document.getElementById('prevBtn').addEventListener('click', prevPhw);
+document.getElementById('nextBtn').addEventListener('click', nextPhw);
+
+const content = document.querySelector('.content'); // 或用 getElementById('content')
+const ctent1 = document.querySelector('.ctent1');
+const ctent2 = document.querySelector('.ctent2');
+const j = document.querySelectorAll('.j li'); // 修改：選擇所有 <li> 元素
+const jElements = document.querySelectorAll('.j');
+const j1 = document.getElementById('j1');
+let clicked = false;
+
+// 點擊菜單
+document.querySelector('.menu').addEventListener('click', () => {
+
+    if (!clicked) {
+        // 回復原本 j 元素樣式
+        jElements.forEach(jEl => {
+            jEl.style.opacity = 1;
+        });
+
+        // 第一次點擊，添加 slide-in 類
+        ctent1.classList.add('slide-in');
+        ctent1.classList.remove('slide-out');
+        ctent2.classList.add('slide-in');
+        ctent2.classList.remove('slide-outt');
+
+        // 顯示所有 li 元素
+        j.forEach((li, index) => {
+            setTimeout(() => {
+                li.classList.add('show');
+            }, index * 200);
+        });
+
+        j.forEach((li) => {
+            li.classList.remove('nosh');
+        });
+
+        clicked = true;  // 更新點擊狀態
+    } else {
+        ctent1.classList.replace('slide-in', 'slide-out');
+        ctent2.classList.replace('slide-in', 'slide-outt');
+
+
+        // 隱藏所有 li 元素
+        j.forEach((li, index) => {
+            setTimeout(() => {
+                li.classList.add('nosh');
+                li.classList.remove('show');
+            }, index * 200); 
+        });
+
+        clicked = false;  // 更新點擊狀態
+    }
+});
+
+jElements.forEach((jElement, index) => {
+    jElement.addEventListener('click', (event) => {
+        const clickedJ = event.currentTarget;  // 獲取被點擊的元素
+
+        // 隱藏其他 li 元素
+        jElements.forEach((otherElement, index) => {
+            if (otherElement !== clickedJ) {
+                const li = otherElement.querySelector('li');
+                setTimeout(() => {
+                    li.classList.add('nosh');
+                    li.classList.remove('show');
+                }, index * 200);
+            }
+        });
+
+        // 點擊的元素不需要添加 .nosh 類，保持顯示
+        clickedJ.querySelector('li').classList.remove('nosh'); // 修改：選擇 <li> 元素
+
+        if (clickedJ.id !== 'j1') {
+            const rect = clickedJ.getBoundingClientRect();
+            const clone = clickedJ.cloneNode(true);
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+        
+            clone.classList.add('fixed-j');
+            
+            clone.style.setProperty('--left', (rect.left + scrollLeft) + 'px');
+            clone.style.setProperty('--top', (rect.top + scrollTop) + 'px');
+            clone.style.setProperty('--h', rect.height + 'px');
+            clone.style.setProperty('--w', rect.width + 'px');
+        
+            // 設定透明度為 0，讓原始元素隱藏
+            clickedJ.style.opacity = 0;
+        
+            // 把克隆元素添加到頁面
+            document.querySelectorAll('.fixed-j').forEach(el => el.remove());
+            document.body.appendChild(clone);
+        
+            // 為克隆的元素添加動畫類
+            const transformClass = `tin-${index + 1}`;
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    clone.classList.add(transformClass);
+                });
+            });
+        }
+        
+        // 隱藏所有 .r 區塊
+        document.querySelectorAll('[class^="r"]').forEach(r => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            r.style.display = 'none';
+        });
+
+        // 顯示對應的 .r 區塊
+        const rTarget = document.querySelector(`.r${index + 1}`);
+        if (rTarget) {
+            rTarget.style.display = 'flex';
+        }
+
+        ctent1.classList.replace('slide-in', 'slide-out');
+        ctent2.classList.replace('slide-in', 'slide-outt');
+
+        clicked = false;
+
+        // 移除 .nosh 類，恢復其他元素
+        setTimeout(() => {
+            jElements.forEach((otherElement) => {
+                const li = otherElement.querySelector('li'); // 修改：選擇 <li> 元素
+                li.classList.remove('nosh');
+                j1.classList.remove('color');
+            });
+        }, 2000);  // 動畫結束後移除 .nosh 類
+    });
+});
+
+j1.addEventListener('click', (event) => {
+    const clickedJ = event.currentTarget;
+    clickedJ.classList.add('color');
+    document.querySelectorAll('.fixed-j').forEach(el => el.remove());
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const firstPhp = document.querySelector('.php');
+    if (firstPhp) {
+      firstPhp.click();
+    }
+  });
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  ScrollTrigger.create({
+    markers:true,
+    trigger: ".cess1",
+    start: "top -10%",
+    end: "bottom -400%",
+    onEnter: () => {
+        // 當元素進入時，確保 .cess11 被添加
+        document.querySelector(".cess1").classList.add("cess11");
+      },
+      onLeaveBack: () => {
+        // 當元素離開時，確保 .cess12 被添加
+        // document.querySelector(".cess1").classList.add("cess111");
+        // 如果需要，還可以選擇移除其他類別
+        document.querySelector(".cess1").classList.remove("cess11");
+      },
+  });
+  ScrollTrigger.create({
+    trigger: ".cess1",
+    start: "top -10%",
+    end: "bottom -400%",
+    toggleClass: { targets: ".cess2", className: "cess22" }
+  });
+  ScrollTrigger.create({
+    trigger: ".cess1",
+    start: "top -10%",
+    end: "bottom -400%",
+    toggleClass: { targets: ".cess3", className: "cess33" }
+  });
+  ScrollTrigger.create({
+    trigger: ".cess1",
+    start: "top -10%",
+    end: "bottom -400%",
+    toggleClass: { targets: ".cess4", className: "cess44" }
+  });
+  ScrollTrigger.create({
+    trigger: ".cess1",
+    start: "top -10%",
+    end: "bottom -400%",
+    toggleClass: { targets: ".cess5", className: "cess55" }
+  });
+
+//   gsap.to('.ppw1 p', { 
+//     scrollTrigger:{
+//        markers:true,
+//       trigger:'.ppw1 p',
+//       start: 'top center',
+//       end: 'bottom top',
+//       toggleActions: "restart none none restart",
+//      },   
+//      y:0,
+//      ease:"power2.out"
+//   })
+
+
+//   ScrollTrigger.create({
+//     trigger: ".cess1",        // 當這個元素出現在畫面中
+//     start: "top 49%",  
+//     end:"bottom -300%",      // 元素頂部進入畫面中間時
+//     toggleClass: { targets: ".cess2", className: "cess11" },
+//   });
+
+
 let port;
 let reader;
 let currentLetter = "";
@@ -408,7 +452,7 @@ async function listenToSerial() {
       let scrollValue = parseInt(text, 10);
       if (!isNaN(scrollValue)) {
         const now = Date.now();
-        if (now - lastScrollTime > 50) { // 限制滾動頻率
+        if (now - lastScrollTime > 500) { // 限制滾動頻率
           window.scrollBy({ top: scrollValue, behavior: "smooth" });
           console.log("滾動：", scrollValue);
           lastScrollTime = now;
@@ -464,8 +508,6 @@ function smoothScroll(targetScroll) {
 function displayImage(letter) {
 
     const word = document.getElementById('word');
-
-    // const dwords = Array.from(document.getElementsByClassName('dword'));
     const word1 = document.getElementById('word1');
     const word2 = document.getElementById('word2');
     const word3 = document.getElementById('word3');
@@ -485,6 +527,12 @@ function displayImage(letter) {
     document.querySelectorAll("#image-container img").forEach(img => {
         img.classList.remove('visible');
     });
+    document.querySelectorAll("#image-container svg").forEach(svg => {
+        svg.classList.remove('run');
+    });
+    document.querySelectorAll("#image-container > div").forEach(div => {
+        div.classList.remove('visible');
+    });
 
     // 重置所有相關類名
     function resetClasses() {
@@ -500,7 +548,8 @@ function displayImage(letter) {
     resetClasses();
 
     if (letter === "a") {
-        document.getElementById('photo1').classList.add('visible');
+        document.getElementById('oto1').classList.add('visible');
+        document.getElementById('sv1').classList.add('run');
         document.getElementById('result').textContent = "鹿";
         // document.getElementById('eresult').textContent = "( LU )";
         setTimeout(() => {
@@ -535,7 +584,8 @@ function displayImage(letter) {
         [g1, g3, g4, g5, g6].forEach(element => element.classList.add('bad'));
         g2.classList.add('good');
     } else if (letter === "b") {
-        document.getElementById('photo2').classList.add('visible');
+        document.getElementById('oto2').classList.add('visible');
+        document.getElementById('sv2').classList.add('run');
         document.getElementById('result').textContent = "壽 字";
         // document.getElementById('eresult').textContent = "( SHOU )";
         setTimeout(() => {
@@ -570,7 +620,8 @@ function displayImage(letter) {
         [g1, g2, g4, g5, g6].forEach(element => element.classList.add('bad'));
         g3.classList.add('good');
     } else if (letter === "c") {
-        document.getElementById('photo3').classList.add('visible');
+        document.getElementById('oto3').classList.add('visible');
+        document.getElementById('sv3').classList.add('run');
         document.getElementById('result').textContent = "璃 龍";
         // document.getElementById('eresult').textContent = "( LILONG )";
         setTimeout(() => {
@@ -600,7 +651,8 @@ function displayImage(letter) {
         [g1, g2, g3, g4, g6].forEach(element => element.classList.add('bad'));
         g5.classList.add('good');
     } else if (letter === "d") {
-        document.getElementById('photo4').classList.add('visible');
+        document.getElementById('oto4').classList.add('visible');
+        document.getElementById('sv4').classList.add('run');
         document.getElementById('result').textContent = "鬱 金 香";
         // document.getElementById('eresult').textContent = "( YUJINSHIAN )";
         setTimeout(() => {
@@ -630,7 +682,8 @@ function displayImage(letter) {
         g1.classList.add('good'); 
 
     } else if (letter === "e") {
-        document.getElementById('photo5').classList.add('visible');
+        document.getElementById('oto5').classList.add('visible');
+        document.getElementById('sv5').classList.add('run');
         document.getElementById('result').textContent = "阿 拉 伯 銘 文";
         // document.getElementById('eresult').textContent = "( ARABIC )";
         setTimeout(() => {
@@ -660,7 +713,8 @@ function displayImage(letter) {
         g3.classList.add('good');   
 
     } else if (letter === "f") {
-        document.getElementById('photo6').classList.add('visible');
+        document.getElementById('oto6').classList.add('visible');
+        document.getElementById('sv6').classList.add('run');
         document.getElementById('result').textContent = "鳥";
         // document.getElementById('eresult').textContent = "( NIAO )";
         setTimeout(() => {
@@ -690,7 +744,8 @@ function displayImage(letter) {
         g2.classList.add('good');  
 
     } else if (letter === "g") {
-        document.getElementById('photo7').classList.add('visible');
+        document.getElementById('oto7').classList.add('visible');
+        document.getElementById('sv7').classList.add('run');
         document.getElementById('result').textContent = "秋 葉";
         // document.getElementById('eresult').textContent = "( CHIUYA )";
         setTimeout(() => {
@@ -720,7 +775,8 @@ function displayImage(letter) {
         g1.classList.add('good'); 
 
     } else if (letter === "h") {
-        document.getElementById('photo8').classList.add('visible');
+        document.getElementById('oto8').classList.add('visible');
+        document.getElementById('sv8').classList.add('run');
         document.getElementById('result').textContent = "山 水 樹 石";
         // document.getElementById('eresult').textContent = "( SANSUISUSHI )";
         setTimeout(() => {
@@ -729,7 +785,7 @@ function displayImage(letter) {
             document.getElementById('word').textContent = "山川、溪流、樹木、奇石";
             document.getElementById('word1').textContent = "起源於宋代的山水畫藝術，在元明清逐漸成熟。";
             document.getElementById('word2').textContent = "以山水景致為主題，突出自然山水的廣闊與深遠，";
-            document.getElementById('word3').textContent = "常見於具觀賞性的器物，體現文人對寄情山水的理想，";
+            document.getElementById('word3').textContent = "常見於具觀賞性的器物，體現文人對寄情山水的理想。";
             document.getElementById('word4').textContent = "技法偏向寫意，以勾勒、皴法為主，常見於青花瓷、釉里紅。";
         }, 700);
     if (currentLetter !== "h") {
@@ -750,7 +806,8 @@ function displayImage(letter) {
         g4.classList.add('good'); 
 
     } else if (letter === "i") {
-        document.getElementById('photo9').classList.add('visible');
+        document.getElementById('oto9').classList.add('visible');
+        document.getElementById('sv9').classList.add('run');
         document.getElementById('result').textContent = "鳳 鳥";
         // document.getElementById('eresult').textContent = "( FONNIAO )";
         setTimeout(() => {
@@ -780,13 +837,14 @@ function displayImage(letter) {
         g5.classList.add('good'); 
 
     } else if (letter === "j") {
-        document.getElementById('photo10').classList.add('visible');
+        document.getElementById('oto10').classList.add('visible');
+        document.getElementById('sv10').classList.add('run');
         document.getElementById('result').textContent = "八 卦 太 極";
         // document.getElementById('eresult').textContent = "( BAGUATAIJI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
-            document.getElementById('word').textContent = "起源於道家思想，陰陽相生、萬物變化。";
+            document.getElementById('word').textContent = "起源於道家思想，陰陽相生、萬物變化";
             document.getElementById('word1').textContent = "始於魏晉南北朝，在隋唐至宋代逐漸成熟。";
             document.getElementById('word2').textContent = "八卦紋以短線組成八組不同的符號，搭配太極紋。";
             document.getElementById('word3').textContent = "常作為宗教供奉、風水器物，是道教宇宙觀的體現。";
@@ -810,13 +868,14 @@ function displayImage(letter) {
         g3.classList.add('good');  
 
     } else if (letter === "k") {
-        document.getElementById('photo11').classList.add('visible');
+        document.getElementById('oto11').classList.add('visible');
+        document.getElementById('sv11').classList.add('run');
         document.getElementById('result').textContent = "冰 梅";
         // document.getElementById('eresult').textContent = "( BINMEI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
-            document.getElementById('word').textContent = "寒冬時誕生、象徵堅強意志與生命的復甦。";
+            document.getElementById('word').textContent = "寒冬時誕生、象徵堅強意志與生命的復甦";
             document.getElementById('word1').textContent = "始於清康熙，又稱「冰裂梅花紋」，";
             document.getElementById('word2').textContent = "描述冬季冰面裂紋與梅花盛開的景象。";
             document.getElementById('word3').textContent = "釉面在高溫燒製後形成自然的裂紋，稱為「開片」，";
@@ -840,13 +899,14 @@ function displayImage(letter) {
         g1.classList.add('good');  
 
     } else if (letter === "l") {
-        document.getElementById('photo12').classList.add('visible');
+        document.getElementById('oto12').classList.add('visible');
+        document.getElementById('sv12').classList.add('run');
         document.getElementById('result').textContent = "團 菊";
         // document.getElementById('eresult').textContent = "( TUANJU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領前期";
             document.getElementById('eraa2').textContent = "1683 - 1750";
-            document.getElementById('word').textContent = "長壽之花，正直不屈、高雅純潔。";
+            document.getElementById('word').textContent = "長壽之花，正直不屈、高雅純潔";
             document.getElementById('word1').textContent = "始於宋代，常被用於婚嫁或吉慶場合的器物裝飾。";
             document.getElementById('word2').textContent = "團菊紋的主體多數以對稱的形式呈現，花瓣層層疊疊，";
             document.getElementById('word3').textContent = "細線勾勒菊花輪廓，用填色或施釉技術增加立體感，";
@@ -871,12 +931,13 @@ function displayImage(letter) {
 
     } else if (letter === "m") {
         document.getElementById('photo13').classList.add('visible');
+        document.getElementById('sv13').classList.add('run');
         document.getElementById('result').textContent = "靈 芝";
         // document.getElementById('eresult').textContent = "( LINGI )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
-            document.getElementById('word').textContent = "被視為仙草，象徵長壽、健康與祥瑞。";
+            document.getElementById('word').textContent = "被視為仙草，象徵長壽、健康與祥瑞";
             document.getElementById('word1').textContent = "可追溯至漢代，在明清兩代達到工藝高峰。";
             document.getElementById('word2').textContent = "珍貴的藥材，形似不規則的波浪，似雲或花。";
             document.getElementById('word3').textContent = "常以曲線勾勒，與其他圖案如雲紋、如意紋等結合。";
@@ -900,14 +961,15 @@ function displayImage(letter) {
         g1.classList.add('good');  
 
     } else if (letter === "n") {
-        document.getElementById('photo14').classList.add('visible');
+        document.getElementById('oto14').classList.add('visible');
+        document.getElementById('sv14').classList.add('run');
         document.getElementById('result').textContent = "石 榴";
         // document.getElementById('eresult').textContent = "( SHILIU )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
-            document.getElementById('word').textContent = "多子多福、繁榮昌盛。";
-            document.getElementById('word1').textContent = "始於明代，常見於清代的婚慶用瓷及壽器上，";
+            document.getElementById('word').textContent = "多子多福、繁榮昌盛";
+            document.getElementById('word1').textContent = "始於明代，常見於清代的婚慶用瓷及壽器上。";
             document.getElementById('word2').textContent = "豐滿的外形和許多果實顆粒，代表繁榮和生生不息。";
             document.getElementById('word3').textContent = "常見於青花瓷中，工匠以藍色釉料繪製石榴外形。";
             document.getElementById('word4').textContent = "";
@@ -930,13 +992,14 @@ function displayImage(letter) {
         g1.classList.add('good');  
 
     } else if (letter === "o") {
-        document.getElementById('photo15').classList.add('visible');
+        document.getElementById('oto15').classList.add('visible');
+        document.getElementById('sv15').classList.add('run');
         document.getElementById('result').textContent = "雲 龍";
         // document.getElementById('eresult').textContent = "( YUNLONG )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
-            document.getElementById('word').textContent = "權威、力量、保護和祥瑞。";
+            document.getElementById('word').textContent = "權威、力量、保護和祥瑞";
             document.getElementById('word1').textContent = "始於唐宋，在宮廷瓷器中得到廣泛應用。";
             document.getElementById('word2').textContent = "龍多呈現蜿蜒或盤旋，";
             document.getElementById('word3').textContent = "雲則外形多變，作為輔紋，常與龍的動態形成對比。";
@@ -960,13 +1023,14 @@ function displayImage(letter) {
         g5.classList.add('good');  
 
     } else if (letter === "p") {
-        document.getElementById('photo16').classList.add('visible');
+        document.getElementById('oto16').classList.add('visible');
+        document.getElementById('sv16').classList.add('run');
         document.getElementById('result').textContent = "牡 丹";
         // document.getElementById('eresult').textContent = "( MUDAN )";
         setTimeout(() => {
             document.getElementById('eraa1').textContent = "清領後期";
             document.getElementById('eraa2').textContent = "1750 - 1895";
-            document.getElementById('word').textContent = "花王，富貴與繁榮、吉祥與美好。";
+            document.getElementById('word').textContent = "花王，富貴與繁榮、吉祥與美好";
             document.getElementById('word1').textContent = "始於宋代，常見於壽器、婚慶以及其他吉祥禮品中。";
             document.getElementById('word2').textContent = "花中之王，長久以來被視為富貴、繁榮和幸福。";
             document.getElementById('word3').textContent = "牡丹的顏色多變，常見的有紅色、粉色、紫色。";
@@ -990,7 +1054,8 @@ function displayImage(letter) {
         g1.classList.add('good');  
 
     } else if (letter === "q") {
-        document.getElementById('photo17').classList.add('visible');
+        document.getElementById('oto17').classList.add('visible');
+        document.getElementById('sv17').classList.add('run');
         document.getElementById('result').textContent = "梵 文";
         // document.getElementById('eresult').textContent = "( SANSKRIT )";
         setTimeout(() => {
@@ -1020,7 +1085,8 @@ function displayImage(letter) {
         g3.classList.add('good');  
 
     } else if (letter === "r") {
-        document.getElementById('photo18').classList.add('visible');
+        document.getElementById('oto18').classList.add('visible');
+        document.getElementById('sv18').classList.add('run');
         document.getElementById('result').textContent = "湖 石 花 草" ;
         // document.getElementById('eresult').textContent = "( HUSHIHUATSAO )";
         setTimeout(() => {
@@ -1050,7 +1116,8 @@ function displayImage(letter) {
         g4.classList.add('good');  
 
     } else if (letter === "s") {
-        document.getElementById('photo19').classList.add('visible');
+        document.getElementById('oto19').classList.add('visible');
+        document.getElementById('sv19').classList.add('run');
         document.getElementById('result').textContent = "富 士 山";
         // document.getElementById('eresult').textContent = "( FUJISAN )";
         setTimeout(() => {
@@ -1080,7 +1147,8 @@ function displayImage(letter) {
         g6.classList.add('good');  
 
     } else if (letter === "t") {
-        document.getElementById('photo20').classList.add('visible');
+        document.getElementById('oto20').classList.add('visible');
+        document.getElementById('sv20').classList.add('run');
         document.getElementById('result').textContent = "鶴";
         // document.getElementById('eresult').textContent = "( HE )";
         setTimeout(() => {
@@ -1186,6 +1254,11 @@ window.addEventListener("scroll", () => {
 
 
 
+
+
+
+
+
 gsap.registerPlugin(ScrollTrigger);
 gsap.timeline({
     scrollTrigger: {
@@ -1193,37 +1266,25 @@ gsap.timeline({
       start: 'top top',
       end: 'bottom top',
       pin: true,
-      toggleActions: "play none none none", // 只執行一次
+      toggleActions: "play none none none",
     }
   })
-  .to('.psoo', { opacity: 1, duration: 1 })
-  .to('.psoo', { opacity: 0, duration: 1 });
-  
-// gsap.timeline({
-//     scrollTrigger: {
-//       // markers: true,
-//       trigger: '.psoo',
-//       start: 'top top',
-//       end: 'bottom top',
-//       scrub: true,
-//       pin:true,
-//       toggleActions: "restart reverse none none",
-//     }
-//   })
-//   .to('.psoo', { opacity: 1, duration: 1 })
-//   .to('.psoo', { opacity: 0, duration: 1 });
-// gsap.to('.psoo', { 
-//     scrollTrigger:{
-//       //  markers:true,
-//       trigger:'.psoo',
-//       start: 'top top',
-//       end: 'bottom top',
-//       pin:true,
-//       scrub:true,
-//       toggleActions: "restart none none reverse",
-//      },
-//      opacity:1,
-//   })
+.to('.psoo', { opacity: 1, duration: 1 })
+.to('.psoo', { opacity: 0, duration: 1 });
+
+gsap.to("#p05path", {
+    scrollTrigger:{
+        //  markers:true,
+        trigger:'.page05',
+        start: 'top bottom',
+        end: 'bottom 10%',
+        scrub:true,
+        toggleActions: "restart none none reverse",
+       },
+    attr: { startOffset: "40%" },
+    ease: "linear"
+  });
+
 gsap.to('.door', { 
     scrollTrigger:{
       //  markers:true,
@@ -2014,7 +2075,6 @@ gsap.to('.p42w p',{
         trigger:'.p42w',
         start:'top bottom',
         end:'bottom -40%',
-        
         toggleAction:'restart none none restart',
     },
     y:"0",
@@ -2110,8 +2170,8 @@ gsap.fromTo("#v1",
         ease: "linear",
         scrollTrigger: {
             trigger:'.p153',
-            start:'top 70%',
-            end:'bottom -5%',    // 當 #text 滑動到 20% 時結束動畫
+            start:'top 60%',
+            end:'bottom -120%',    // 當 #text 滑動到 20% 時結束動畫
             scrub: 2,           // 讓動畫隨滾動進度播放
         }
     }
@@ -2137,9 +2197,9 @@ gsap.fromTo("#v3",
         ease: "linear",
         scrollTrigger: {
             trigger:'.p153',
-            start:'top 50%',
-            end:'bottom 20%',     // 當 #text 滑動到 20% 時結束動畫
-            scrub: 2,           // 讓動畫隨滾動進度播放
+            start:'top 10%',
+            end:'bottom -170%',
+            scrub: 2,
         }
 });
 gsap.fromTo("#v4", 
@@ -2151,7 +2211,7 @@ gsap.fromTo("#v4",
         scrollTrigger: {
             trigger:'.p153',
             start:'top 0%',
-            end:'bottom 30%',     // 當 #text 滑動到 20% 時結束動畫
+            end:'bottom -50%',     // 當 #text 滑動到 20% 時結束動畫
             scrub: 2,           // 讓動畫隨滾動進度播放
         }
     })
@@ -2194,75 +2254,14 @@ gsap.fromTo("#v7",
         }
     }
 );
-
-
-console.clear();
-/* The encoding is super important here to enable frame-by-frame scrubbing. */
-
-// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -movflags faststart -vcodec libx264 -crf 23 -g 1 -pix_fmt yuv420p output.mp4
-// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -vf scale=960:-1 -movflags faststart -vcodec libx264 -crf 20 -g 1 -pix_fmt yuv420p output_960.mp4
-
-const video = document.querySelector(".video-background");
-let src = video.currentSrc || video.src;
-console.log(video, src);
-
-/* Make sure the video is 'activated' on iOS */
-function once(el, event, fn, opts) {
-  var onceFn = function (e) {
-    el.removeEventListener(event, onceFn);
-    fn.apply(this, arguments);
-  };
-  el.addEventListener(event, onceFn, opts);
-  return onceFn;
-}
-
-once(document.documentElement, "touchstart", function (e) {
-  video.play();
-  video.pause();
-});
-
-/* ---------------------------------- */
-/* Scroll Control! */
-
-gsap.registerPlugin(ScrollTrigger);
-
-let tl = gsap.timeline({
-  defaults: { duration: 1 },
-  scrollTrigger: {
-    trigger: ".p151",
-    start: "top top",
-    end: "bottom top",
-    scrub: 1,
-  }
-});
-once(video, "loadedmetadata", () => {
-  tl.fromTo(
-    video,
-    {
-      currentTime: 0
-    },
-    {
-      currentTime: video.duration || 1
-    }
-  );
-});
-
-/* When first coded, the Blobbing was important to ensure the browser wasn't dropping previously played segments, but it doesn't seem to be a problem now. Possibly based on memory availability? */
-setTimeout(function () {
-  if (window["fetch"]) {
-    fetch(src)
-      .then((response) => response.blob())
-      .then((response) => {
-        var blobURL = URL.createObjectURL(response);
-
-        var t = video.currentTime;
-        once(document.documentElement, "touchstart", function (e) {
-          video.play();
-          video.pause();
-        });
-
-        video.setAttribute("src", blobURL);
-        video.currentTime = t + 0.01;
-      });
-  }
-}, 1000);
+gsap.to('.honmov ', { 
+  scrollTrigger:{
+    //  markers:true,
+    trigger:'.mov35',
+    start: 'top top',
+    end: 'bottom bottom',
+    pin: true,
+    toggleActions: "restart none none none",
+   },
+   zIndex: 1,
+})
