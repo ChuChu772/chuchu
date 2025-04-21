@@ -11,7 +11,7 @@
 
 
 ::-webkit-scrollbar {
-    display: none; /* 隱藏滾動條 */
+    display: none; 
 }
 
 body{
