@@ -2924,6 +2924,27 @@ textPath {
         background-color: var(--gg);
         box-shadow: 0 8px 5px rgba(151, 141, 132, 0.2);
     }
+    .cpic1, .cpic2, .cpic3, .cpic4, .cpic5{
+        position: absolute;
+        display:flex;
+        height: 8rem;
+        width: 45%;
+        margin: 2rem 0;
+        right: 2rem;
+        border-radius: .3rem;
+        overflow: hidden;
+        clip-path: inset(0 0 0 100%);
+        transition: clip-path 0.7s ease-out;
+    }
+    .cpic1 img, .cpic2 img, .cpic3 img, .cpic4 img, .cpic5 img{
+        object-fit: cover;
+        width: 100%;
+        display: flex;
+        position: relative;
+    }
+    .clip-open {
+        clip-path: inset(0 0 0 0%);
+      }
     .cess11{
         height: 52vh;
     }
