@@ -343,39 +343,40 @@ window.addEventListener('DOMContentLoaded', () => {
       firstPhp.click();
     }
   });
+const observerOptions = {
+  root: document.querySelector('.cess0'), // 以 .cess0 為滾動容器
+  rootMargin: '0px 0px -50% 0px',
+  threshold: 0
+};
 
-  const observerOptions = {
-    root: null,
-    rootMargin: "-34% 0% -400% 0%", // top, right, bottom, left
-    threshold: 0
-  };
-  
-  const cess1 = document.querySelector('.cess1');
-  const cess2 = document.querySelector('.cess2');
-  const cess3 = document.querySelector('.cess3');
-  const cess4 = document.querySelector('.cess4');
-  const cess5 = document.querySelector('.cess5');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+const sections = [
+  { selector: '.cess1', className: 'cess11' },
+  { selector: '.cess2', className: 'cess22' },
+  { selector: '.cess3', className: 'cess33' },
+  { selector: '.cess4', className: 'cess44' },
+  { selector: '.cess5', className: 'cess55' }
+];
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const match = sections.find(sec => sec.selector === `.${entry.target.classList[0]}`);
+    if (match) {
       if (entry.isIntersecting) {
-        cess1.classList.add("cess11");
-        cess2.classList.add("cess22");
-        cess3.classList.add("cess33");
-        cess4.classList.add("cess44");
-        cess5.classList.add("cess55");
+        entry.target.classList.add(match.className);
       } else {
-        cess1.classList.remove("cess11");
-        cess2.classList.remove("cess22");
-        cess3.classList.remove("cess33");
-        cess4.classList.remove("cess44");
-        cess5.classList.remove("cess55");
+        entry.target.classList.remove(match.className);
       }
-    });
-  }, observerOptions);
-  
-  observer.observe(document.querySelector(".cess0"));
-  
+    }
+  });
+}, observerOptions);
+
+// 對每個 section 執行 observer.observe()
+sections.forEach(sec => {
+  const el = document.querySelector(sec.selector);
+  if (el) {
+    observer.observe(el);
+  }
+});
 
 
 
