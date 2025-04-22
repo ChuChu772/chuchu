@@ -346,7 +346,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const observerOptions = {
     root: null,
-    rootMargin: "-49% 0% -400% 0%", // top, right, bottom, left
+    rootMargin: "-34% 0% -400% 0%", // top, right, bottom, left
     threshold: 0
   };
   
@@ -2237,3 +2237,4 @@ gsap.to('.honmov ', {
    },
    zIndex: 1,
 })
+
