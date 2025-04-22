@@ -2852,7 +2852,7 @@ textPath {
         position: relative;
         display: flex;
         flex-direction: column;
-        top: 35vh;
+        top: 40vh;
         height: 235vh;
         width: 100vw;
         align-items: center;
@@ -2878,7 +2878,7 @@ textPath {
         position: absolute;
         display: flex;
         opacity: 0;
-        top: 35%;
+        top: 28%;
         transition: all 1s ease;
         align-items: end;
     }
