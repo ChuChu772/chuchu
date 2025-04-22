@@ -346,7 +346,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
       root: null, // 整個視窗
-      rootMargin: '0px 0px -70% 0px', // 進入畫面下方 30% 才觸發
+      rootMargin: '0px 0px -65% 0px', // 進入畫面下方 30% 才觸發
       threshold: 0
     };
   
@@ -384,6 +384,77 @@ window.addEventListener('DOMContentLoaded', () => {
     const target = document.querySelector('.cess0');
     if (target) observer.observe(target);
   });
+ 
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -70% 0px',
+      threshold: 0
+    };
+  
+    const sections = [
+      { trigger: '.cess1', target: '.cpic1' },
+      { trigger: '.cess2', target: '.cpic2' },
+      { trigger: '.cess3', target: '.cpic3' },
+      { trigger: '.cess4', target: '.cpic4' }
+    ];
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        sections.forEach(sec => {
+          if (entry.target.matches(sec.trigger)) {
+            const target = document.querySelector(sec.target);
+            if (entry.isIntersecting) {
+              target?.classList.add('clip-open');
+            } else {
+              target?.classList.remove('clip-open');
+            }
+          }
+        });
+      });
+    }, observerOptions);
+  
+    // 對每個 trigger element 觀察
+    sections.forEach(sec => {
+      const el = document.querySelector(sec.trigger);
+      if (el) observer.observe(el);
+    });
+  });
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -30% 0px',
+      threshold: 0
+    };
+    const sections = [
+      { trigger: '.cess5', target: '.cpic5' }
+    ];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        sections.forEach(sec => {
+          if (entry.target.matches(sec.trigger)) {
+            const target = document.querySelector(sec.target);
+            if (entry.isIntersecting) {
+              target?.classList.add('clip-open');
+            } 
+            else {
+              target?.classList.remove('clip-open');
+            }
+          }
+        });
+      });
+    }, observerOptions);
+  
+    // 對每個 trigger element 觀察
+    sections.forEach(sec => {
+      const el = document.querySelector(sec.trigger);
+      if (el) observer.observe(el);
+    });
+  });
+  
+  
   
   
 
