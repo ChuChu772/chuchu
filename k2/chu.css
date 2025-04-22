@@ -2140,6 +2140,7 @@ textPath {
 }
 
 /* 手機 (寬度小於 768px) */
+/* 手機 (寬度小於 768px) */
 @media (max-width: 768px) {
     ::-webkit-scrollbar {
         display: none; /* 隱藏滾動條 */
@@ -2593,11 +2594,11 @@ textPath {
         display: flex;
         flex-direction: column;
         position: relative;
-        height: 100%;
+        height: 90%;
         width: 100%;
       }
     .phw{
-        height: 80%;
+        height: 70%;
         width: 100vw;
         position: relative;
         display: flex;
@@ -2679,7 +2680,7 @@ textPath {
         display: flex;
         height: 65%;
         top: 45%;
-        left: 5%;
+        left: 15%;
     }
     .unnu{
         position: relative;
@@ -2853,7 +2854,7 @@ textPath {
         position: relative;
         display: flex;
         flex-direction: column;
-        top: 50vh;
+        top: 35vh;
         height: 235vh;
         width: 100vw;
         align-items: center;
@@ -3084,7 +3085,7 @@ textPath {
         z-index: 49;
         display: flex;
         top: 20%;
-        width: 70%;
+        width:90%;
         font-size: 2rem;
         letter-spacing: 1.4;
         line-height: 3rem;
@@ -3381,6 +3382,7 @@ textPath {
         font-size: 1.1rem;
         font-weight: bold;
         top: 8%;
+        /* border: 1px solid black; */
     }
     .phw3{
         height: 40%;
@@ -3392,7 +3394,8 @@ textPath {
         font-weight: 600;
         justify-content: center;
         line-height: 2;
-        margin: 5%;
+        margin-top: 6%;
+        /* border: 1px solid black; */
     }
     #phw01, #phw02, #phw03, #phw04, #phw05, #phw06, #phw07, #phw08, #phw09, #phw10, #phw11, #phw12, #phw13, #phw14, #phw15, #phw16, #phw17, #phw18, #phw19, #phw20{
         position: absolute;
