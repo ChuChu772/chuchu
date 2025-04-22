@@ -11,7 +11,7 @@
 
 
 ::-webkit-scrollbar {
-    display: none; 
+    display: none; /* 隱藏滾動條 */
 }
 
 body{
@@ -2140,7 +2140,6 @@ textPath {
 }
 
 /* 手機 (寬度小於 768px) */
-/* 手機 (寬度小於 768px) */
 @media (max-width: 768px) {
     ::-webkit-scrollbar {
         display: none; /* 隱藏滾動條 */
@@ -2591,7 +2590,7 @@ textPath {
       }
       .r1{
         z-index: 49;
-        display: flex;
+        display: none;
         flex-direction: column;
         position: relative;
         height: 90%;
@@ -2842,7 +2841,7 @@ textPath {
     }
     .r3{
         position: absolute;
-        display: none;
+        display: flex;
         flex-direction: column;
         align-items: center;
         width: 100vw;
@@ -2879,7 +2878,7 @@ textPath {
         position: absolute;
         display: flex;
         opacity: 0;
-        top: 15%;
+        top: 35%;
         transition: all 1s ease;
         align-items: end;
     }
@@ -3085,7 +3084,7 @@ textPath {
     .tin-2 {
         z-index: 49;
         display: flex;
-        top: 20%;
+        top: 23%;
         width:90%;
         font-size: 2rem;
         letter-spacing: 1.4;
