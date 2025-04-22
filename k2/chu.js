@@ -342,70 +342,37 @@ window.addEventListener('DOMContentLoaded', () => {
       firstPhp.click();
     }
   });
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  ScrollTrigger.create({
-    markers:true,
-    trigger: ".cess1",
-    start: "top -10%",
-    end: "bottom -400%",
-    onEnter: () => {
-        // 當元素進入時，確保 .cess11 被添加
-        document.querySelector(".cess1").classList.add("cess11");
-      },
-      onLeaveBack: () => {
-        // 當元素離開時，確保 .cess12 被添加
-        // document.querySelector(".cess1").classList.add("cess111");
-        // 如果需要，還可以選擇移除其他類別
-        document.querySelector(".cess1").classList.remove("cess11");
-      },
-  });
-  ScrollTrigger.create({
-    trigger: ".cess1",
-    start: "top -10%",
-    end: "bottom -400%",
-    toggleClass: { targets: ".cess2", className: "cess22" }
-  });
-  ScrollTrigger.create({
-    trigger: ".cess1",
-    start: "top -10%",
-    end: "bottom -400%",
-    toggleClass: { targets: ".cess3", className: "cess33" }
-  });
-  ScrollTrigger.create({
-    trigger: ".cess1",
-    start: "top -10%",
-    end: "bottom -400%",
-    toggleClass: { targets: ".cess4", className: "cess44" }
-  });
-  ScrollTrigger.create({
-    trigger: ".cess1",
-    start: "top -10%",
-    end: "bottom -400%",
-    toggleClass: { targets: ".cess5", className: "cess55" }
-  });
-
-//   gsap.to('.ppw1 p', { 
-//     scrollTrigger:{
-//        markers:true,
-//       trigger:'.ppw1 p',
-//       start: 'top center',
-//       end: 'bottom top',
-//       toggleActions: "restart none none restart",
-//      },   
-//      y:0,
-//      ease:"power2.out"
-//   })
-
-
-//   ScrollTrigger.create({
-//     trigger: ".cess1",        // 當這個元素出現在畫面中
-//     start: "top 49%",  
-//     end:"bottom -300%",      // 元素頂部進入畫面中間時
-//     toggleClass: { targets: ".cess2", className: "cess11" },
-//   });
-
+const observerOptions = {
+    root: null,
+    rootMargin: "-49% 0% -400% 0%", // top, right, bottom, left
+    threshold: 0
+  };
+  
+  const cess1 = document.querySelector('.cess1');
+  const cess2 = document.querySelector('.cess2');
+  const cess3 = document.querySelector('.cess3');
+  const cess4 = document.querySelector('.cess4');
+  const cess5 = document.querySelector('.cess5');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        cess1.classList.add("cess11");
+        cess2.classList.add("cess22");
+        cess3.classList.add("cess33");
+        cess4.classList.add("cess44");
+        cess5.classList.add("cess55");
+      } else {
+        cess1.classList.remove("cess11");
+        cess2.classList.remove("cess22");
+        cess3.classList.remove("cess33");
+        cess4.classList.remove("cess44");
+        cess5.classList.remove("cess55");
+      }
+    });
+  }, observerOptions);
+  
+  observer.observe(document.querySelector(".cess0"));
 
 let port;
 let reader;
