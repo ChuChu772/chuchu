@@ -2858,6 +2858,8 @@ textPath {
         width: 100vw;
         align-items: center;
         background-color: var(--gg);
+        overflow-y: auto;
+        scroll-behavior: smooth;
     }
     .c1p{
         position: relative;
