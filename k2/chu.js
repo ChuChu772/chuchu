@@ -1,3 +1,4 @@
+
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
@@ -342,7 +343,8 @@ window.addEventListener('DOMContentLoaded', () => {
       firstPhp.click();
     }
   });
-const observerOptions = {
+
+  const observerOptions = {
     root: null,
     rootMargin: "-49% 0% -400% 0%", // top, right, bottom, left
     threshold: 0
@@ -373,6 +375,9 @@ const observerOptions = {
   }, observerOptions);
   
   observer.observe(document.querySelector(".cess0"));
+  
+
+
 
 let port;
 let reader;
