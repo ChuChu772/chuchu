@@ -3114,7 +3114,6 @@ textPath {
         z-index: 49;
         display: flex;
         flex-direction: column;
-        top: 33%;
         width: 30%;
         font-size: 2rem;
         line-height: 3rem;
