@@ -2734,7 +2734,6 @@ textPath {
         position: relative;
         height: 100%;
         width: 100%;
-        /* transform: translateY(100%); */
         /* border: 1px solid black; */
     }
     .ppw2{
