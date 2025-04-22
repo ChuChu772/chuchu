@@ -1,4 +1,3 @@
-
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
@@ -343,40 +342,50 @@ window.addEventListener('DOMContentLoaded', () => {
       firstPhp.click();
     }
   });
-const observerOptions = {
-  root: document.querySelector('.cess0'), // 以 .cess0 為滾動容器
-  rootMargin: '0px 0px -50% 0px',
-  threshold: 0
-};
 
-const sections = [
-  { selector: '.cess1', className: 'cess11' },
-  { selector: '.cess2', className: 'cess22' },
-  { selector: '.cess3', className: 'cess33' },
-  { selector: '.cess4', className: 'cess44' },
-  { selector: '.cess5', className: 'cess55' }
-];
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const match = sections.find(sec => sec.selector === `.${entry.target.classList[0]}`);
-    if (match) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add(match.className);
-      } else {
-        entry.target.classList.remove(match.className);
-      }
-    }
+  window.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      root: null, // 整個視窗
+      rootMargin: '0px 0px -70% 0px', // 進入畫面下方 30% 才觸發
+      threshold: 0
+    };
+  
+    const sections = [
+      { selector: '.cess1', className: 'cess11' },
+      { selector: '.cess2', className: 'cess22' },
+      { selector: '.cess3', className: 'cess33' },
+      { selector: '.cess4', className: 'cess44' },
+      { selector: '.cess5', className: 'cess55' }
+    ];
+  
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 進入畫面 → 全部加 class
+          sections.forEach(sec => {
+            const el = document.querySelector(sec.selector);
+            if (el && !el.classList.contains(sec.className)) {
+              el.classList.add(sec.className);
+            }
+          });
+        } else {
+          // 離開畫面 → 全部移除 class
+          sections.forEach(sec => {
+            const el = document.querySelector(sec.selector);
+            if (el && el.classList.contains(sec.className)) {
+              el.classList.remove(sec.className);
+            }
+          });
+        }
+      });
+    }, observerOptions);
+  
+    // 開始觀察 cess0
+    const target = document.querySelector('.cess0');
+    if (target) observer.observe(target);
   });
-}, observerOptions);
-
-// 對每個 section 執行 observer.observe()
-sections.forEach(sec => {
-  const el = document.querySelector(sec.selector);
-  if (el) {
-    observer.observe(el);
-  }
-});
+  
+  
 
 
 
