@@ -3420,7 +3420,7 @@ textPath {
       }
       
       .menu.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -2px);
+        transform: rotate(-45deg) translate(4px, -2px);
       }
       
     .phwp img{
