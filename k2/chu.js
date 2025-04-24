@@ -1,4 +1,9 @@
 
+document.getElementById("menu").addEventListener("click", () => {
+  console.log("Hello, world!");
+  // 滾動 .r4 到頂部
+  document.querySelector('.r4').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
