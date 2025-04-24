@@ -222,6 +222,7 @@ const j2 = document.getElementById('j2');
 let clicked = false;
 
 // 點擊菜單
+
 document.querySelector('.menu').addEventListener('click', () => {
 
     if (!clicked) {
@@ -238,7 +239,6 @@ document.querySelector('.menu').addEventListener('click', () => {
         menu.classList.add("active");
         window.scrollTo({
           top: 0,
-          behavior: "smooth" // 平滑滾動
         });
 
 
@@ -260,7 +260,6 @@ document.querySelector('.menu').addEventListener('click', () => {
         menu.classList.remove("active");
         window.scrollTo({
           top: 0,
-          behavior: "smooth" // 平滑滾動
         });
         // 隱藏所有 li 元素
         j.forEach((li, index) => {
@@ -276,6 +275,10 @@ document.querySelector('.menu').addEventListener('click', () => {
 
 jElements.forEach((jElement, index) => {
     jElement.addEventListener('click', (event) => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
         const clickedJ = event.currentTarget;  // 獲取被點擊的元素
         // 隱藏其他 li 元素
         jElements.forEach((otherElement, index) => {
@@ -516,6 +519,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
     
+  
   
 
 
