@@ -237,6 +237,9 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent2.classList.remove('slide-outt');
         menu.classList.add("active");
 
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+
         // 顯示所有 li 元素
         j.forEach((li, index) => {
             setTimeout(() => {
@@ -269,9 +272,6 @@ document.querySelector('.menu').addEventListener('click', () => {
 jElements.forEach((jElement, index) => {
     jElement.addEventListener('click', (event) => {
         const clickedJ = event.currentTarget;  // 獲取被點擊的元素
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
-
         // 隱藏其他 li 元素
         jElements.forEach((otherElement, index) => {
             if (otherElement !== clickedJ) {
@@ -290,11 +290,8 @@ const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLe
         if (clickedJ.id !== 'j1' && clickedJ.id !== 'j2') {
             const rect = clickedJ.getBoundingClientRect();
             const clone = clickedJ.cloneNode(true);
-           window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
         
             clone.classList.add('fixed-j');
             
@@ -513,6 +510,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+    
+  
     
   
 
