@@ -478,50 +478,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  document.addEventListener("DOMContentLoaded", function () {
-    const target = document.querySelector(".p3-42");
-    let lastScrollY = window.pageYOffset;
-    let isScrollingDown = false;
-    let isScrollingBlocked = false;
-  
-    function preventScrolling() {
-      window.scrollTo(window.pageXOffset, lastScrollY);
-    }
-  
-    window.addEventListener("scroll", function () {
-      const rect = target.getBoundingClientRect();
-  
-      // 判斷是否為向下滾動
-      if (window.pageYOffset > lastScrollY) {
-        isScrollingDown = true;
-      } else {
-        isScrollingDown = false;
-      }
-  
-      lastScrollY = window.pageYOffset;
-  
-      // 滾動方向是向下，且 .p3-42 的底部碰到畫面頂部
-      if (
-        isScrollingDown &&
-        rect.bottom <= 0 &&
-        rect.bottom > -10 && // 容錯值，避免太快略過
-        !isScrollingBlocked
-      ) {
-        console.log(".p3-42 bottom reached top");
-  
-        preventScrolling(); // 強制固定目前捲動位置
-        document.body.style.overflow = "hidden";
-        isScrollingBlocked = true;
-  
-        setTimeout(function () {
-          document.body.style.overflow = "auto";
-          isScrollingBlocked = false;
-        }, 1000);
-      }
-    });
-  });
-     
-  
 
 
 let port;
