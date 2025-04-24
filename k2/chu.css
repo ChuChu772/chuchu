@@ -2751,7 +2751,8 @@ textPath {
         position: relative;
     }
     .phone1{
-        height: 25vh;
+        height: 10vh;
+        margin: 10vh 0;
         width: 85vw;
         position: relative;
         display: flex;
@@ -2760,14 +2761,13 @@ textPath {
         align-items: center;
         list-style: none;
         font-size: 9px;
-        /* border: 1px solid black; */
+        border: 1px solid black;
     }
     .ppw1{
         font-size: 18px;
         font-family: "Noto Sans", serif;
         font-weight: bolder;
-        /* border: 1px solid black; */
-        overflow: hidden;
+        border: 1px solid black;
     }
     .ppw1 p{
         display: flex;
@@ -3144,7 +3144,7 @@ textPath {
         opacity: 0;
     }
     .tin-2 {
-        z-index: 49;
+        z-index: 46;
         display: flex;
         top: 23%;
         width:90%;
