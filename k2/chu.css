@@ -2761,21 +2761,18 @@ textPath {
         align-items: center;
         list-style: none;
         font-size: 9px;
-        border: 1px solid black;
     }
     .ppw1{
         height:20%;
         font-size: 18px;
         font-family: "Noto Sans", serif;
         font-weight: bolder;
-        border: 1px solid black;
     }
     .ppw1 p{
         display: flex;
         position: relative;
         height: 100%;
         width: 100%;
-        /* border: 1px solid black; */
     }
     .ppw2{
         margin: 3% 5%;
