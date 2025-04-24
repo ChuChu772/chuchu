@@ -236,7 +236,10 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent2.classList.add('slide-in');
         ctent2.classList.remove('slide-outt');
         menu.classList.add("active");
-        
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth" // 平滑滾動
+        });
 
 
         // 顯示所有 li 元素
