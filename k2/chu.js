@@ -269,6 +269,8 @@ document.querySelector('.menu').addEventListener('click', () => {
 jElements.forEach((jElement, index) => {
     jElement.addEventListener('click', (event) => {
         const clickedJ = event.currentTarget;  // 獲取被點擊的元素
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
+const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
 
         // 隱藏其他 li 元素
         jElements.forEach((otherElement, index) => {
