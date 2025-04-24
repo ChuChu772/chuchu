@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="chu.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_up" />
@@ -53,13 +54,13 @@
         </div>
 
         <div class="loword">
-            <h6>
+            <p>
                 台灣陶瓷業的歷史，</br>就是台灣歷史的縮影</br></br></br>
                 歷史上不同的</br>
                 紋樣講述了</br>
                 不同時期的</br>
                 文化融合</br>
-            </h6>
+            </p>
         </div>
         <div class="title">
             <div class="titlepic">
@@ -86,7 +87,7 @@
         </div>
         <div class="cera">
             <div class="scroll">
-                <p>Turn the knob to scroll</p>
+                <!-- <p>Turn the knob to scroll</p> -->
             </div>
             <!-- 封面那些盤子工具 -->
             <div class="ce1"><img src="n2.png"></div> 
@@ -142,6 +143,7 @@
                     </div>
                     <div class="p152pic2">
                         <img src="n10.png">
+                        <!-- <img src="n12.png"> -->
                     </div>
                     <div class="p152w">
                         <div class="p152w1"><p>1662</p></div>
@@ -1377,7 +1379,9 @@
                 <div class="p42ww">
                     <div class="p42w1"><p>拾遺</p></div>
                     <div class="p42w"><h3>A History Of Taiwan Ceramic Patterns</h3></div>
-                    <div class="p42w2"><h5>Press the knob to the first page</h5></div>
+                    <div class="p42w2">
+                      <p id="animatedText">Press the knob to the first page</p>
+                    </div>
                 </div>
             </div>
             <div class="p41">
@@ -1415,11 +1419,15 @@
                             <div class="p41b" id="no"></div>
                         </div>
                     </div>
+                    <!-- <div class="roo"><img src="rou.svg"></div> -->
                 </div>
             </div>
         </div>
+        <!-- <video src="https://assets.codepen.io/39255/output_960.mp4" playsinline="true" webkit-playsinline="true" preload="auto" muted="muted" class="video-background"></video> -->
+        <!-- <img src="last1.png"> -->
         
     </section>
+<!-- 這邊是手機內容 -->
     <section class="phterns">
         <div class="content" id="content">
             <div class="ctent1">
@@ -1579,14 +1587,35 @@
             </div>
         </div>
         <div class="r4">
-            <div class="work"><img src="pp.png"></div>
+            <div class="work"><img src="o-01.png"></div>
+            <div class="abme"><p>我收集了二十個過去四百年四個時期當期流行的紋樣並視覺化在互動頁面上，以時期與紋樣類別做出分類。</br>
+</p>
+            </div>
+            <div class="ot2">
+              <div class="ot22">
+                <img src="o-02.png">
+                <div class="ot21">
+                  <div class="ot21w"><p>以陶瓷做為媒材，</br>放置於中間的面板上互動</br>可在網頁上看到他的寓意。</p></div>
+                </div>
+              </div>
+            </div>
+            <div class="o1"><img src="o-03.png"></div>
+            <div class="o3"><div class="o33"><img src="o-05.png"></div></div>
+            <div class="o4"><div class="o44"><img src="o-06.png"></div></div>
+            <div class="olast"><h3>拾 遺</h3></div>
+            <div class="olast2"><p>A History Of Taiwan Ceramic Patterns</p></div>
         </div>
+        <!-- <div class="chuchu"><img src="chuchu.JPG"></div> -->
         <div class="phternsnav">
             <div class="under"></div>
             <div class="fixhome">
                 <div class="fix">
                     <img src="v1-01.svg">
-                    <div class="menu"><p>menu</p></div>
+                    <div class="menu" id="menu">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                 </div>
             </div>
             <div class="r1">
@@ -2564,4 +2593,6 @@
 <script type="module" src="./chu.js">
     import { gsap } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js';
     import { ScrollTrigger } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollTrigger.min.js';
+    import { ScrollToPlugin } from 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollToPlugin.min.js';
+
     </script>
