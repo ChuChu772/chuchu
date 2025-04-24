@@ -236,9 +236,8 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent2.classList.add('slide-in');
         ctent2.classList.remove('slide-outt');
         menu.classList.add("active");
+        
 
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop || 0;
-        const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft || 0;
 
         // 顯示所有 li 元素
         j.forEach((li, index) => {
@@ -256,7 +255,10 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent1.classList.replace('slide-in', 'slide-out');
         ctent2.classList.replace('slide-in', 'slide-outt');
         menu.classList.remove("active");
-
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth" // 平滑滾動
+        });
         // 隱藏所有 li 元素
         j.forEach((li, index) => {
             setTimeout(() => {
@@ -510,8 +512,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-    
-  
     
   
 
