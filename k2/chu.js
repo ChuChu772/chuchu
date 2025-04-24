@@ -5,7 +5,6 @@ document.getElementById("menu").addEventListener("click", () => {
   document.querySelector('.r3').scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.querySelector('.r2').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
-
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
@@ -274,11 +273,7 @@ document.querySelector('.menu').addEventListener('click', () => {
         clicked = false;  // 更新點擊狀態
     }
 });
-j.forEach(item => {
-  item.addEventListener('click', () => {
-    window.scrollTo(0, 0);
-  });
-});
+
 jElements.forEach((jElement, index) => {
     jElement.addEventListener('click', (event) => {
         const clickedJ = event.currentTarget;  // 獲取被點擊的元素
@@ -354,12 +349,6 @@ jElements.forEach((jElement, index) => {
         }, 2000);  // 動畫結束後移除 .nosh 類
     });
 });
-document.getElementById("omg").addEventListener("click", () => {
-  console.log("Hello, world!");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-
 
 j1.addEventListener('click', (event) => {
     const clickedJ = event.currentTarget;
@@ -485,37 +474,50 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-
-
-let port;
-let reader;
-let currentLetter = "";
-let isInteractionAllowed = false;
-let lastScrollTime = 0;
-
-async function autoConnect() {
-  try {
-    // 自動尋找可用的串口
-    const ports = await navigator.serial.getPorts();
-    if (ports.length > 0) {
-      // 選擇第一個可用的串口
-      port = ports[0];
-      console.log("找到可用串口，嘗試連接...");
-
-      // 開啟串口並設定波特率
-      await port.open({ baudRate: 9600 });
-      reader = port.readable.getReader();
-      console.log("串口連接成功！");
-
-      // 開始監聽串口數據
-      await listenToSerial();
-    } else {
-      console.warn("未找到可用串口，請手動連接。");
+  document.addEventListener("DOMContentLoaded", function () {
+    const target = document.querySelector(".p3-42");
+    let lastScrollY = window.pageYOffset;
+    let isScrollingDown = false;
+    let isScrollingBlocked = false;
+  
+    function preventScrolling() {
+      window.scrollTo(window.pageXOffset, lastScrollY);
     }
-  } catch (err) {
-    console.error("自動連接串口失敗: ", err);
-  }
-}
+  
+    window.addEventListener("scroll", function () {
+      const rect = target.getBoundingClientRect();
+  
+      // 判斷是否為向下滾動
+      if (window.pageYOffset > lastScrollY) {
+        isScrollingDown = true;
+      } else {
+        isScrollingDown = false;
+      }
+  
+      lastScrollY = window.pageYOffset;
+  
+      // 滾動方向是向下，且 .p3-42 的底部碰到畫面頂部
+      if (
+        isScrollingDown &&
+        rect.bottom <= 0 &&
+        rect.bottom > -10 && // 容錯值，避免太快略過
+        !isScrollingBlocked
+      ) {
+        console.log(".p3-42 bottom reached top");
+  
+        preventScrolling(); // 強制固定目前捲動位置
+        document.body.style.overflow = "hidden";
+        isScrollingBlocked = true;
+  
+        setTimeout(function () {
+          document.body.style.overflow = "auto";
+          isScrollingBlocked = false;
+        }, 1000);
+      }
+    });
+  });
+    
+  
 
 async function listenToSerial() {
   try {
