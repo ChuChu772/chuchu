@@ -116,6 +116,15 @@ function queueShowOnly(phwId) {
   showOnly(phwId);
 }
 
+// document.addEventListener("DOMContentLoaded", () => {
+//   const menu = document.getElementById("menu");
+//   menu.addEventListener("click", () => {
+//     menu.classList.toggle("active");
+//     console.log("active toggled:", menu.classList.contains("active"));
+//   });
+// });
+
+
 const materialIcons = document.querySelectorAll('.icon-track');
 const materialIcon = document.querySelectorAll('.icon-trac');
 document.querySelectorAll('.php').forEach((el, index) => {
@@ -209,6 +218,7 @@ const ctent2 = document.querySelector('.ctent2');
 const j = document.querySelectorAll('.j li'); // 修改：選擇所有 <li> 元素
 const jElements = document.querySelectorAll('.j');
 const j1 = document.getElementById('j1');
+const j2 = document.getElementById('j2');
 let clicked = false;
 
 // 點擊菜單
@@ -225,6 +235,7 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent1.classList.remove('slide-out');
         ctent2.classList.add('slide-in');
         ctent2.classList.remove('slide-outt');
+        menu.classList.add("active");
 
         // 顯示所有 li 元素
         j.forEach((li, index) => {
@@ -241,7 +252,7 @@ document.querySelector('.menu').addEventListener('click', () => {
     } else {
         ctent1.classList.replace('slide-in', 'slide-out');
         ctent2.classList.replace('slide-in', 'slide-outt');
-
+        menu.classList.remove("active");
 
         // 隱藏所有 li 元素
         j.forEach((li, index) => {
@@ -266,6 +277,7 @@ jElements.forEach((jElement, index) => {
                 setTimeout(() => {
                     li.classList.add('nosh');
                     li.classList.remove('show');
+                    menu.classList.remove("active");
                 }, index * 200);
             }
         });
@@ -273,7 +285,7 @@ jElements.forEach((jElement, index) => {
         // 點擊的元素不需要添加 .nosh 類，保持顯示
         clickedJ.querySelector('li').classList.remove('nosh'); // 修改：選擇 <li> 元素
 
-        if (clickedJ.id !== 'j1') {
+        if (clickedJ.id !== 'j1' && clickedJ.id !== 'j2') {
             const rect = clickedJ.getBoundingClientRect();
             const clone = clickedJ.cloneNode(true);
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -389,7 +401,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -70% 0px',
+      rootMargin: '0px 0px -65% 0px',
       threshold: 0
     };
   
@@ -425,7 +437,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
       root: null,
-      rootMargin: '0px 0px -30% 0px',
+      rootMargin: '0px 0px -50% 0px',
       threshold: 0
     };
     const sections = [
@@ -454,10 +466,50 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+  document.addEventListener("DOMContentLoaded", function () {
+    const target = document.querySelector(".p3-42");
+    let lastScrollY = window.pageYOffset;
+    let isScrollingDown = false;
+    let isScrollingBlocked = false;
   
+    function preventScrolling() {
+      window.scrollTo(window.pageXOffset, lastScrollY);
+    }
   
+    window.addEventListener("scroll", function () {
+      const rect = target.getBoundingClientRect();
   
-
+      // 判斷是否為向下滾動
+      if (window.pageYOffset > lastScrollY) {
+        isScrollingDown = true;
+      } else {
+        isScrollingDown = false;
+      }
+  
+      lastScrollY = window.pageYOffset;
+  
+      // 滾動方向是向下，且 .p3-42 的底部碰到畫面頂部
+      if (
+        isScrollingDown &&
+        rect.bottom <= 0 &&
+        rect.bottom > -10 && // 容錯值，避免太快略過
+        !isScrollingBlocked
+      ) {
+        console.log(".p3-42 bottom reached top");
+  
+        preventScrolling(); // 強制固定目前捲動位置
+        document.body.style.overflow = "hidden";
+        isScrollingBlocked = true;
+  
+        setTimeout(function () {
+          document.body.style.overflow = "auto";
+          isScrollingBlocked = false;
+        }, 1000);
+      }
+    });
+  });
+    
+  
 
 
 let port;
@@ -983,7 +1035,7 @@ function displayImage(letter) {
         g1.classList.add('good');  
 
     } else if (letter === "m") {
-        document.getElementById('photo13').classList.add('visible');
+        document.getElementById('oto13').classList.add('visible');
         document.getElementById('sv13').classList.add('run');
         document.getElementById('result').textContent = "靈 芝";
         // document.getElementById('eresult').textContent = "( LINGI )";
@@ -1245,6 +1297,8 @@ function displayImage(letter) {
 
 document.addEventListener("DOMContentLoaded", autoConnect);
 
+
+
 // function setupObserver() {
 //     const sadSection = document.querySelector('.firstpage');
 //     if (!sadSection) return;
@@ -1272,6 +1326,8 @@ document.addEventListener("DOMContentLoaded", autoConnect);
 //   // 初始化滾動監聽
 //   setupObserver();
 
+gsap.registerPlugin(ScrollTrigger);
+
 let lastScrollY = window.scrollY;
 let positionY = 0;
 const logo = document.querySelector('.logo');
@@ -1291,7 +1347,7 @@ window.addEventListener("scroll", () => {
     }
 
     // 限制 LOGO 位置，避免跑太遠
-    positionY = Math.max(-100, Math.min(0, positionY));
+    positionY = Math.max(-150, Math.min(0, positionY));
 
     // 用 GSAP 平滑動畫
     gsap.to(logo, { y: positionY, duration: 1.5, ease: "power2.out" });
@@ -1307,12 +1363,9 @@ window.addEventListener("scroll", () => {
 
 
 
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-
-
-
-
-gsap.registerPlugin(ScrollTrigger);
+  // 測試 ScrollTrigger 是否工作
 gsap.timeline({
     scrollTrigger: {
       trigger: '.psoo',
@@ -1652,121 +1705,6 @@ gsap.to(".p151pic4", {
   y:"-120%",
   onComplete: () => gsap.set('.p152pic', { zIndex: -1 }) 
   })
-
-//   gsap.to('.b p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p151',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
-//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
-//         onEnter: () => gsap.to('.b p', { y: 0, opacity: 1, delay: 0.2 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b p', { y: 0, opacity: 1, delay: 0.2 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
-// gsap.to('.b2 p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p151',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
-//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
-//         onEnter: () => gsap.to('.b2 p', { y: 0, opacity: 1, delay: 0.4 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b2 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b2 p', { y: 0, opacity: 1, delay: 0.4 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b2 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
-// gsap.to('.b3 p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p151',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
-//         toggleActions: "play none none reverse", // 讓動畫在進入和離開範圍時播放
-//         onEnter: () => gsap.to('.b3 p', { y: 0, opacity: 1, delay: 0.6 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b3 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b3 p', { y: 0, opacity: 1, delay: 0.6 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b3 p', { y: '100%' }) // 再次離開範圍時設定 y 為 -100%
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
-// gsap.to('.b4 p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p152',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom 10%', // 當 trigger 離開視窗頂部時結束
-//         onEnter: () => gsap.to('.b4 p', { y: 0, opacity: 1, delay: 0.2 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b4 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b4 p', { y: 0, opacity: 1, delay: 0.2 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b4 p', { y: '100%' }),
-//         invalidateOnRefresh: true,
-//         // 讓動畫進行到結束時
-//         onUpdate: (self) => {
-//             if (self.progress === 1) {
-//                 self.animation.progress(1); // 讓動畫直接結束
-//             }
-//         }
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
-// gsap.to('.b5 p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p152',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom top', // 當 trigger 離開視窗頂部時結束
-//         onEnter: () => gsap.to('.b5 p', { y: 0, opacity: 1, delay: 0.4 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b5 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b5 p', { y: 0, opacity: 1, delay: 0.4 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b5 p', { y: '100%' }) ,
-//         invalidateOnRefresh: true,
-//         // 讓動畫進行到結束時
-//         onUpdate: (self) => {
-//             if (self.progress === 1) {
-//                 self.animation.progress(1); // 讓動畫直接結束
-//             }
-//         }
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
-// gsap.to('.b6 p', {
-//     scrollTrigger: {
-//         markers: true,
-//         trigger: '.p152',
-//         start: 'top top', // 當 trigger 進入視窗頂部時開始
-//         end: 'bottom top', // 當 trigger 離開視窗頂部時結束
-//         onEnter: () => gsap.to('.b6 p', { y: 0, opacity: 1, delay: 0.6 }), // 進入範圍時設定 y 為 0
-//         onLeave: () => gsap.to('.b6 p', { y: '100%' }), // 離開範圍時設定 y 為 -100%
-//         onEnterBack: () => gsap.to('.b6 p', { y: 0, opacity: 1, delay: 0.6 }), // 回到範圍內時設定 y 為 0
-//         onLeaveBack: () => gsap.to('.b6 p', { y: '100%' }),
-//         invalidateOnRefresh: true,
-//         // 讓動畫進行到結束時
-//         onUpdate: (self) => {
-//             if (self.progress === 1) {
-//                 self.animation.progress(1); // 讓動畫直接結束
-//             }
-//         }
-//     },
-//     opacity:1,
-//     duration: 1,
-//     ease: "power2.inOut"
-// });
   gsap.to('.eraa1 p, .eraa2 p, .block p', { 
     scrollTrigger:{
       //  markers:true,
@@ -1849,24 +1787,6 @@ gsap.to(".p151pic4", {
      duration:1,
      ease:"power2.out"
   })
-  gsap.to('.totra',{
-    scrollTrigger:{
-      trigger:'.totra',
-      start:'top top',
-      end:'bottom bottom',
-      pin:true,
-    }
-  })
-gsap.to('.p2pic',{
-    scrollTrigger: {
-        // markers: true,
-        trigger: '.p2pic ',
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: true,
-        toggleActions: "restart none none reverse",
-    },
-});
 gsap.to('.p154pic',{
     scrollTrigger: {
         // markers: true,
@@ -2097,41 +2017,6 @@ gsap.to('.tap5 p',{
     duration:1,
     ease:"power2.out",
 });
-gsap.fromTo("#text", 
-    { strokeDashoffset: 246 }, 
-    { 
-        strokeDashoffset: 0, 
-        duration: 3, 
-        ease: "linear",
-        scrollTrigger: {
-            trigger: "#text",
-            start: "top bottom",   // 當 #text 滑動到畫面 80% 時開始動畫
-            end: "top 50%",     // 當 #text 滑動到 20% 時結束動畫
-            scrub: 2,           // 讓動畫隨滾動進度播放
-        }
-    }
-);
-gsap.to('.p42pic img',{
-    scrollTrigger: {
-        // markers:true,
-        trigger:'.p42pic',
-        start:'top bottom',
-        end:'bottom -40%',
-        
-        toggleAction:'restart none none restart',
-    },
-    y:"0",
-})
-gsap.to('.p42w p',{
-    scrollTrigger: {
-        // markers:true,
-        trigger:'.p42w',
-        start:'top bottom',
-        end:'bottom -40%',
-        toggleAction:'restart none none restart',
-    },
-    y:"0",
-})
 gsap.to('.s3svg1',{
     scrollTrigger: {
         // markers:true,
@@ -2318,4 +2203,53 @@ gsap.to('.honmov ', {
    },
    zIndex: 1,
 })
+gsap.to('.p42w1 p ', { 
+  scrollTrigger:{
+    //  markers:true,
+    trigger:'.p42w1',
+    start: 'top bottom',
+    end: 'bottom bottom',
+    toggleActions: "restart none none restart",
+   },
+   y:0,
+   duration:1.5,
+   ease:"power2.out",
+})
+gsap.to('.p42w h3 ', { 
+  scrollTrigger:{
+    //  markers:true,
+    trigger:'.p42w',
+    start: 'top bottom',
+    end: 'bottom bottom',
+    toggleActions: "restart none none restart",
+   },
+   y:0,
+   duration:1.5,
+   ease:"power2.out",
+  })
+
+  const text = document.getElementById("animatedText");
+  const chars = text.textContent.split("");
+  text.innerHTML = ""; // 清空原文字內容
+
+  chars.forEach(char => {
+    const span = document.createElement("span");
+    span.innerHTML = char === " " ? "&nbsp;" : char; // 保留空格
+    text.appendChild(span);
+  });
+
+  gsap.to(".p42w2 span", {
+    scrollTrigger: {
+      trigger: ".p42w2",
+      start: "top bottom", // 當 .p42w2 的頂部碰到視窗底部
+      toggleActions: "play none none restart",
+    },
+    delay:3,
+    y: 0,
+    opacity: 1,
+    duration: 0.6,
+    ease: "power3.out",
+    stagger: 0.1
+  });
+
 
