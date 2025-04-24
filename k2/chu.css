@@ -3393,14 +3393,13 @@ textPath {
         left: 3%;
     }
     .menu {
+        top: 45%;
         width: 10%;
         height: 20%;
         position: relative;
-        cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        margin: 2.5rem 0rem;
       }
       
       .menu span {
