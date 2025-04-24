@@ -1,3 +1,4 @@
+
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
@@ -237,9 +238,6 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent2.classList.add('slide-in');
         ctent2.classList.remove('slide-outt');
         menu.classList.add("active");
-        window.scrollTo({
-          top: 0,
-        });
 
 
         // 顯示所有 li 元素
@@ -258,9 +256,6 @@ document.querySelector('.menu').addEventListener('click', () => {
         ctent1.classList.replace('slide-in', 'slide-out');
         ctent2.classList.replace('slide-in', 'slide-outt');
         menu.classList.remove("active");
-        window.scrollTo({
-          top: 0,
-        });
         // 隱藏所有 li 元素
         j.forEach((li, index) => {
             setTimeout(() => {
@@ -272,13 +267,13 @@ document.querySelector('.menu').addEventListener('click', () => {
         clicked = false;  // 更新點擊狀態
     }
 });
-
+j.forEach(item => {
+  item.addEventListener('click', () => {
+    window.scrollTo(0, 0);
+  });
+});
 jElements.forEach((jElement, index) => {
     jElement.addEventListener('click', (event) => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
         const clickedJ = event.currentTarget;  // 獲取被點擊的元素
         // 隱藏其他 li 元素
         jElements.forEach((otherElement, index) => {
@@ -347,10 +342,17 @@ jElements.forEach((jElement, index) => {
                 const li = otherElement.querySelector('li'); // 修改：選擇 <li> 元素
                 li.classList.remove('nosh');
                 j1.classList.remove('color');
+                j2.classList.remove('color');
             });
         }, 2000);  // 動畫結束後移除 .nosh 類
     });
 });
+document.getElementById("omg").addEventListener("click", () => {
+  console.log("Hello, world!");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+
 
 j1.addEventListener('click', (event) => {
     const clickedJ = event.currentTarget;
@@ -518,8 +520,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-    
-  
+     
   
 
 
