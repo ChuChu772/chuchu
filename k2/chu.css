@@ -2764,6 +2764,7 @@ textPath {
         border: 1px solid black;
     }
     .ppw1{
+        height:20%;
         font-size: 18px;
         font-family: "Noto Sans", serif;
         font-weight: bolder;
