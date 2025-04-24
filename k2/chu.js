@@ -288,8 +288,10 @@ jElements.forEach((jElement, index) => {
         if (clickedJ.id !== 'j1' && clickedJ.id !== 'j2') {
             const rect = clickedJ.getBoundingClientRect();
             const clone = clickedJ.cloneNode(true);
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+           window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 
         
             clone.classList.add('fixed-j');
