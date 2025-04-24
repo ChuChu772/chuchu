@@ -2,7 +2,6 @@ document.getElementById("menu").addEventListener("click", () => {
   console.log("Hello, world!");
   // 滾動 .r4 到頂部
   document.querySelector('.r4').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  document.querySelector('.r3').scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.querySelector('.r2').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 let lastPhwId = null;
