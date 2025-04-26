@@ -5,12 +5,13 @@ document.getElementById("menu").addEventListener("click", () => {
   document.querySelector('.r3').scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.querySelector('.r2').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
+
 const emailButton = document.getElementById('j2');
 
 emailButton.addEventListener('click', function() {
-  const email = "example@example.com";
-  const subject = encodeURIComponent("Hello!");
-  const body = encodeURIComponent("我想和你聯絡～");
+  const email = "matsu310720@gmail..com";
+  const subject = encodeURIComponent("我是小楚你好");
+  const body = encodeURIComponent("");
   
   window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 });
