@@ -9,7 +9,7 @@ document.getElementById("menu").addEventListener("click", () => {
 const emailButton = document.getElementById('j2');
 
 emailButton.addEventListener('click', function() {
-  const email = "matsu310720@gmail..com";
+  const email = "matsu310720@gmail.com";
   const subject = encodeURIComponent("我是小楚你好");
   const body = encodeURIComponent("");
   
