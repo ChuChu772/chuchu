@@ -12,7 +12,7 @@
     --con: 2.5vw;
     --fo: 2vw;
     --num: 3vw;
-    --pat:5vw;
+    --pat:4.7vw;
     --pro:1.4vw;
     /* --shi: clamp(3rem, 2.5vw, 5rem);
     --in: clamp(.5rem, 2.5vw, 1rem);
@@ -72,14 +72,14 @@ body{
     left: 31%;
     letter-spacing: 10;
     line-height: 2;
-    writing-mode: vertical-rl; /* 直書，從右到左 */
+    writing-mode: vertical-rl;
     text-orientation: upright;
     color: var(--cc);
     mix-blend-mode: difference;
 }
 .loword p{
-    font-size: var(--non);
-    font-family: "Zen Maru Gothic", serif;
+    font-size: .7vw;
+    /* font-family: "Zen Maru Gothic", serif; */
     font-weight: 400;
 }
 .cera{
@@ -222,7 +222,7 @@ body{
 textPath {
   fill: var(--aa);
   letter-spacing: 1.2;
-  font-size: .4vw;
+  font-size: .2vw;
   font-weight: bolder;
   font-family: "Noto Sans", serif;
 }
@@ -573,7 +573,6 @@ textPath {
     width: 100%;
     border: 1px solid brown;
 }
-
 .p2word{
     display: flex;
     position: relative;
@@ -603,7 +602,7 @@ textPath {
 .page3{
     z-index: 1000;
     display: flex;
-    height: 370vh;
+    height: 400vh;
     width: 100vw;
     overflow: hidden;
     z-index: 1000;
@@ -613,7 +612,7 @@ textPath {
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 370vh;
+    height: 100%;
     width: 100vw;
     justify-content: start;
     background-color: var(--gg);
@@ -752,7 +751,7 @@ textPath {
     display: flex;
     position: absolute;
     flex-direction: column;
-    height: 350vh;
+    height: 320vh;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -871,12 +870,13 @@ textPath {
     opacity: 0;
     margin: 30% 0;
 }
+
 .name{
     display: flex;
     position: relative;
     height: 100%;
     width: 24%;
-    padding: 2rem;
+    padding: 2rem 4rem;
     font-size: var(--pat);
     font-family: "Noto Sans", serif;
     font-weight: bolder;
@@ -1163,6 +1163,7 @@ textPath {
     transform: translateY(120%)!important;
 }
 .eraa .upp{
+    transition: 1s ease;
     transform: translateY(0%)!important;
 }
 .eraa1 p{
@@ -1299,6 +1300,8 @@ textPath {
 }
 .block1 p, .block2 p, .block3 p, .block4 p{
     transform: translateY(100%);
+
+    font-size: var(--in) !important;
 }
 .block1 .do{
     transform: translateY(130%)!important;
@@ -2153,6 +2156,9 @@ textPath {
 .anop4{
     display: none;
 }
+.r4, .r5{
+    display:none;
+}
 
 @media (max-width: 1024px) {
     html,body {
@@ -2762,18 +2768,21 @@ textPath {
         align-items: center;
         list-style: none;
         font-size: 9px;
+        border: 1px solid black;
     }
     .ppw1{
-        height:25%;
+        height: 20%;
         font-size: 18px;
         font-family: "Noto Sans", serif;
         font-weight: bolder;
+        border: 1px solid black;
     }
     .ppw1 p{
         display: flex;
         position: relative;
         height: 100%;
         width: 100%;
+        /* border: 1px solid black; */
     }
     .ppw2{
         margin: 3% 5%;
@@ -2828,7 +2837,7 @@ textPath {
         position: absolute;
         height: 25vh;
         width: 85vw;
-        bottom: 5%;
+        bottom: 10%;
         justify-content: center;
     }
     .pppp2 img{
@@ -3186,8 +3195,21 @@ textPath {
         align-items: start;
         color: var(--cc);
     }  
+    .tin-5 {
+        z-index: 49;
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        top: 20%;
+        font-size: 2rem;
+        line-height: 3rem;
+        letter-spacing: 1.4;
+        white-space: normal;   
+        justify-content: start;
+        align-items: start;
+        color: var(--cc);
+    }  
     .color{
-        transform: translateY(20%);
         opacity: 0 !important;
         transition: all 2s ease;
         transition-delay: .8s;
@@ -3423,7 +3445,7 @@ textPath {
       }
       
       .menu.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(3px, -2px);
+        transform: rotate(-45deg) translate(1px, 10px);
       }
       
     .phwp img{
@@ -3653,6 +3675,13 @@ textPath {
         border: 1px solid black;
         background-color: #fff;
     }
+    .up{
+        transform:translateY(0) !important; 
+        opacity: 1;
+    }
+    .up2{
+    transform:translateY(-120%) !important;
+    }
     .r5{
         position: absolute;
         display: none;
@@ -3690,13 +3719,6 @@ textPath {
         font-weight: bolder;
         font-family: "Zen Maru Gothic", serif;
         margin-top: 5% ;
-    }
-    .up{
-        transform:translateY(0) !important; 
-        opacity: 1;
-    }
-    .up2{
-    transform:translateY(-120%) !important;
     }
     #svg2{
         stroke-dasharray: 3225 3225;
