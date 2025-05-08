@@ -6,16 +6,6 @@ document.getElementById("menu").addEventListener("click", () => {
   document.querySelector('.r2').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-const emailButton = document.getElementById('j2');
-
-emailButton.addEventListener('click', function() {
-  const email = "matsu310720@gmail.com";
-  const subject = encodeURIComponent("我是小楚你好");
-  const body = encodeURIComponent("");
-  
-  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-});
-
 let lastPhwId = null;
 let up2Timeout = null;
 let isTransitioning = false;
@@ -367,6 +357,13 @@ j1.addEventListener('click', (event) => {
     document.querySelectorAll('.fixed-j').forEach(el => el.remove());
 });
 
+j2.addEventListener('click', (event) => {
+  const clickedJ = event.currentTarget;
+  clickedJ.classList.add('color');
+  document.querySelectorAll('.fixed-j').forEach(el => el.remove());
+});
+
+
 window.addEventListener('DOMContentLoaded', () => {
     const firstPhp = document.querySelector('.php');
     if (firstPhp) {
@@ -530,6 +527,37 @@ window.addEventListener('DOMContentLoaded', () => {
     
   
 
+
+let port;
+let reader;
+let currentLetter = "";
+let isInteractionAllowed = false;
+let lastScrollTime = 0;
+
+async function autoConnect() {
+  try {
+    // 自動尋找可用的串口
+    const ports = await navigator.serial.getPorts();
+    if (ports.length > 0) {
+      // 選擇第一個可用的串口
+      port = ports[0];
+      console.log("找到可用串口，嘗試連接...");
+
+      // 開啟串口並設定波特率
+      await port.open({ baudRate: 9600 });
+      reader = port.readable.getReader();
+      console.log("串口連接成功！");
+
+      // 開始監聽串口數據
+      await listenToSerial();
+    } else {
+      console.warn("未找到可用串口，請手動連接。");
+    }
+  } catch (err) {
+    console.error("自動連接串口失敗: ", err);
+  }
+}
+
 async function listenToSerial() {
   try {
     while (true) {
@@ -597,6 +625,20 @@ function smoothScroll(targetScroll) {
   if (Math.abs(step) > 1) requestAnimationFrame(() => smoothScroll(targetScroll));
 }
 
+const emailButton = document.getElementById('j2');
+
+emailButton.addEventListener('click', function() {
+  const email = "matsu310720@gmail..com";
+  const subject = encodeURIComponent("我是小楚你好");
+  const body = encodeURIComponent("");
+  
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+});
+
+
+
+
+
 
 function displayImage(letter) {
 
@@ -639,7 +681,7 @@ function displayImage(letter) {
     }
 
     resetClasses();
-
+    if (!/^\d+$/.test(currentLetter)) { 
     if (letter === "a") {
         document.getElementById('oto1').classList.add('visible');
         document.getElementById('sv1').classList.add('run');
@@ -653,7 +695,7 @@ function displayImage(letter) {
             document.getElementById('word2').textContent = "常與動植物如鶴、松、竹、梅搭配，表達富裕和幸福。";
             document.getElementById('word3').textContent = "此時期的鹿紋陶器常使用鮮明的顏色，如藍、紅、金。";
             document.getElementById('word4').textContent = "使用雕刻、凹雕技術，使鹿紋顯得更加生動。";
-        }, 700);
+        }, 600);
         if (currentLetter !== "a") {
             currentLetter = "a";  // 更新當前的 letter
             // 執行相關的動作
@@ -1270,19 +1312,18 @@ function displayImage(letter) {
         [g1, g2, g3, g4, g5].forEach(element => element.classList.add('bad'));
         g6.classList.add('good');  
     } else {
-        document.getElementById('result').textContent = "紋 樣 寓 意";
+        document.getElementById('result').textContent = "瞭 解 更 多";
         // document.getElementById('eresult').textContent = "(JOURNAL)";
         document.getElementById('eraa1').textContent = "陶瓷與臺灣";
         document.getElementById('eraa2').textContent = "17世紀";
-        document.getElementById('word').textContent = "回看過去四百年";
+        document.getElementById('word').textContent = "掃描旁邊的QR code";
         document.getElementById('word1').textContent = "台灣經過四個殖民時期，各時期的文化體現在陶瓷上。";
         document.getElementById('word2').textContent = "不同時期的紋樣，反映了當時社會生活與審美風格，";
         document.getElementById('word3').textContent = "這些紋樣寓意深刻，承載當時人們對生活的寄託與願望，";
-        document.getElementById('word4').textContent = "展現當時的思想與價值觀，記錄下了時代變遷與文化融合。";
-        
+        document.getElementById('word4').textContent = "展現當時的思想與價值觀，記錄下了時代變遷與文化融合。"; 
     }
 }
-
+}
 document.addEventListener("DOMContentLoaded", autoConnect);
 
 
